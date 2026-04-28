@@ -1,6 +1,5 @@
 package com.github.alexthe666.rats.server.items;
 
-import com.github.alexthe666.rats.registry.RatsCapabilityRegistry;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
@@ -28,8 +27,8 @@ public class RatStaffItem extends LoreTagItem {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		if (level != null && level.isClientSide() && Minecraft.getInstance().player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).resolve().isPresent()) {
-			TamedRat rat = Minecraft.getInstance().player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).resolve().get().getSelectedRat();
+		if (level != null && level.isClientSide() && Minecraft.getInstance().player != null) {
+			TamedRat rat = com.github.alexthe666.rats.server.capability.SelectedRat.get(Minecraft.getInstance().player);
 			if (rat != null) {
 				tooltip.add(Component.translatable(RatsLangConstants.CHEESE_STAFF_SELECTED, rat.getDisplayName(), rat.getUUID().toString()).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
 			}

@@ -118,8 +118,7 @@ public class RatsMod {
 		RatlantisFeatureRegistry.PROCESSORS.register(bus);
 		RatlantisFeatureRegistry.TRUNK_PLACERS.register(bus);
 
-		NeoForge.EVENT_BUS.addGenericListener(Entity.class, RatsCapabilityRegistry::attachCap);
-		bus.addListener(RatsCapabilityRegistry::registerCapabilities);
+		com.github.alexthe666.rats.server.capability.SelectedRat.ATTACHMENTS.register(bus);
 		bus.addListener(this::reloadConfigs);
 		bus.addListener(this::setup);
 		NeoForge.EVENT_BUS.addListener(this::addPetShops);

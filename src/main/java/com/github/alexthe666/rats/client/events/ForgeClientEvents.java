@@ -9,7 +9,7 @@ import com.github.alexthe666.rats.client.util.RatsIconRenderUtil;
 import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.registry.worldgen.RatlantisDimensionRegistry;
 import com.github.alexthe666.rats.server.block.entity.RatQuarryBlockEntity;
-import com.github.alexthe666.rats.server.capability.SelectedRatCapability;
+import com.github.alexthe666.rats.server.capability.SelectedRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.events.ForgeEvents;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
@@ -319,8 +319,8 @@ public class ForgeClientEvents {
 	@SubscribeEvent
 	public static void onRenderWorld(RenderLevelStageEvent event) {
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-			if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).resolve().isPresent()) {
-				TamedRat rat = Minecraft.getInstance().player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).resolve().get().getSelectedRat();
+			if (Minecraft.getInstance().player != null && SelectedRat.has(Minecraft.getInstance().player)) {
+				TamedRat rat = SelectedRat.get(Minecraft.getInstance().player);
 				if (rat == null) return;
 				ItemStack heldItem = Minecraft.getInstance().player.getItemInHand(InteractionHand.MAIN_HAND);
 				Tesselator tessellator = Tesselator.getInstance();
@@ -411,8 +411,7 @@ public class ForgeClientEvents {
 		if (Minecraft.getInstance().player != null) {
 			LocalPlayer player = Minecraft.getInstance().player;
 			if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof RatStaffItem || player.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof RatStaffItem) {
-				LazyOptional<SelectedRatCapability> cap = player.getCapability(RatsCapabilityRegistry.SELECTED_RAT);
-				return cap.resolve().isPresent() && Objects.equals(cap.resolve().get().getSelectedRat(), rat);
+				return Objects.equals(SelectedRat.get(player), rat);
 			}
 		}
 		return false;

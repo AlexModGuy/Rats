@@ -16,13 +16,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.EnergyStorage;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.core.HolderLookup;
 
@@ -32,13 +29,11 @@ public class RatCageWheelBlockEntity extends DecoratedRatCageBlockEntity {
 	public float rotationSpeed = 1.0F;
 	private TamedRat wheeler;
 	private int dismountCooldown = 0;
-	private final EnergyStorage energyStorage;
-	private final LazyOptional<EnergyStorage> energyCap;
+	public final EnergyStorage energyStorage;
 
 	public RatCageWheelBlockEntity(BlockPos pos, BlockState state) {
 		super(RatsBlockEntityRegistry.RAT_CAGE_WHEEL.get(), pos, state);
 		this.energyStorage = new EnergyStorage(1000, 10, 10, 0);
-		this.energyCap = LazyOptional.of(() -> this.energyStorage);
 	}
 
 	@Override
@@ -136,26 +131,14 @@ public class RatCageWheelBlockEntity extends DecoratedRatCageBlockEntity {
 			BlockEntity blockEntity = level.getBlockEntity(pos.relative(facing));
 			if (blockEntity == null)
 				continue;
-			blockEntity.getCapability(ForgeCapabilities.ENERGY, facing.getOpposite()).ifPresent(handler -> {
-				if (handler.canReceive()) {
-					int received = handler.receiveEnergy(Math.min(capacity.get(), 10), false);
-					capacity.addAndGet(-received);
-					this.energyStorage.extractEnergy(received, false);
-					this.setChanged();
-				}
-			});
+			IEnergyStorage handler = level.getCapability(Capabilities.EnergyStorage.BLOCK,
+					pos.relative(facing), facing.getOpposite());
+			if (handler != null && handler.canReceive()) {
+				int received = handler.receiveEnergy(Math.min(capacity.get(), 10), false);
+				capacity.addAndGet(-received);
+				this.energyStorage.extractEnergy(received, false);
+				this.setChanged();
+			}
 		}
-	}
-
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-		this.energyCap.invalidate();
-	}
-
-	@NotNull
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-		return capability == ForgeCapabilities.ENERGY ? this.energyCap.cast() : super.getCapability(capability, facing);
 	}
 }

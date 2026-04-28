@@ -7,7 +7,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import com.github.alexthe666.rats.registry.RatsCapabilityRegistry;
 import com.github.alexthe666.rats.server.capability.SelectedRat;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.client.Minecraft;
@@ -35,7 +34,7 @@ public record UpdateSelectedRatPacket(int entityId, int ratId) implements Custom
         				public void run() {
         					Entity entity = Minecraft.getInstance().level.getEntity(packet.entityId());
         					if (entity instanceof LivingEntity) {
-        						entity.getCapability(RatsCapabilityRegistry.SELECTED_RAT).ifPresent(cap -> cap.setSelectedRat((TamedRat) Minecraft.getInstance().level.getEntity(packet.ratId())));
+        						com.github.alexthe666.rats.server.capability.SelectedRat.setLocal((LivingEntity) entity, packet.ratId());
         					}
         				}
         			});

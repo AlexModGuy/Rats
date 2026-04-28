@@ -427,10 +427,7 @@ public class ForgeEvents {
 			event.setUseBlock(Event.Result.DENY);
 			event.setCancellationResult(InteractionResult.FAIL);
 			event.setCanceled(true);
-			TamedRat rat = null;
-			if (event.getEntity().getCapability(RatsCapabilityRegistry.SELECTED_RAT).resolve().isPresent()) {
-				rat = event.getEntity().getCapability(RatsCapabilityRegistry.SELECTED_RAT).resolve().get().getSelectedRat();
-			}
+			TamedRat rat = com.github.alexthe666.rats.server.capability.SelectedRat.get(event.getEntity());
 			if (rat != null) {
 				event.getEntity().swing(event.getHand());
 				if (!event.getLevel().isClientSide()) {

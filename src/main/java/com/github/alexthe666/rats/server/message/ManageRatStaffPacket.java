@@ -11,8 +11,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import com.github.alexthe666.rats.client.gui.CheeseStaffScreen;
 import com.github.alexthe666.rats.client.gui.PatrolStaffScreen;
 import com.github.alexthe666.rats.client.gui.RadiusStaffScreen;
-import com.github.alexthe666.rats.registry.RatsCapabilityRegistry;
-import com.github.alexthe666.rats.server.capability.SelectedRatCapability;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
@@ -42,7 +40,7 @@ public record ManageRatStaffPacket(int entityId, BlockPos pos, int dirOrd, boole
         				@Override
         				public void run() {
         					if (packet.clear()) {
-        						Minecraft.getInstance().player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).ifPresent(SelectedRatCapability::clearSelectedRat);
+        						com.github.alexthe666.rats.server.capability.SelectedRat.clear(Minecraft.getInstance().player);
         					} else {
         						Entity e = Minecraft.getInstance().player.level().getEntity(packet.entityId());
         						if (e instanceof TamedRat rat) {

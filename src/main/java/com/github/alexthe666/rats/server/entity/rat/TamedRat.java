@@ -947,7 +947,7 @@ public class TamedRat extends InventoryRat {
 					return InteractionResult.SUCCESS;
 				}
 			} else if (itemstack.getItem() instanceof RatStaffItem) {
-				player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).ifPresent(cap -> cap.setSelectedRat(this));
+				com.github.alexthe666.rats.server.capability.SelectedRat.set(player, this);
 				player.swing(hand);
 				if (!this.level().isClientSide() && player instanceof ServerPlayer sp) {
 					PacketDistributor.sendToPlayer(sp, new ManageRatStaffPacket(this.getId(), BlockPos.ZERO, Direction.NORTH.ordinal(), false, false));
