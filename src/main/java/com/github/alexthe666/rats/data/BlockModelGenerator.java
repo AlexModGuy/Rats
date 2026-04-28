@@ -14,7 +14,7 @@ import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.util.Objects;
 
@@ -199,27 +199,27 @@ public class BlockModelGenerator extends BlockStateProvider {
 	}
 
 	public void simpleBlockTranslucent(Block block) {
-		simpleBlock(block, models().cubeAll(NeoForgeRegistries.BLOCKS.getKey(block).getPath(), blockTexture(block)).renderType("minecraft:translucent"));
+		simpleBlock(block, models().cubeAll(BuiltInRegistries.BLOCK.getKey(block).getPath(), blockTexture(block)).renderType("minecraft:translucent"));
 	}
 
 	public void slabBlockTranslucent(SlabBlock block, ResourceLocation doubleslab, ResourceLocation texture) {
-		slabBlock(block, models().slab(NeoForgeRegistries.BLOCKS.getKey(block).getPath(), texture, texture, texture).renderType("minecraft:translucent"), models().slabTop(NeoForgeRegistries.BLOCKS.getKey(block).getPath() + "_top", texture, texture, texture).renderType("minecraft:translucent"), models().getExistingFile(doubleslab));
+		slabBlock(block, models().slab(BuiltInRegistries.BLOCK.getKey(block).getPath(), texture, texture, texture).renderType("minecraft:translucent"), models().slabTop(BuiltInRegistries.BLOCK.getKey(block).getPath() + "_top", texture, texture, texture).renderType("minecraft:translucent"), models().getExistingFile(doubleslab));
 	}
 
 	public void pressurePlateBlockTranslucent(PressurePlateBlock block, ResourceLocation texture) {
-		ModelFile pressurePlate = models().pressurePlate(NeoForgeRegistries.BLOCKS.getKey(block).getPath(), texture).renderType("minecraft:translucent");
-		ModelFile pressurePlateDown = models().pressurePlateDown(NeoForgeRegistries.BLOCKS.getKey(block).getPath() + "_down", texture).renderType("minecraft:translucent");
+		ModelFile pressurePlate = models().pressurePlate(BuiltInRegistries.BLOCK.getKey(block).getPath(), texture).renderType("minecraft:translucent");
+		ModelFile pressurePlateDown = models().pressurePlateDown(BuiltInRegistries.BLOCK.getKey(block).getPath() + "_down", texture).renderType("minecraft:translucent");
 		pressurePlateBlock(block, pressurePlate, pressurePlateDown);
 	}
 
 	public void buttonBlockTranslucent(ButtonBlock block, ResourceLocation texture) {
-		ModelFile button = models().button(NeoForgeRegistries.BLOCKS.getKey(block).getPath(), texture).renderType("minecraft:translucent");
-		ModelFile buttonPressed = models().buttonPressed(NeoForgeRegistries.BLOCKS.getKey(block).getPath() + "_pressed", texture).renderType("minecraft:translucent");
+		ModelFile button = models().button(BuiltInRegistries.BLOCK.getKey(block).getPath(), texture).renderType("minecraft:translucent");
+		ModelFile buttonPressed = models().buttonPressed(BuiltInRegistries.BLOCK.getKey(block).getPath() + "_pressed", texture).renderType("minecraft:translucent");
 		buttonBlock(block, button, buttonPressed);
 	}
 
 	private void builtinEntity(Block b, ResourceLocation particle) {
-		simpleBlock(b, models().getBuilder(NeoForgeRegistries.BLOCKS.getKey(b).getPath())
+		simpleBlock(b, models().getBuilder(BuiltInRegistries.BLOCK.getKey(b).getPath())
 				.parent(new ModelFile.UncheckedModelFile("builtin/entity"))
 				.texture("particle", particle));
 	}

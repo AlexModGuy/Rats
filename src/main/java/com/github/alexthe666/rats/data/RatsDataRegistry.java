@@ -62,9 +62,9 @@ public class RatsDataRegistry {
 
 		generator.addProvider(event.includeServer(), new RatsAdvancementProvider(output, provider, helper));
 		generator.addProvider(event.includeServer(), new BiomeModifierGenerator(output, provider));
-		generator.addProvider(event.includeServer(), new RatsLootTables(output));
+		generator.addProvider(event.includeServer(), new RatsLootTables(output, provider));
 		generator.addProvider(event.includeServer(), new RatsLootModifierGenerator(output));
-		generator.addProvider(event.includeServer(), new RatsRecipes(output));
+		generator.addProvider(event.includeServer(), new RatsRecipes(output, provider));
 
 		Path mainPath = Paths.get("src/main/resources").toAbsolutePath();
 		generator.addProvider(event.includeServer(), new RatsStructureUpdater(new PackOutput(mainPath), helper));
@@ -81,8 +81,8 @@ public class RatsDataRegistry {
 		TagsProvider<Block> ratlantisBlockTags = ratlantisPack.addProvider(ratOutput -> new RatlantisBlockTags(ratOutput, provider, helper));
 		ratlantisPack.addProvider(ratOutput -> new RatlantisEntityTags(ratOutput, provider, helper));
 		ratlantisPack.addProvider(ratOutput -> new RatlantisItemTags(ratOutput, provider, ratlantisBlockTags.contentsGetter(), helper));
-		ratlantisPack.addProvider(RatlantisLootTables::new);
-		ratlantisPack.addProvider(RatlantisRecipes::new);
+		ratlantisPack.addProvider(ratOutput -> new RatlantisLootTables(ratOutput, provider));
+		ratlantisPack.addProvider(ratOutput -> new RatlantisRecipes(ratOutput, provider));
 		ratlantisPack.addProvider(ratOutput -> new PackMetadataGenerator(ratOutput).add(PackMetadataSection.TYPE, new PackMetadataSection(
 				Component.translatable(RatsLangConstants.RATLANTIS_PACK),
 				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),

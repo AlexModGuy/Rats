@@ -18,7 +18,7 @@ import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.ItemLayerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,9 +33,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 	@Override
 	protected void registerModels() {
 
-		for (Item i : NeoForgeRegistries.ITEMS.getValues()) {
-			if (i instanceof SpawnEggItem && Objects.requireNonNull(NeoForgeRegistries.ITEMS.getKey(i)).getNamespace().equals(RatsMod.MODID)) {
-				this.getBuilder(Objects.requireNonNull(NeoForgeRegistries.ITEMS.getKey(i)).getPath())
+		for (Item i : BuiltInRegistries.ITEM.getValues()) {
+			if (i instanceof SpawnEggItem && Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(i)).getNamespace().equals(RatsMod.MODID)) {
+				this.getBuilder(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(i)).getPath())
 						.parent(this.getExistingFile(ResourceLocation.parse("item/template_spawn_egg")));
 			}
 		}
@@ -359,11 +359,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void toBlock(Block b) {
-		toBlockModel(b, blockPrefix(NeoForgeRegistries.BLOCKS.getKey(b).getPath()));
+		toBlockModel(b, blockPrefix(BuiltInRegistries.BLOCK.getKey(b).getPath()));
 	}
 
 	private void toBlockModel(Block b, ResourceLocation model) {
-		withExistingParent(NeoForgeRegistries.BLOCKS.getKey(b).getPath(), model);
+		withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath(), model);
 	}
 
 	private void singleTexTool(DeferredHolder<Item, Item> item) {
