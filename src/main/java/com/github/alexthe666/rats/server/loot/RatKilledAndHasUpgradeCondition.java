@@ -1,24 +1,23 @@
 package com.github.alexthe666.rats.server.loot;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.registry.RatsLootRegistry;
 import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public record RatKilledAndHasUpgradeCondition(Item upgrade) implements LootItemCondition {
+
+	public static final MapCodec<RatKilledAndHasUpgradeCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			BuiltInRegistries.ITEM.byNameCodec().fieldOf("upgrade").forGetter(RatKilledAndHasUpgradeCondition::upgrade)
+	).apply(instance, RatKilledAndHasUpgradeCondition::new));
 
 	@Override
 	public LootItemConditionType getType() {
@@ -36,21 +35,5 @@ public record RatKilledAndHasUpgradeCondition(Item upgrade) implements LootItemC
 
 	public static LootItemCondition.Builder hasUpgrade(Item upgrade) {
 		return () -> new RatKilledAndHasUpgradeCondition(upgrade);
-	}
-
-	public static class RatSerializer implements Serializer<RatKilledAndHasUpgradeCondition> {
-		public void serialize(JsonObject object, RatKilledAndHasUpgradeCondition condition, JsonSerializationContext context) {
-			object.addProperty("upgrade", BuiltInRegistries.ITEM.getKey(condition.upgrade()).toString());
-		}
-
-		public RatKilledAndHasUpgradeCondition deserialize(JsonObject object, JsonDeserializationContext context) {
-			Item upgrade;
-			try {
-				upgrade = BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "upgrade")));
-				return new RatKilledAndHasUpgradeCondition(upgrade);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
 	}
 }
