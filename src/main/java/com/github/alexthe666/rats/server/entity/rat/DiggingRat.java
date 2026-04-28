@@ -43,7 +43,7 @@ public abstract class DiggingRat extends AbstractRat {
 	public void aiStep() {
 		super.aiStep();
 
-		if (this.canDigThroughBlocks() && EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (this.canDigThroughBlocks() && (this.level() instanceof net.minecraft.server.level.ServerLevel _sl && net.neoforged.neoforge.event.EventHooks.canEntityGrief(_sl, this))) {
 			if (this.getOwner() == null && this.getNavigation().isDone() && this.digCooldown-- <= 0 && RatConfig.ratsDigBlocks) {
 				this.findDigTarget();
 				this.digTarget();

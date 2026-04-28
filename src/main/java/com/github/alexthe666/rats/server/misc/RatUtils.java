@@ -181,11 +181,11 @@ public class RatUtils {
 	}
 
 	public static boolean canRatPlaceBlock(Level level, BlockPos pos, DiggingRat rat) {
-		return EventHooks.getMobGriefingEvent(level, rat) && !EventHooks.onBlockPlace(rat, BlockSnapshot.create(level.dimension(), level, pos), Direction.UP);
+		return (level instanceof net.minecraft.server.level.ServerLevel _sl && net.neoforged.neoforge.event.EventHooks.canEntityGrief(_sl, rat)) && !EventHooks.onBlockPlace(rat, BlockSnapshot.create(level.dimension(), level, pos), Direction.UP);
 	}
 
 	public static boolean isBlockProtected(Level level, BlockPos pos, DiggingRat rat) {
-		return !EventHooks.getMobGriefingEvent(level, rat) || !EventHooks.onEntityDestroyBlock(rat, pos, level.getBlockState(pos));
+		return !(level instanceof net.minecraft.server.level.ServerLevel _sl && net.neoforged.neoforge.event.EventHooks.canEntityGrief(_sl, rat)) || !EventHooks.onEntityDestroyBlock(rat, pos, level.getBlockState(pos));
 	}
 
 	public static boolean isOpenRatTube(BlockGetter getter, BlockPos pos) {

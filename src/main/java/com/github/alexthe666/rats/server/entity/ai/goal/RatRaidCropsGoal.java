@@ -37,7 +37,7 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 			return false;
 		}
 
-		return EventHooks.getMobGriefingEvent(this.rat.level(), this.rat) && super.canUse();
+		return (this.rat.level() instanceof net.minecraft.server.level.ServerLevel _sl && net.neoforged.neoforge.event.EventHooks.canEntityGrief(_sl, this.rat)) && super.canUse();
 	}
 
 	@Override

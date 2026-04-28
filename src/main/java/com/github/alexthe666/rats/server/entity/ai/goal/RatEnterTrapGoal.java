@@ -38,7 +38,7 @@ public class RatEnterTrapGoal extends RatMoveToBlockGoal {
 			if (!this.rat.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
 				return false;
 			} else {
-				return (this.nextStartTick > 0 || EventHooks.getMobGriefingEvent(this.rat.level(), this.rat)) && super.canUse();
+				return (this.nextStartTick > 0 || (this.rat.level() instanceof net.minecraft.server.level.ServerLevel _sl && net.neoforged.neoforge.event.EventHooks.canEntityGrief(_sl, this.rat))) && super.canUse();
 			}
 		} else {
 			return false;
