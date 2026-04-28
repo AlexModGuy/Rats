@@ -36,7 +36,7 @@ public class RatGolemMount extends RatMountBase {
 
 	public RatGolemMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		this.setMaxUpStep(1.0F);
+		// PORT-STUB: 1.21 removed Entity.setMaxUpStep; use Attributes.STEP_HEIGHT modifier instead. (was 1.0F)
 		this.riderY = 1.95F;
 		this.riderXZ = -0.1F;
 	}

@@ -58,7 +58,7 @@ public class PiratBoat extends Mob {
 
 	public PiratBoat(EntityType<? extends Mob> type, Level level) {
 		super(type, level);
-		this.setMaxUpStep(1.0F);
+		// PORT-STUB: 1.21 removed Entity.setMaxUpStep; use Attributes.STEP_HEIGHT modifier instead. (was 1.0F)
 		this.setPathfindingMalus(PathType.WATER, 0.0F);
 		this.setPathfindingMalus(PathType.WALKABLE, -1.0F);
 		this.moveControl = new BoatMoveControl(this);

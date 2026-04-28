@@ -29,7 +29,7 @@ public class RatAutomatonMount extends RatMountBase implements IAnimatedEntity {
 
 	public RatAutomatonMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		this.setMaxUpStep(2.0F);
+		// PORT-STUB: 1.21 removed Entity.setMaxUpStep; use Attributes.STEP_HEIGHT modifier instead. (was 2.0F)
 		this.riderY = 2.725F;
 		this.moveControl = new FlyingMoveControl(this, 10, false);
 	}

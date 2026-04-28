@@ -39,7 +39,7 @@ public class RatBiplaneMount extends RatMountBase implements Plane {
 
 	public RatBiplaneMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		this.setMaxUpStep(1.0F);
+		// PORT-STUB: 1.21 removed Entity.setMaxUpStep; use Attributes.STEP_HEIGHT modifier instead. (was 1.0F)
 		this.riderY = 1.35F;
 		this.riderXZ = -0.35F;
 		this.moveControl = new PlaneMoveControl<>(this);

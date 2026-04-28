@@ -26,7 +26,7 @@ public class RatChickenMount extends RatMountBase {
 
 	public RatChickenMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		this.setMaxUpStep(1.0F);
+		// PORT-STUB: 1.21 removed Entity.setMaxUpStep; use Attributes.STEP_HEIGHT modifier instead. (was 1.0F)
 		this.riderY = 0.55F;
 		this.riderXZ = 0.1F;
 	}

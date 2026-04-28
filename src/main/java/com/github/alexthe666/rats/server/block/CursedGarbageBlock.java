@@ -37,7 +37,7 @@ public class CursedGarbageBlock extends AbstractGarbageBlock {
 				double d0 = (double) pos.getX() + (double) random.nextFloat();
 				double d1 = (double) pos.getY() + 1.05D;
 				double d2 = (double) pos.getZ() + (double) random.nextFloat();
-				level.addParticle(ParticleTypes.ENTITY_EFFECT, d0, d1, d2, 0, random.nextGaussian() * 0.05D + 0.75D, 0);
+				level.addParticle(net.minecraft.core.particles.ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, 0F, (float) (random.nextGaussian() * 0.05D + 0.75D), 0F), d0, d1, d2, 0, 0, 0);
 			}
 		}
 	}

@@ -52,7 +52,7 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 
 	public RatlanteanAutomaton(EntityType<? extends Monster> type, Level level) {
 		super(type, level);
-		this.setMaxUpStep(2.0F);
+		// PORT-STUB: 1.21 removed Entity.setMaxUpStep; use Attributes.STEP_HEIGHT modifier instead. (was 2.0F)
 		this.getNavigation().setCanFloat(true);
 		this.xpReward = 50;
 		this.moveControl = new FlyingMoveControl(this, 10, false);

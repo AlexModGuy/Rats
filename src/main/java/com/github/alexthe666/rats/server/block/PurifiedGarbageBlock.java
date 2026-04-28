@@ -31,7 +31,7 @@ public class PurifiedGarbageBlock extends AbstractGarbageBlock {
 				double g = 0.87D;
 				double b = 0.88D;
 
-				level.addParticle(ParticleTypes.ENTITY_EFFECT, d0, d1, d2, r, g, random.nextGaussian() * 0.05D + b);
+				level.addParticle(net.minecraft.core.particles.ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, (float) r, (float) g, (float) (random.nextGaussian() * 0.05D + b)), d0, d1, d2, 0, 0, 0);
 			}
 		}
 	}
