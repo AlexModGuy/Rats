@@ -28,20 +28,19 @@ public class RatCraftingTableMenu extends AbstractContainerMenu {
 		super(RatsMenuRegistry.RAT_CRAFTING_TABLE_CONTAINER.get(), id);
 		this.table = table;
 		this.data = data;
-		//result
-		table.resultHandler.ifPresent(handler -> this.addSlot(new RatCraftingResultSlot(handler, playerInventory.player, table, 0, 130, 40)));
+		// 1.21: handlers are direct fields (not Optional) on the BlockEntity now.
+		this.addSlot(new RatCraftingResultSlot(table.resultHandler, playerInventory.player, table, 0, 130, 40));
 		//ghost input
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 3; ++j) {
 				int finalI = i;
 				int finalJ = j;
-				table.matrixHandler.ifPresent(handler -> this.addSlot(new ImprovedSlotItemHandler(table, handler, finalJ + finalI * 3, 36 + finalJ * 18, 22 + finalI * 18, true)));
+				this.addSlot(new ImprovedSlotItemHandler(table, table.matrixHandler, finalJ + finalI * 3, 36 + finalJ * 18, 22 + finalI * 18, true));
 			}
 		}
 		//input
 		for (int k = 0; k < 9; ++k) {
-			int finalK = k;
-			table.bufferHandler.ifPresent(handler -> this.addSlot(new ImprovedSlotItemHandler(table, handler, finalK, finalK * 18 + 8, 96, false)));
+			this.addSlot(new ImprovedSlotItemHandler(table, table.bufferHandler, k, k * 18 + 8, 96, false));
 		}
 		//inventory
 		for (int i = 0; i < 3; ++i) {
@@ -148,10 +147,9 @@ public class RatCraftingTableMenu extends AbstractContainerMenu {
 	}
 
 	public void clearCraftingContent() {
-		this.table.matrixHandler.ifPresent(h -> {
-			for (int i = 0; i < h.getSlots(); i++) {
-				h.setStackInSlot(i, ItemStack.EMPTY);
-			}
-		});
+		var h = this.table.matrixHandler;
+		for (int i = 0; i < h.getSlots(); i++) {
+			h.setStackInSlot(i, ItemStack.EMPTY);
+		}
 	}
 }

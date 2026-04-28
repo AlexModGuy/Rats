@@ -121,7 +121,7 @@ public class ForgeClientEvents {
 		if (RatConfig.synesthesiaShader) {
 			if (event.getEntity() == Minecraft.getInstance().player) {
 				GameRenderer renderer = Minecraft.getInstance().gameRenderer;
-				boolean active = event.getEntity().hasEffect(RatsEffectRegistry.SYNESTHESIA);
+				boolean active = ((net.minecraft.world.entity.LivingEntity) event.getEntity()).hasEffect(RatsEffectRegistry.SYNESTHESIA);
 				try {
 					if (active && renderer.currentEffect() == null) {
 						renderer.loadEffect(SYNESTHESIA);
@@ -179,7 +179,8 @@ public class ForgeClientEvents {
 	public static void onRenderOverlay(RenderGuiLayerEvent.Post event) {
 		Player player = Minecraft.getInstance().player;
 		if (player == null || player.isCreative() || player.isSpectator()) return;
-		if (event.getOverlay() != VanillaGuiLayers.PLAYER_HEALTH.type() || event.isCanceled() || !player.hasEffect(RatsEffectRegistry.PLAGUE) || !RatConfig.plagueHearts) {
+		// PORT-STUB: 1.21 RenderGuiLayerEvent.Post no longer has getOverlay()/isCanceled(); identifies layer via getName().
+		if (!event.getName().equals(VanillaGuiLayers.PLAYER_HEALTH) || !player.hasEffect(RatsEffectRegistry.PLAGUE) || !RatConfig.plagueHearts) {
 			return;
 		}
 		GuiGraphics graphics = event.getGuiGraphics();
@@ -327,7 +328,7 @@ public class ForgeClientEvents {
 				Tesselator tessellator = Tesselator.getInstance();
 				BufferBuilder buffer = null; // PORT-STUB: 1.21 removed Tesselator.getBuilder(); buffer is now obtained inline via tessellator.begin(...)
 				PoseStack stack = event.getPoseStack();
-				float bob = 1.5F + 0.3F * (Mth.sin((event.getPartialTick() + Minecraft.getInstance().player.tickCount) * 0.1F) + 1F);
+				float bob = 1.5F + 0.3F * (Mth.sin((event.getPartialTick().getGameTimeDeltaPartialTick(false) + Minecraft.getInstance().player.tickCount) * 0.1F) + 1F);
 				final Vec3 viewPosition = Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition();
 				double px = viewPosition.x;
 				double py = viewPosition.y;
@@ -367,7 +368,7 @@ public class ForgeClientEvents {
 					AABB aabb = new AABB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
 					RatsIconRenderUtil.renderBox(RADIUS_TEXTURE, viewPosition, renderCenter, aabb, stack);
 				} else if (heldItem.is(RatsItemRegistry.PATROL_STICK.get())) {
-					bob = 1.5F + 0.05F * (Mth.sin((event.getPartialTick() + (float) Minecraft.getInstance().player.tickCount) * 0.1F) + 1.0F);
+					bob = 1.5F + 0.05F * (Mth.sin((event.getPartialTick().getGameTimeDeltaPartialTick(false) + (float) Minecraft.getInstance().player.tickCount) * 0.1F) + 1.0F);
 
 					for (int i = 0; i < rat.getPatrolNodes().size(); ++i) {
 						GlobalPos node = rat.getPatrolNodes().get(i);

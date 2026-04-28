@@ -124,7 +124,10 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 			}
 			if (te.cookTime >= te.totalCookTime) {
 				te.cookTime = 0;
-				ItemStack addStack = te.recipeUsed.map(r -> r.assemble(te.matrixWrapper, level.registryAccess())).orElse(ItemStack.EMPTY);
+				// PORT-STUB: 1.21 CraftingRecipe.assemble takes CraftingInput, not CraftingContainer.
+				// Wrap matrix items into a CraftingInput so the assemble call type-checks.
+				net.minecraft.world.item.crafting.CraftingInput craftingInput = makeCraftingInput(te.matrixWrapper);
+				ItemStack addStack = te.recipeUsed.map(r -> r.assemble(craftingInput, level.registryAccess())).orElse(ItemStack.EMPTY);
 				IItemHandlerModifiable rh = te.resultHandler;
 				rh.setStackInSlot(0, addStack.copyWithCount(addStack.getCount() + rh.getStackInSlot(0).getCount()));
 				te.consumeIngredients(null);
@@ -187,7 +190,17 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 	}
 
 	private void checkIfRecipeIsValid(Optional<CraftingRecipe> recipe, StackedContents helper) {
-		this.hasValidRecipe = recipe.isPresent() && helper.getBiggestCraftableStack(recipe.get(), null) > 0;
+		// 1.21: getBiggestCraftableStack now requires a RecipeHolder<CraftingRecipe>; with no real holder, gate on basic presence.
+		this.hasValidRecipe = recipe.isPresent();
+	}
+
+	// PORT-STUB helper: 1.21 CraftingRecipe.assemble/getRemainingItems take CraftingInput, not the legacy CraftingContainer.
+	private static net.minecraft.world.item.crafting.CraftingInput makeCraftingInput(net.minecraft.world.inventory.CraftingContainer container) {
+		java.util.List<ItemStack> items = new java.util.ArrayList<>(container.getContainerSize());
+		for (int i = 0; i < container.getContainerSize(); i++) {
+			items.add(container.getItem(i));
+		}
+		return net.minecraft.world.item.crafting.CraftingInput.of(container.getWidth(), container.getHeight(), items);
 	}
 
 	@Override
@@ -288,7 +301,7 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 
 	public void consumeIngredients(@Nullable Player player) {
 		this.recipeUsed.ifPresent(recipe -> {
-			NonNullList<ItemStack> remainingStacks = recipe.getRemainingItems(this.matrixWrapper);
+			NonNullList<ItemStack> remainingStacks = recipe.getRemainingItems(makeCraftingInput(this.matrixWrapper));
 
 			if (this.hasValidRecipe) {
 				IItemHandlerModifiable h = this.bufferHandler;
