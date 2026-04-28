@@ -4,8 +4,10 @@ import com.github.alexthe666.rats.server.items.RatListUpgradeItem;
 import com.github.alexthe666.rats.server.items.upgrades.CombinedRatUpgradeItem;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +19,7 @@ public class RatUpgradeContainer implements WorldlyContainer {
 
 	public RatUpgradeContainer(ItemStack upgradeStack) {
 		this.upgradeStack = upgradeStack;
-		this.readFromNBT(upgradeStack.getOrCreateTag());
+		this.readFromNBT(upgradeStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag());
 	}
 
 	private void readFromNBT(CompoundTag tagCompound) {
@@ -25,8 +27,10 @@ public class RatUpgradeContainer implements WorldlyContainer {
 		ContainerHelper.loadAllItems(tagCompound, this.items, net.minecraft.core.RegistryAccess.EMPTY);
 	}
 
-	private void writeToNBT(CompoundTag tagCompound) {
-		ContainerHelper.saveAllItems(tagCompound, this.items, net.minecraft.core.RegistryAccess.EMPTY);
+	private void writeToNBT() {
+		CompoundTag tag = this.upgradeStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+		ContainerHelper.saveAllItems(tag, this.items, net.minecraft.core.RegistryAccess.EMPTY);
+		this.upgradeStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 	}
 
 	@Override
@@ -75,7 +79,7 @@ public class RatUpgradeContainer implements WorldlyContainer {
 
 	@Override
 	public void setChanged() {
-		this.writeToNBT(this.upgradeStack.getOrCreateTag());
+		this.writeToNBT();
 	}
 
 	@Override
@@ -85,7 +89,7 @@ public class RatUpgradeContainer implements WorldlyContainer {
 
 	@Override
 	public void stopOpen(Player player) {
-		this.writeToNBT(this.upgradeStack.getOrCreateTag());
+		this.writeToNBT();
 	}
 
 	@Override
