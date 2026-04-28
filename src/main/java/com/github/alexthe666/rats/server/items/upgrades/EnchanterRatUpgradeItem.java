@@ -9,7 +9,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.block.EnchantmentTableBlock;
 
 public class EnchanterRatUpgradeItem extends BaseRatUpgradeItem implements TickRatUpgrade {
 	public EnchanterRatUpgradeItem(Properties properties, int rarity, int textLength) {
@@ -38,7 +37,8 @@ public class EnchanterRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 		}
 		if (disenchant && heldItem.isEnchanted()) {
 			burntItem = heldItem.copy();
-			burntItem.getEnchantmentTags().clear();
+			// 1.21: enchantments are now a DataComponent (ItemEnchantments). Replace with empty.
+			burntItem.set(net.minecraft.core.component.DataComponents.ENCHANTMENTS, net.minecraft.world.item.enchantment.ItemEnchantments.EMPTY);
 		}
 		if (burntItem.isEmpty()) {
 			rat.cookingProgress = 0;
@@ -47,13 +47,16 @@ public class EnchanterRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 			if (rat.cookingProgress == 1000) {
 				heldItem.shrink(1);
 				if (!disenchant) {
-					float power = 0;
-					for (BlockPos blockpos : EnchantmentTableBlock.BOOKSHELF_OFFSETS) {
-						if (EnchantmentTableBlock.isValidBookShelf(rat.level(), rat.blockPosition(), blockpos)) {
-							power += rat.level().getBlockState(rat.blockPosition().offset(blockpos)).getEnchantPowerBonus(rat.level(), rat.blockPosition().offset(blockpos));
-						}
+					// PORT-STUB: 1.21 EnchantmentTableBlock.BOOKSHELF_OFFSETS / isValidBookShelf moved to internal logic; bookshelf-power scan disabled.
+					// EnchantmentHelper.enchantItem now requires (RegistryAccess, RandomSource, ItemStack, int, Stream<Holder<Enchantment>>) — defer to RegistryAccess-aware variant.
+					if (rat.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+						burntItem = EnchantmentHelper.enchantItem(
+								serverLevel.registryAccess(),
+								rat.getRandom(),
+								burntItem,
+								(int) (2.0F + rat.getRandom().nextInt(2)),
+								serverLevel.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).holders().map(net.minecraft.core.Holder.Reference::cast));
 					}
-					burntItem = EnchantmentHelper.enchantItem(rat.getRandom(), burntItem, (int) (2.0F + rat.getRandom().nextInt(2) + power), false);
 				}
 				if (heldItem.isEmpty()) {
 					rat.setItemInHand(InteractionHand.MAIN_HAND, burntItem);
