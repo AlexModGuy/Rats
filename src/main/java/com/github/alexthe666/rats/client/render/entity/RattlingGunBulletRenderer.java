@@ -38,24 +38,23 @@ public class RattlingGunBulletRenderer extends EntityRenderer<RattlingGunBullet>
 		stack.scale(0.05625F, 0.05625F, 0.05625F);
 		stack.translate(-4.0F, 0.0F, 0.0F);
 		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutout(this.getTextureLocation(bullet)));
-		PoseStack.Pose posestack$pose = stack.last();
-		Matrix4f matrix4f = posestack$pose.pose();
-		// matrix3f no longer needed; using pose
-		this.addVertex(matrix4f, pose, vertexconsumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, light);
-		this.addVertex(matrix4f, pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, light);
-		this.addVertex(matrix4f, pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, light);
-		this.addVertex(matrix4f, pose, vertexconsumer, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, light);
-		this.addVertex(matrix4f, pose, vertexconsumer, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, light);
-		this.addVertex(matrix4f, pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, light);
-		this.addVertex(matrix4f, pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, light);
-		this.addVertex(matrix4f, pose, vertexconsumer, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, light);
+		PoseStack.Pose pose = stack.last();
+		Matrix4f matrix4f = pose.pose();
+		this.vertex(matrix4f, pose, vertexconsumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, light);
+		this.vertex(matrix4f, pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, light);
+		this.vertex(matrix4f, pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, light);
+		this.vertex(matrix4f, pose, vertexconsumer, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, light);
+		this.vertex(matrix4f, pose, vertexconsumer, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, light);
+		this.vertex(matrix4f, pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, light);
+		this.vertex(matrix4f, pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, light);
+		this.vertex(matrix4f, pose, vertexconsumer, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, light);
 
 		for (int j = 0; j < 4; ++j) {
 			stack.mulPose(Axis.XP.rotationDegrees(90.0F));
-			this.addVertex(matrix4f, pose, vertexconsumer, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, light);
-			this.addVertex(matrix4f, pose, vertexconsumer, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, light);
-			this.addVertex(matrix4f, pose, vertexconsumer, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, light);
-			this.addVertex(matrix4f, pose, vertexconsumer, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, light);
+			this.vertex(matrix4f, pose, vertexconsumer, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, light);
+			this.vertex(matrix4f, pose, vertexconsumer, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, light);
+			this.vertex(matrix4f, pose, vertexconsumer, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, light);
+			this.vertex(matrix4f, pose, vertexconsumer, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, light);
 		}
 
 		stack.popPose();

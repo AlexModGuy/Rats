@@ -36,9 +36,7 @@ public class SmallArrowRenderer extends ArrowRenderer<SmallArrow> {
 		stack.scale(scale * 0.05625F, scale * 0.05625F, scale * 0.05625F);
 		stack.translate(-4.0D, 0.0D, 0.0D);
 		VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityCutout(ARROW));
-		PoseStack.Pose matrixstack$entry = stack.last();
-		Matrix4f matrix4f = matrixstack$entry.pose();
-		Matrix3f matrix3f = matrixstack$entry.normal();
+		PoseStack.Pose pose = stack.last();
 		this.addVertex(pose, vertexBuilder, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, light);
 		this.addVertex(pose, vertexBuilder, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, light);
 		this.addVertex(pose, vertexBuilder, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, light);

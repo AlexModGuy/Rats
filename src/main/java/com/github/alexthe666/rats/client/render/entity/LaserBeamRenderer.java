@@ -44,9 +44,8 @@ public class LaserBeamRenderer extends EntityRenderer<LaserBeam> {
 		stack.scale(0.05625F, 0.05625F, 0.05625F);
 		stack.translate(-4.0D, 0.0D, 0.0D);
 		VertexConsumer consumer = buffer.getBuffer(r > 200 ? RENDER_TYPE_RED : RENDER_TYPE_BLUE);
-		PoseStack.Pose matrixstack$entry = stack.last();
-		Matrix4f matrix4f = matrixstack$entry.pose();
-		Matrix3f matrix3f = matrixstack$entry.normal();
+		PoseStack.Pose pose = stack.last();
+		Matrix4f matrix4f = pose.pose();
 		light = 240;
 		this.vertex(matrix4f, pose, consumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, light, r, g, b);
 		this.vertex(matrix4f, pose, consumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, light, r, g, b);
@@ -60,8 +59,8 @@ public class LaserBeamRenderer extends EntityRenderer<LaserBeam> {
 		super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 	}
 
-	public void vertex(Matrix4f m4f, Matrix3f m3f, VertexConsumer consumer, float x, float y, float z, float u, float v, int normX, int normZ, int normY, int light, int red, int green, int blue) {
-		consumer.addVertex(m4f, x, y, z).setColor(red, green, blue, 255).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(m3f, (float) normX, (float) normY, (float) normZ);
+	public void vertex(Matrix4f m4f, PoseStack.Pose pose, VertexConsumer consumer, float x, float y, float z, float u, float v, int normX, int normZ, int normY, int light, int red, int green, int blue) {
+		consumer.addVertex(m4f, x, y, z).setColor(red, green, blue, 255).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, (float) normX, (float) normY, (float) normZ);
 	}
 
 	@Override
