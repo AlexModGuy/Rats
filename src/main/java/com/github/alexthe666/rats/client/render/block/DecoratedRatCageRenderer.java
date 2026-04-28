@@ -56,13 +56,13 @@ public class DecoratedRatCageRenderer implements BlockEntityRenderer<DecoratedRa
 		if (containedItem.getItem() instanceof RatIglooItem iglooItem) {
 			DyeColor color = iglooItem.color;
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_IGLOO);
-			this.igloo.renderToBuffer(stack, consumer, light, overlay, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, color.getTextureDiffuseColors()[0], color.getTextureDiffuseColors()[1], color.getTextureDiffuseColors()[2]));
+			this.igloo.renderToBuffer(stack, consumer, light, overlay, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, color.getTextureDiffuseColor()[0], color.getTextureDiffuseColor()[1], color.getTextureDiffuseColor()[2]));
 		}
 
 		if (containedItem.getItem() instanceof RatHammockItem hammockItem) {
 			VertexConsumer consumer = buffer.getBuffer(TEXTURE_RAT_HAMMOCK);
 			DyeColor color = hammockItem.color;
-			this.hammock.renderToBuffer(stack, consumer, light, overlay, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, color.getTextureDiffuseColors()[0], color.getTextureDiffuseColors()[1], color.getTextureDiffuseColors()[2]));
+			this.hammock.renderToBuffer(stack, consumer, light, overlay, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, color.getTextureDiffuseColor()[0], color.getTextureDiffuseColor()[1], color.getTextureDiffuseColor()[2]));
 		}
 
 		if (containedItem.is(RatsItemRegistry.RAT_WATER_BOTTLE.get())) {

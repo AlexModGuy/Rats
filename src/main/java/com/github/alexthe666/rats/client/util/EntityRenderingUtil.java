@@ -29,13 +29,13 @@ public class EntityRenderingUtil {
 	@Nullable
 	public static LivingEntity fetchEntity(@Nullable ResourceLocation entityName, @Nullable Level level) {
 		if (entityName != null && level != null && !IGNORED_ENTITIES.contains(entityName)) {
-			EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getValue(entityName);
+			EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(entityName);
 			if (type != null) {
 				Entity entity;
 				if (type == EntityType.PLAYER) {
 					entity = Minecraft.getInstance().player;
 				} else {
-					entity = ENTITY_MAP.computeIfAbsent(entityName, t -> BuiltInRegistries.ENTITY_TYPE.getValue(t).create(level));
+					entity = ENTITY_MAP.computeIfAbsent(entityName, t -> BuiltInRegistries.ENTITY_TYPE.get(t).create(level));
 				}
 				if (entity instanceof LivingEntity living) {
 					return living;
@@ -68,7 +68,7 @@ public class EntityRenderingUtil {
 
 	public static void drawEntityOnScreen(GuiGraphics graphics, int posX, int posY, int scale, float mouseX, float mouseY, @Nullable LivingEntity entity, boolean rotating) {
 		if (entity != null) {
-			float rotate = (Minecraft.getInstance().getPartialTick() + Minecraft.getInstance().player.tickCount) * 2F;
+			float rotate = (Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true) + Minecraft.getInstance().player.tickCount) * 2F;
 			float f = (float) Math.atan(mouseX / 40.0F);
 			float f1 = (float) Math.atan(mouseY / 40.0F);
 			Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);

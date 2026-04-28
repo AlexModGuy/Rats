@@ -37,7 +37,7 @@ public class RatlantisTokenRenderer implements BlockEntityRenderer<RatlantisToke
 			while (f1 < -(float) Math.PI) {
 				f1 += ((float) Math.PI * 2F);
 			}
-			f2 = entity.ratRotationPrev + f1 * Minecraft.getInstance().getPartialTick();
+			f2 = entity.ratRotationPrev + f1 * Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
 		}
 		stack.pushPose();
 		stack.translate(0.5D, 0.5D, 0.5D);

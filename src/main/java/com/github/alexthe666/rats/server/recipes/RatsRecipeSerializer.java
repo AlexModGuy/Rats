@@ -30,7 +30,7 @@ public class RatsRecipeSerializer<T extends BaseRatRecipe> implements RecipeSeri
 
 		String s1 = GsonHelper.getAsString(object, "result");
 		int i = GsonHelper.getAsInt(object, "count");
-		ItemStack itemstack = new ItemStack(BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(s1)), i);
+		ItemStack itemstack = new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(s1)), i);
 		return this.factory.create(id, s, ingredient, itemstack);
 	}
 

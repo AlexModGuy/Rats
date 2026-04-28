@@ -88,7 +88,7 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 
 	private List<ItemEntity> getItemsOfTypeAround(ItemStack stack) {
 		return this.rat.level().getEntitiesOfClass(ItemEntity.class, this.rat.getBoundingBox().inflate(this.rat.getRadius()), item -> {
-			if (!ItemStack.isSameItemSameTags(stack, item.getItem())) return false;
+			if (!ItemStack.isSameItemSameComponents(stack, item.getItem())) return false;
 			Path path = this.rat.getNavigation().createPath(item, 1);
 			return path != null && path.canReach();
 		});

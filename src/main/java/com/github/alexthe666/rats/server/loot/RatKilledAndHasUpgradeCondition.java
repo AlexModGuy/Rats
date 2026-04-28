@@ -46,7 +46,7 @@ public record RatKilledAndHasUpgradeCondition(Item upgrade) implements LootItemC
 		public RatKilledAndHasUpgradeCondition deserialize(JsonObject object, JsonDeserializationContext context) {
 			Item upgrade;
 			try {
-				upgrade = BuiltInRegistries.ITEM.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "upgrade")));
+				upgrade = BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "upgrade")));
 				return new RatKilledAndHasUpgradeCondition(upgrade);
 			} catch (Exception e) {
 				throw new RuntimeException(e);

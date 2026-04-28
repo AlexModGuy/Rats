@@ -187,7 +187,7 @@ public class RatlanteanRatbotModel<T extends RatlanteanRatbot> extends AdvancedE
 		this.walk(this.tail1, speedWalk, degreeWalk, false, -1, -0.15F, f, f1);
 		this.walk(this.tail2, speedWalk, degreeWalk * 0.5F, true, 0, -0.15F, f, f1);
 		this.walk(this.neck, speedWalk, degreeWalk * 0.25F, false, 2, 0, f, f1);
-		this.gear.rotateAngleY += Mth.lerp(Minecraft.getInstance().getPartialTick(), rat.prevWalkTick, rat.walkTick) * 0.15F;
+		this.gear.rotateAngleY += Mth.lerp(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true), rat.prevWalkTick, rat.walkTick) * 0.15F;
 	}
 
 	public void setRotateAngle(AdvancedModelBox box, float x, float y, float z) {

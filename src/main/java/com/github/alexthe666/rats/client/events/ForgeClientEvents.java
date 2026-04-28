@@ -83,7 +83,7 @@ public class ForgeClientEvents {
 	public static void adjustSynesthesiaFOV(ViewportEvent.ComputeFov event) {
 		if (RatConfig.synesthesiaShader) {
 			if (prevSynesthesiaProgress > 0) {
-				float prog = (prevSynesthesiaProgress + (synesthesiaProgress - prevSynesthesiaProgress) * Minecraft.getInstance().getPartialTick());
+				float prog = (prevSynesthesiaProgress + (synesthesiaProgress - prevSynesthesiaProgress) * Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true));
 				float renderProg;
 				if (prevSynesthesiaProgress <= synesthesiaProgress) {
 					renderProg = (float) Math.sin(prog / MAX_SYNESTESIA * Math.PI) * 40.0F;

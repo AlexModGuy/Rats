@@ -19,7 +19,7 @@ public class RatColorUtil {
 		if (color == DyeColor.WHITE) {
 			return new float[]{0.9019608F, 0.9019608F, 0.9019608F};
 		} else {
-			float[] afloat = color.getTextureDiffuseColors();
+			float[] afloat = color.getTextureDiffuseColor();
 			return new float[]{afloat[0] * 0.75F, afloat[1] * 0.75F, afloat[2] * 0.75F};
 		}
 	}

@@ -147,14 +147,14 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatsItemRegistry.RAT_BANNER_PATTERN.get());
 				output.accept(RatsItemRegistry.CHEESE_BANNER_PATTERN.get());
 				output.accept(RatsItemRegistry.RAC_BANNER_PATTERN.get());
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "demon_rat_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_king_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pied_piper_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_doctor_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "black_death_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_cloud_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_beast_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "demon_rat_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_king_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pied_piper_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_doctor_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "black_death_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_cloud_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_beast_spawn_egg"))));
 				registerOreNuggets(output);
 			}).build());
 
@@ -349,21 +349,21 @@ public class RatsCreativeTabRegistry {
 				output.accept(RatlantisItemRegistry.PIRAT_BOAT.get());
 				output.accept(RatlantisItemRegistry.PIRAT_CHEST_BOAT.get());
 
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "feral_ratlantean_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantean_spirit_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pirat_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ghost_pirat_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratfish_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantean_ratbot_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantean_automaton_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "neo_ratlantean_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "dutchrat_spawn_egg"))));
-				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_baron_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "feral_ratlantean_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantean_spirit_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pirat_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ghost_pirat_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratfish_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantean_ratbot_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "ratlantean_automaton_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "neo_ratlantean_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "dutchrat_spawn_egg"))));
+				output.accept(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_baron_spawn_egg"))));
 			}).build());
 
 	private static void registerColoredItems(CreativeModeTab.Output output, String itemType) {
 		for (DyeColor color : DyeColor.values()) {
-			var item = BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, itemType + "_" + color.getName()));
+			var item = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, itemType + "_" + color.getName()));
 			if (item != null && item != Items.AIR) {
 				output.accept(item);
 			}

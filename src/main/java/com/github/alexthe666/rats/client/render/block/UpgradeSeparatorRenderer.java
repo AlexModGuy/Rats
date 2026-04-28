@@ -22,7 +22,7 @@ public class UpgradeSeparatorRenderer implements BlockEntityRenderer<UpgradeSepa
 	public void render(UpgradeSeparatorBlockEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
 		stack.pushPose();
 		stack.translate(0.5D, 0.15D, 0.5D);
-		float f = entity.ratRotationPrev + Minecraft.getInstance().getPartialTick();
+		float f = entity.ratRotationPrev + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
 		stack.translate(0.0F, 1F + Mth.sin(f * 0.1F) * 0.1F, 0.0F);
 		float f1;
 
@@ -32,7 +32,7 @@ public class UpgradeSeparatorRenderer implements BlockEntityRenderer<UpgradeSepa
 		while (f1 < -(float) Math.PI) {
 			f1 += ((float) Math.PI * 2F);
 		}
-		float f2 = entity.ratRotationPrev + f1 * Minecraft.getInstance().getPartialTick();
+		float f2 = entity.ratRotationPrev + f1 * Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
 		stack.mulPose(Axis.YP.rotationDegrees(-f2 * 0.1F * (180F / (float) Math.PI)));
 		stack.mulPose(Axis.ZP.rotationDegrees(180));
 		stack.mulPose(Axis.XP.rotationDegrees(90));

@@ -177,7 +177,7 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 		if (recipe.isPresent()) {
 			ItemStack checkStack = this.resultHandler.getStackInSlot(0);
 			ItemStack resultStack = recipe.get().getResultItem(level.registryAccess());
-			return (ItemStack.isSameItemSameTags(checkStack, resultStack) && checkStack.getCount() + resultStack.getCount() <= checkStack.getMaxStackSize()) || checkStack.isEmpty();
+			return (ItemStack.isSameItemSameComponents(checkStack, resultStack) && checkStack.getCount() + resultStack.getCount() <= checkStack.getMaxStackSize()) || checkStack.isEmpty();
 		}
 		return false;
 	}
