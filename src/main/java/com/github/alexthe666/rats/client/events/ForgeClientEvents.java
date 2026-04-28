@@ -395,7 +395,7 @@ public class ForgeClientEvents {
 							Matrix4f matrix4f = stack.last().pose();
 							buffer.addVertex(matrix4f, pdx, pdy, pdz).setColor(r, g, b, 1.0F);
 							buffer.addVertex(matrix4f, 0.0F, 0.0F, 0.0F).setColor(r, g, b, 1.0F);
-							net.minecraft.client.renderer.BufferUploader.drawWithShader(buffer.buildOrThrow());
+							com.mojang.blaze3d.vertex.BufferUploader.drawWithShader(buffer.buildOrThrow());
 							stack.popPose();
 						}
 

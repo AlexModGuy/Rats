@@ -29,7 +29,7 @@ public class RatsIconRenderUtil {
 			buffer.addVertex(matrix4f, -0.5F, 0.5F, 0).setUv(1.0F, 0.0F);
 			buffer.addVertex(matrix4f, 0.5F, 0.5F, 0).setUv(0.0F, 0.0F);
 			buffer.addVertex(matrix4f, 0.5F, -0.5F, 0).setUv(0.0F, 1.0F);
-			net.minecraft.client.renderer.BufferUploader.drawWithShader(buffer.buildOrThrow());
+			com.mojang.blaze3d.vertex.BufferUploader.drawWithShader(buffer.buildOrThrow());
 			RenderSystem.disableBlend();
 			RenderSystem.depthMask(true);
 			stack.popPose();
@@ -101,6 +101,6 @@ public class RatsIconRenderUtil {
 		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).setUv(f3 + minX - maxX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(1.0F, 0.0F, 0.0F);
 		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(1.0F, 0.0F, 0.0F);
 		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(1.0F, 0.0F, 0.0F);
-		net.minecraft.client.renderer.BufferUploader.drawWithShader(buffer.buildOrThrow());
+		com.mojang.blaze3d.vertex.BufferUploader.drawWithShader(buffer.buildOrThrow());
 	}
 }
