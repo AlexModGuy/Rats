@@ -48,14 +48,14 @@ public class LaserBeamRenderer extends EntityRenderer<LaserBeam> {
 		Matrix4f matrix4f = matrixstack$entry.pose();
 		Matrix3f matrix3f = matrixstack$entry.normal();
 		light = 240;
-		this.vertex(matrix4f, matrix3f, consumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, light, r, g, b);
-		this.vertex(matrix4f, matrix3f, consumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, light, r, g, b);
-		this.vertex(matrix4f, matrix3f, consumer, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, light, r, g, b);
-		this.vertex(matrix4f, matrix3f, consumer, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, light, r, g, b);
-		this.vertex(matrix4f, matrix3f, consumer, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, light, r, g, b);
-		this.vertex(matrix4f, matrix3f, consumer, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, light, r, g, b);
-		this.vertex(matrix4f, matrix3f, consumer, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, light, r, g, b);
-		this.vertex(matrix4f, matrix3f, consumer, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, light, r, g, b);
+		this.vertex(matrix4f, pose, consumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, light, r, g, b);
+		this.vertex(matrix4f, pose, consumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, light, r, g, b);
+		this.vertex(matrix4f, pose, consumer, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, light, r, g, b);
+		this.vertex(matrix4f, pose, consumer, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, light, r, g, b);
+		this.vertex(matrix4f, pose, consumer, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, light, r, g, b);
+		this.vertex(matrix4f, pose, consumer, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, light, r, g, b);
+		this.vertex(matrix4f, pose, consumer, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, light, r, g, b);
+		this.vertex(matrix4f, pose, consumer, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, light, r, g, b);
 		stack.popPose();
 		super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 	}

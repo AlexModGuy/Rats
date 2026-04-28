@@ -40,30 +40,30 @@ public class RattlingGunBulletRenderer extends EntityRenderer<RattlingGunBullet>
 		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutout(this.getTextureLocation(bullet)));
 		PoseStack.Pose posestack$pose = stack.last();
 		Matrix4f matrix4f = posestack$pose.pose();
-		Matrix3f matrix3f = posestack$pose.normal();
-		this.addVertex(matrix4f, matrix3f, vertexconsumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, light);
-		this.addVertex(matrix4f, matrix3f, vertexconsumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, light);
-		this.addVertex(matrix4f, matrix3f, vertexconsumer, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, light);
-		this.addVertex(matrix4f, matrix3f, vertexconsumer, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, light);
-		this.addVertex(matrix4f, matrix3f, vertexconsumer, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, light);
-		this.addVertex(matrix4f, matrix3f, vertexconsumer, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, light);
-		this.addVertex(matrix4f, matrix3f, vertexconsumer, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, light);
-		this.addVertex(matrix4f, matrix3f, vertexconsumer, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, light);
+		// matrix3f no longer needed; using pose
+		this.addVertex(matrix4f, pose, vertexconsumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, light);
+		this.addVertex(matrix4f, pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, light);
+		this.addVertex(matrix4f, pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, light);
+		this.addVertex(matrix4f, pose, vertexconsumer, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, light);
+		this.addVertex(matrix4f, pose, vertexconsumer, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, light);
+		this.addVertex(matrix4f, pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, light);
+		this.addVertex(matrix4f, pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, light);
+		this.addVertex(matrix4f, pose, vertexconsumer, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, light);
 
 		for (int j = 0; j < 4; ++j) {
 			stack.mulPose(Axis.XP.rotationDegrees(90.0F));
-			this.addVertex(matrix4f, matrix3f, vertexconsumer, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, light);
-			this.addVertex(matrix4f, matrix3f, vertexconsumer, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, light);
-			this.addVertex(matrix4f, matrix3f, vertexconsumer, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, light);
-			this.addVertex(matrix4f, matrix3f, vertexconsumer, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, light);
+			this.addVertex(matrix4f, pose, vertexconsumer, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, light);
+			this.addVertex(matrix4f, pose, vertexconsumer, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, light);
+			this.addVertex(matrix4f, pose, vertexconsumer, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, light);
+			this.addVertex(matrix4f, pose, vertexconsumer, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, light);
 		}
 
 		stack.popPose();
 		super.render(bullet, yaw, partialTicks, stack, buffer, light);
 	}
 
-	public void vertex(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer consumer, int x, int y, int z, float u, float v, int xNorm, int zNorm, int yNorm, int light) {
-		consumer.addVertex(matrix4f, (float) x, (float) y, (float) z).setColor(255, 255, 255, 255).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(matrix3f, (float) xNorm, (float) yNorm, (float) zNorm);
+	public void vertex(Matrix4f matrix4f, PoseStack.Pose pose, VertexConsumer consumer, int x, int y, int z, float u, float v, int xNorm, int zNorm, int yNorm, int light) {
+		consumer.addVertex(matrix4f, (float) x, (float) y, (float) z).setColor(255, 255, 255, 255).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, (float) xNorm, (float) yNorm, (float) zNorm);
 	}
 
 	@Override
