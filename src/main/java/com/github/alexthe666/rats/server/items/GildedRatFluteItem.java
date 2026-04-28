@@ -35,7 +35,7 @@ public class GildedRatFluteItem extends LoreTagItem {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (stack.getTag() != null) {
+		if (stack.has(net.minecraft.core.component.DataComponents.CUSTOM_DATA)) {
 			RatShot ratShot = new RatShot(RatsEntityRegistry.RAT_SHOT.get(), level, player);
 			ratShot.setColorVariant(RatVariant.getRandomVariant(player.getRandom(), false));
 			Vec3 vector3d = player.getViewVector(1.0F);
