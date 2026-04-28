@@ -3,10 +3,13 @@ package com.github.alexthe666.rats.server.items.upgrades;
 import com.github.alexthe666.rats.client.events.ModClientEvents;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,33 +39,43 @@ public class MobFilterUpgradeItem extends BaseRatUpgradeItem {
 		return super.use(level, player, hand);
 	}
 
+	private static CompoundTag readTag(ItemStack stack) {
+		return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+	}
+
+	private static void writeTag(ItemStack stack, CompoundTag tag) {
+		stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+	}
+
 	public static boolean isWhitelist(ItemStack stack) {
-		return stack.getTag() != null && stack.getTag().getBoolean("Whitelist");
+		return readTag(stack).getBoolean("Whitelist");
 	}
 
 	public static void setWhitelist(ItemStack stack, boolean whitelist) {
-		stack.getOrCreateTag().putBoolean("Whitelist", whitelist);
+		CompoundTag tag = readTag(stack);
+		tag.putBoolean("Whitelist", whitelist);
+		writeTag(stack, tag);
 	}
 
 	public static List<String> getSelectedMobs(ItemStack stack) {
-		if (stack.getTag() == null) return new ArrayList<>();
 		List<String> mobs = new ArrayList<>();
-		ListTag tag = stack.getTag().getList("Mobs", Tag.TAG_STRING);
+		ListTag tag = readTag(stack).getList("Mobs", Tag.TAG_STRING);
 		for (int i = 0; i < tag.size(); ++i) {
-			String s = tag.getString(i);
-			mobs.add(s);
+			mobs.add(tag.getString(i));
 		}
 		return mobs;
 	}
 
 	public static void setMobs(ItemStack stack, List<String> mobs) {
-		ListTag tag = new ListTag();
+		ListTag list = new ListTag();
 		for (String mob : mobs) {
 			if (BuiltInRegistries.ENTITY_TYPE.containsKey(ResourceLocation.parse(mob))) {
-				tag.add(StringTag.valueOf(mob));
+				list.add(StringTag.valueOf(mob));
 			}
 		}
-		stack.getOrCreateTag().put("Mobs", tag);
+		CompoundTag tag = readTag(stack);
+		tag.put("Mobs", list);
+		writeTag(stack, tag);
 	}
 
 	@Override

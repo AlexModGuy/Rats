@@ -89,26 +89,9 @@ public class RatTubeItem extends Item {
 	}
 
 	private BlockState stateWithTag(BlockPos pos, Level level, ItemStack stack, BlockState state) {
-		BlockState blockstate = state;
-		CompoundTag compoundnbt = stack.getTag();
-		if (compoundnbt != null) {
-			CompoundTag compoundnbt1 = compoundnbt.getCompound("BlockStateTag");
-			StateDefinition<Block, BlockState> statecontainer = state.getBlock().getStateDefinition();
-
-			for (String s : compoundnbt1.getAllKeys()) {
-				Property<?> iproperty = statecontainer.getProperty(s);
-				if (iproperty != null) {
-					String s1 = compoundnbt1.get(s).getAsString();
-					blockstate = remapProperties(blockstate, iproperty, s1);
-				}
-			}
-		}
-
-		if (blockstate != state) {
-			level.setBlock(pos, blockstate, 2);
-		}
-
-		return blockstate;
+		// PORT-STUB: 1.21 replaced BlockStateTag NBT with DataComponents.BLOCK_STATE (BlockItemStateProperties).
+		// Until migrated, the tube places with the default block state regardless of stack-encoded properties.
+		return state;
 	}
 
 	private static <T extends Comparable<T>> BlockState remapProperties(BlockState state, Property<T> property, String value) {
@@ -124,29 +107,7 @@ public class RatTubeItem extends Item {
 	}
 
 	public void setBlockEntityTag(Level level, @Nullable Player player, BlockPos pos, ItemStack stack) {
-		MinecraftServer minecraftserver = level.getServer();
-		if (minecraftserver != null) {
-			CompoundTag compoundnbt = stack.getTagElement("BlockEntityTag");
-			if (compoundnbt != null) {
-				BlockEntity tileentity = level.getBlockEntity(pos);
-				if (tileentity != null) {
-					if (!level.isClientSide() && tileentity.onlyOpCanSetNbt() && (player == null || !player.canUseGameMasterBlocks())) {
-						return;
-					}
-
-					CompoundTag compoundnbt1 = tileentity.serializeNBT();
-					CompoundTag compoundnbt2 = compoundnbt1.copy();
-					compoundnbt1.merge(compoundnbt);
-					compoundnbt1.putInt("x", pos.getX());
-					compoundnbt1.putInt("y", pos.getY());
-					compoundnbt1.putInt("z", pos.getZ());
-					if (!compoundnbt1.equals(compoundnbt2)) {
-						tileentity.load(compoundnbt1);
-						tileentity.setChanged();
-					}
-				}
-			}
-
-		}
+		// PORT-STUB: 1.21 replaced BlockEntityTag NBT with DataComponents.BLOCK_ENTITY_DATA + applyComponentsFromItemStack.
+		// Until migrated, no extra NBT carries from item to placed block entity.
 	}
 }
