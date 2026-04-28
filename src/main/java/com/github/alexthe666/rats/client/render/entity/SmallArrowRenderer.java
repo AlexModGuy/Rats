@@ -37,21 +37,21 @@ public class SmallArrowRenderer extends ArrowRenderer<SmallArrow> {
 		stack.translate(-4.0D, 0.0D, 0.0D);
 		VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityCutout(ARROW));
 		PoseStack.Pose pose = stack.last();
-		this.addVertex(pose, vertexBuilder, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, light);
-		this.addVertex(pose, vertexBuilder, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, light);
-		this.addVertex(pose, vertexBuilder, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, light);
-		this.addVertex(pose, vertexBuilder, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, light);
-		this.addVertex(pose, vertexBuilder, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, light);
-		this.addVertex(pose, vertexBuilder, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, light);
-		this.addVertex(pose, vertexBuilder, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, light);
-		this.addVertex(pose, vertexBuilder, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, light);
+		this.vertex(pose, vertexBuilder, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, light);
+		this.vertex(pose, vertexBuilder, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, light);
+		this.vertex(pose, vertexBuilder, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, light);
+		this.vertex(pose, vertexBuilder, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, light);
+		this.vertex(pose, vertexBuilder, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, light);
+		this.vertex(pose, vertexBuilder, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, light);
+		this.vertex(pose, vertexBuilder, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, light);
+		this.vertex(pose, vertexBuilder, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, light);
 
 		for (int j = 0; j < 4; ++j) {
 			stack.mulPose(Axis.XP.rotationDegrees(90.0F));
-			this.addVertex(pose, vertexBuilder, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, light);
-			this.addVertex(pose, vertexBuilder, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, light);
-			this.addVertex(pose, vertexBuilder, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, light);
-			this.addVertex(pose, vertexBuilder, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, light);
+			this.vertex(pose, vertexBuilder, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, light);
+			this.vertex(pose, vertexBuilder, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, light);
+			this.vertex(pose, vertexBuilder, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, light);
+			this.vertex(pose, vertexBuilder, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, light);
 		}
 
 		stack.popPose();
