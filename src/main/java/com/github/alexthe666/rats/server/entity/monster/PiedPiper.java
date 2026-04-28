@@ -254,8 +254,8 @@ public class PiedPiper extends Raider implements RatSummoner {
 	}
 
 	@Override
-	protected void dropCustomDeathLoot(DamageSource source, int looting, boolean playerKill) {
-		super.dropCustomDeathLoot(source, looting, playerKill);
+	protected void dropCustomDeathLoot(net.minecraft.server.level.ServerLevel _sl, DamageSource source, boolean playerKill) {
+		super.dropCustomDeathLoot(_sl, source, playerKill);
 		if (source.getEntity() instanceof AbstractRat) {
 			if (this.getRandom().nextBoolean()) {
 				this.spawnAtLocation(RatsItemRegistry.MUSIC_DISC_MICE_ON_VENUS.get(), 1);

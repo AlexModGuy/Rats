@@ -815,11 +815,11 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
-	protected void dropCustomDeathLoot(DamageSource source, int looting, boolean playerKill) {
+	protected void dropCustomDeathLoot(net.minecraft.server.level.ServerLevel _sl, DamageSource source, boolean playerKill) {
 		if (this.hasToga()) {
 			this.spawnAtLocation(new ItemStack(RatlantisItemRegistry.RAT_TOGA.get()), 0.0F);
 		}
-		super.dropCustomDeathLoot(source, looting, playerKill);
+		super.dropCustomDeathLoot(_sl, source, playerKill);
 	}
 
 	public void spawnAngelCopy() {
