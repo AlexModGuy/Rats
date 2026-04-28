@@ -20,7 +20,8 @@ public class RatDragonFire extends Fireball {
 	}
 
 	public RatDragonFire(EntityType<? extends Fireball> type, LivingEntity shooter, Level level, double accelX, double accelY, double accelZ) {
-		super(type, shooter, accelX, accelY, accelZ, level);
+		// 1.21: Fireball ctor takes (type, shooter, Vec3 movement, level).
+		super(type, shooter, new Vec3(accelX, accelY, accelZ), level);
 	}
 
 	@Override
@@ -65,9 +66,10 @@ public class RatDragonFire extends Fireball {
 		Entity entity = result.getEntity();
 		if (!entity.fireImmune()) {
 			entity.igniteForSeconds(10);
-			boolean flag = entity.hurt(this.damageSources().fireball(this, this.getOwner()), 5.0F);
-			if (flag && this.getOwner() instanceof LivingEntity living) {
-				this.doEnchantDamageEffects(living, entity);
+			DamageSource source = this.damageSources().fireball(this, this.getOwner());
+			boolean flag = entity.hurt(source, 5.0F);
+			if (flag && this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+				net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffects(serverLevel, entity, source);
 			}
 
 			if (!this.level().isClientSide()) {

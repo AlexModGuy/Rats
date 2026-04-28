@@ -21,8 +21,9 @@ public class RatlanteanFlame extends Fireball {
 	}
 
 	public RatlanteanFlame(Level level, LivingEntity shooter, double accelX, double accelY, double accelZ) {
-		super(RatlantisEntityRegistry.RATLANTEAN_FLAME.get(), shooter.getX(), shooter.getY() + shooter.getBbHeight() * 0.5D, shooter.getZ(), accelX, accelY, accelZ, level);
-		this.setOwner(shooter);
+		// 1.21: Fireball ctor takes (type, shooter, Vec3 movement, level); position is set via moveTo afterwards.
+		super(RatlantisEntityRegistry.RATLANTEAN_FLAME.get(), shooter, new Vec3(accelX, accelY, accelZ), level);
+		this.setPos(shooter.getX(), shooter.getY() + shooter.getBbHeight() * 0.5D, shooter.getZ());
 	}
 
 	public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
@@ -69,9 +70,10 @@ public class RatlanteanFlame extends Fireball {
 			if (!result.getEntity().fireImmune()) {
 				result.getEntity().igniteForSeconds(10);
 			}
-			boolean flag = result.getEntity().hurt(this.damageSources().fireball(this, this.getOwner()), 2.0F);
-			if (flag) {
-				this.doEnchantDamageEffects((LivingEntity) this.getOwner(), result.getEntity());
+			net.minecraft.world.damagesource.DamageSource source = this.damageSources().fireball(this, this.getOwner());
+			boolean flag = result.getEntity().hurt(source, 2.0F);
+			if (flag && this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+				net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffects(serverLevel, result.getEntity(), source);
 			}
 		}
 	}

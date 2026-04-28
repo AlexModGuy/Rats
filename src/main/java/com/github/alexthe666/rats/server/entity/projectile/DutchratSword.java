@@ -85,7 +85,7 @@ public class DutchratSword extends ThrowableProjectile {
 	}
 
 	@Override
-	protected float getGravity() {
-		return 0.0f;
+	protected double getDefaultGravity() {
+		return 0.0D;
 	}
 }

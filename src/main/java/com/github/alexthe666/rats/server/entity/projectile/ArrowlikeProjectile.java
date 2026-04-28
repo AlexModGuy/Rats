@@ -215,9 +215,9 @@ public abstract class ArrowlikeProjectile extends Projectile {
 			}
 
 			if (entity instanceof LivingEntity livingentity) {
-				if (!this.level().isClientSide() && entity1 instanceof LivingEntity) {
-					EnchantmentHelper.doPostHurtEffects(livingentity, entity1);
-					EnchantmentHelper.doPostDamageEffects((LivingEntity) entity1, livingentity);
+				if (this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel && entity1 instanceof LivingEntity) {
+					// 1.21: doPostHurt/doPostDamage collapsed into doPostAttackEffects(ServerLevel, Entity, DamageSource).
+					EnchantmentHelper.doPostAttackEffects(serverLevel, entity, damagesource);
 				}
 			}
 
@@ -296,10 +296,7 @@ public abstract class ArrowlikeProjectile extends Projectile {
 		return false;
 	}
 
-	@Override
-	protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
-		return 0.13F;
-	}
+	// PORT-STUB: 1.21 Entity.getEyeHeight removed (replaced by EntityAttachment.EYE on EntityDimensions). Custom 0.13F eye height dropped.
 
 	public abstract boolean explodesOnHit();
 
