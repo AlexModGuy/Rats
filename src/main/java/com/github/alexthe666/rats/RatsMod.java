@@ -81,12 +81,10 @@ public class RatsMod {
 	public static final List<Item> RATLANTIS_ITEMS = new ArrayList<>();
 	private static final List<Pair<String, Component>> MOB_CACHE = new ArrayList<>();
 
-	public RatsMod() {
+	public RatsMod(IEventBus bus, net.neoforged.fml.ModContainer container) {
 		ICEANDFIRE_LOADED = ModList.get().isLoaded("iceandfire");
-		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-		final ModLoadingContext modLoadingContext = ModLoadingContext.get();
-		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
-		modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+		container.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
+		container.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
 		//melk
 		NeoForgeMod.enableMilkFluid();
 
