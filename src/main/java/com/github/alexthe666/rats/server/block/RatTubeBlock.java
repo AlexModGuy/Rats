@@ -11,6 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -255,42 +256,48 @@ public class RatTubeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (player.isCrouching() || player.getItemInHand(hand).getItem() instanceof BlockItem || player.getItemInHand(hand).getItem() instanceof RatTubeItem) {
-			return InteractionResult.PASS;
-		} else {
-			Direction side = hit.getDirection();
-			BooleanProperty changing;
-			BooleanProperty[] allOpenVars = new BooleanProperty[]{OPEN_DOWN, OPEN_EAST, OPEN_NORTH, OPEN_SOUTH, OPEN_UP, OPEN_WEST};
-			changing = switch (side) {
-				case NORTH -> OPEN_NORTH;
-				case SOUTH -> OPEN_SOUTH;
-				case EAST -> OPEN_EAST;
-				case WEST -> OPEN_WEST;
-				case DOWN -> OPEN_DOWN;
-				default -> OPEN_UP;
-			};
-			boolean alreadyOpened = false;
-			for (BooleanProperty opened : allOpenVars) {
-				if (state.getValue(opened)) {
-					alreadyOpened = true;
-				}
-			}
-			if (!alreadyOpened && canBeOpenNextToBlock(level.getBlockState(pos.relative(side)))) {
-				level.setBlockAndUpdate(pos, state.setValue(changing, true));
-				updateTEOpening(level, pos, side, true);
-
-			} else {
-				level.setBlockAndUpdate(pos, state.setValue(OPEN_NORTH, false)
-						.setValue(OPEN_EAST, false)
-						.setValue(OPEN_SOUTH, false)
-						.setValue(OPEN_WEST, false)
-						.setValue(OPEN_UP, false)
-						.setValue(OPEN_DOWN, false));
-				updateTEOpening(level, pos, side, false);
-			}
-			return InteractionResult.SUCCESS;
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (stack.getItem() instanceof BlockItem || stack.getItem() instanceof RatTubeItem) {
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 		}
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		if (player.isCrouching()) {
+			return InteractionResult.PASS;
+		}
+		Direction side = hit.getDirection();
+		BooleanProperty changing;
+		BooleanProperty[] allOpenVars = new BooleanProperty[]{OPEN_DOWN, OPEN_EAST, OPEN_NORTH, OPEN_SOUTH, OPEN_UP, OPEN_WEST};
+		changing = switch (side) {
+			case NORTH -> OPEN_NORTH;
+			case SOUTH -> OPEN_SOUTH;
+			case EAST -> OPEN_EAST;
+			case WEST -> OPEN_WEST;
+			case DOWN -> OPEN_DOWN;
+			default -> OPEN_UP;
+		};
+		boolean alreadyOpened = false;
+		for (BooleanProperty opened : allOpenVars) {
+			if (state.getValue(opened)) {
+				alreadyOpened = true;
+			}
+		}
+		if (!alreadyOpened && canBeOpenNextToBlock(level.getBlockState(pos.relative(side)))) {
+			level.setBlockAndUpdate(pos, state.setValue(changing, true));
+			updateTEOpening(level, pos, side, true);
+		} else {
+			level.setBlockAndUpdate(pos, state.setValue(OPEN_NORTH, false)
+					.setValue(OPEN_EAST, false)
+					.setValue(OPEN_SOUTH, false)
+					.setValue(OPEN_WEST, false)
+					.setValue(OPEN_UP, false)
+					.setValue(OPEN_DOWN, false));
+			updateTEOpening(level, pos, side, false);
+		}
+		return InteractionResult.SUCCESS;
 	}
 
 	private void updateTEOpening(Level world, BlockPos pos, Direction side, boolean open) {

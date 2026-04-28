@@ -12,6 +12,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -82,44 +83,49 @@ public class AutoCurdlerBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!player.isShiftKeyDown()) {
-			ItemStack stack = player.getItemInHand(hand);
-			if (AutoCurdlerBlockEntity.isMilk(stack) && level.getBlockEntity(pos) instanceof AutoCurdlerBlockEntity te) {
-				if (!level.isClientSide() && FluidUtil.getFluidHandler(stack).resolve().isPresent()) {
-					FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
-					IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(stack).resolve().get();
-					FluidStack drain = fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
-					if (drain.getAmount() > 0 || stack.is(Items.MILK_BUCKET)) {
-						if (te.getTank().fill(fluidStack.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
-							int amount = te.getTank().fill(fluidStack.copy(), IFluidHandler.FluidAction.EXECUTE);
-							level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
-							if (!player.isCreative()) {
-								fluidHandler.drain(amount, IFluidHandler.FluidAction.EXECUTE);
-								ItemStack container = fluidHandler.getContainer();
-								//support container changing tanks
-								if (stack != container) {
-									stack.shrink(1);
-									player.getInventory().add(container);
-								} else if (stack.is(Items.MILK_BUCKET)) {
-									stack.shrink(1);
-									player.getInventory().add(new ItemStack(Items.BUCKET));
-								}
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (player.isShiftKeyDown()) {
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		}
+		if (AutoCurdlerBlockEntity.isMilk(stack) && level.getBlockEntity(pos) instanceof AutoCurdlerBlockEntity te) {
+			if (!level.isClientSide() && FluidUtil.getFluidHandler(stack).resolve().isPresent()) {
+				FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
+				IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(stack).resolve().get();
+				FluidStack drain = fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
+				if (drain.getAmount() > 0 || stack.is(Items.MILK_BUCKET)) {
+					if (te.getTank().fill(fluidStack.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
+						int amount = te.getTank().fill(fluidStack.copy(), IFluidHandler.FluidAction.EXECUTE);
+						level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+						if (!player.isCreative()) {
+							fluidHandler.drain(amount, IFluidHandler.FluidAction.EXECUTE);
+							ItemStack container = fluidHandler.getContainer();
+							if (stack != container) {
+								stack.shrink(1);
+								player.getInventory().add(container);
+							} else if (stack.is(Items.MILK_BUCKET)) {
+								stack.shrink(1);
+								player.getInventory().add(new ItemStack(Items.BUCKET));
 							}
-							PacketDistributor.sendToAllPlayers(new UpdateCurdlerFluidPacket(pos.asLong(), te.getTank().getFluid()));
 						}
+						PacketDistributor.sendToAllPlayers(new UpdateCurdlerFluidPacket(pos.asLong(), te.getTank().getFluid()));
 					}
 				}
-				return InteractionResult.SUCCESS;
 			}
-			if (level.isClientSide()) {
-				return InteractionResult.SUCCESS;
-			} else {
-				player.openMenu(this.getMenuProvider(state, level, pos));
-				return InteractionResult.CONSUME;
-			}
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		}
-		return InteractionResult.PASS;
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		if (player.isShiftKeyDown()) {
+			return InteractionResult.PASS;
+		}
+		if (level.isClientSide()) {
+			return InteractionResult.SUCCESS;
+		}
+		player.openMenu(this.getMenuProvider(state, level, pos));
+		return InteractionResult.CONSUME;
 	}
 
 	@Override

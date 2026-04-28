@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,8 +39,9 @@ public class CheeseCauldronBlock extends AbstractCauldronBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (super.use(state, level, pos, player, hand, hit) == InteractionResult.PASS) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		ItemInteractionResult parent = super.useItemOn(stack, state, level, pos, player, hand, hit);
+		if (parent == ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION || parent == ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION) {
 			level.setBlockAndUpdate(pos, Blocks.CAULDRON.defaultBlockState());
 			level.playSound(null, pos, RatsSoundRegistry.CHEESE_CAULDRON_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -47,7 +49,7 @@ public class CheeseCauldronBlock extends AbstractCauldronBlock {
 				player.drop(new ItemStack(this.drop.get()), false);
 			}
 		}
-		return InteractionResult.SUCCESS;
+		return ItemInteractionResult.sidedSuccess(level.isClientSide());
 	}
 
 	@Override

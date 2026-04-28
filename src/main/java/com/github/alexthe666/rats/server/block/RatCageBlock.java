@@ -15,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -144,15 +145,15 @@ public class RatCageBlock extends Block {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (player.getItemInHand(hand).getItem() instanceof RatCageDecoration decoration && level.getBlockEntity(pos) == null) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (stack.getItem() instanceof RatCageDecoration decoration && level.getBlockEntity(pos) == null) {
 			Direction limitedFacing = player.getDirection().getOpposite();
 			if (state.getValue(PROPERTY_BY_DIRECTION.get(decoration.getSupportedFace(limitedFacing))) == 0) {
-				if (player.getItemInHand(hand).is(RatsItemRegistry.RAT_BREEDING_LANTERN.get())) {
+				if (stack.is(RatsItemRegistry.RAT_BREEDING_LANTERN.get())) {
 					BlockState pre = level.getBlockState(pos);
 					BlockState decorated = RatsBlockRegistry.RAT_CAGE_BREEDING_LANTERN.get().withPropertiesOf(pre);
 					this.setupCage(level, pos, decorated, limitedFacing, player, hand);
-				} else if (player.getItemInHand(hand).is(RatsItemRegistry.RAT_WHEEL.get())) {
+				} else if (stack.is(RatsItemRegistry.RAT_WHEEL.get())) {
 					BlockState pre = level.getBlockState(pos);
 					BlockState decorated = RatsBlockRegistry.RAT_CAGE_WHEEL.get().withPropertiesOf(pre);
 					this.setupCage(level, pos, decorated, limitedFacing, player, hand);
@@ -161,13 +162,12 @@ public class RatCageBlock extends Block {
 					BlockState decorated = RatsBlockRegistry.RAT_CAGE_DECORATED.get().withPropertiesOf(pre);
 					this.setupCage(level, pos, decorated, limitedFacing, player, hand);
 				}
-
-				return InteractionResult.SUCCESS;
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
 		if (level.getBlockEntity(pos) != null) {
-			ItemStack stack = this.getContainedItem(level, pos);
-			if (!stack.isEmpty() && player.isShiftKeyDown()) {
+			ItemStack contained = this.getContainedItem(level, pos);
+			if (!contained.isEmpty() && player.isShiftKeyDown()) {
 				BlockState pre = level.getBlockState(pos);
 				BlockState decorated = RatsBlockRegistry.RAT_CAGE.get().defaultBlockState();
 				decorated = decorated.getBlock().withPropertiesOf(pre);
@@ -175,39 +175,44 @@ public class RatCageBlock extends Block {
 				level.setBlockAndUpdate(pos, decorated);
 			}
 		}
-		if (player.getItemInHand(hand).isEmpty() && !player.isShiftKeyDown()) {
-			boolean ridingRats = false;
-			if (!player.getPassengers().isEmpty()) {
-				for (Entity entity : player.getPassengers()) {
-					if (entity instanceof TamedRat) {
-						ridingRats = true;
-						break;
-					}
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		if (player.isShiftKeyDown()) {
+			return InteractionResult.PASS;
+		}
+		boolean ridingRats = false;
+		if (!player.getPassengers().isEmpty()) {
+			for (Entity entity : player.getPassengers()) {
+				if (entity instanceof TamedRat) {
+					ridingRats = true;
+					break;
 				}
 			}
-			int ratCount = 0;
-			if (ridingRats) {
-				for (Entity entity : player.getPassengers()) {
-					if (entity instanceof TamedRat rat && !rat.isBaby()) {
-						rat.stopRiding();
-						rat.setPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
-						rat.getNavigation().stop();
-						ratCount++;
-					}
-				}
-				player.displayClientMessage(Component.translatable(RatsLangConstants.CAGE_DEPOSIT, ratCount), true);
-			} else {
-				List<TamedRat> list = level.getEntitiesOfClass(TamedRat.class, new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1), rat -> !rat.isBaby() && rat.isOwnedBy(player));
-				for (TamedRat rat : list) {
-					rat.setPos(player.getX(), player.getY(), player.getZ());
+		}
+		int ratCount = 0;
+		if (ridingRats) {
+			for (Entity entity : player.getPassengers()) {
+				if (entity instanceof TamedRat rat && !rat.isBaby()) {
+					rat.stopRiding();
+					rat.setPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+					rat.getNavigation().stop();
 					ratCount++;
 				}
-				player.displayClientMessage(Component.translatable(RatsLangConstants.CAGE_WITHDRAW, ratCount), true);
-				this.onRatsRemoved(state, level, pos, player);
 			}
-			return InteractionResult.SUCCESS;
+			player.displayClientMessage(Component.translatable(RatsLangConstants.CAGE_DEPOSIT, ratCount), true);
+		} else {
+			List<TamedRat> list = level.getEntitiesOfClass(TamedRat.class, new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1), rat -> !rat.isBaby() && rat.isOwnedBy(player));
+			for (TamedRat rat : list) {
+				rat.setPos(player.getX(), player.getY(), player.getZ());
+				ratCount++;
+			}
+			player.displayClientMessage(Component.translatable(RatsLangConstants.CAGE_WITHDRAW, ratCount), true);
+			this.onRatsRemoved(state, level, pos, player);
 		}
-		return InteractionResult.PASS;
+		return InteractionResult.SUCCESS;
 	}
 
 	private void setupCage(Level level, BlockPos pos, BlockState state, Direction dir, Player player, InteractionHand hand) {

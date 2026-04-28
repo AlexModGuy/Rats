@@ -58,7 +58,7 @@ public class AirRaidSirenBlock extends Block implements CustomItemRarity {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		return this.spawnTheBaron(level, pos) ? InteractionResult.sidedSuccess(level.isClientSide()) : InteractionResult.PASS;
 	}
 

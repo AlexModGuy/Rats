@@ -99,8 +99,10 @@ public abstract class AbstractGarbageBlock extends FallingBlock {
 		tooltip.add(Component.translatable(this.getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
 	}
 
-	@Override
-	public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, SpawnPlacementType type, EntityType<?> entityType) {
+	// 1.21: BlockBehaviour.isValidSpawn is no longer overridable on the block class;
+	// vanilla now reads BlockBehaviour.Properties.isValidSpawn (a static predicate set during properties build).
+	// PORT-STUB: helper retained for callers; spawn-validity tied to spawn-placement registration instead.
+	public boolean canMobSpawnHere(EntityType<?> entityType) {
 		return entityType == this.getEntityToSpawn();
 	}
 }

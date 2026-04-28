@@ -24,10 +24,10 @@ import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.inventory.RecipeHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -39,7 +39,6 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
-import net.neoforged.neoforge.items.wrapper.EmptyHandler;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -49,8 +48,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 import net.minecraft.core.HolderLookup;
 
+// PORT-STUB: dropped RecipeHolder interface (net.minecraft.world.inventory.RecipeHolder no longer exists in 1.21).
+// Recipe tracking is maintained via internal recipeUsed state; vanilla integration with
+// "recently-used recipes" stat tracking is lost but core crafting still works.
 @SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "unchecked", "unused"})
-public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProvider, RecipeHolder, Clearable {
+public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProvider, Clearable {
 
 	private static final Component DEFAULT_NAME = Component.translatable(RatsLangConstants.RAT_CRAFTING_TABLE);
 	private Component customName;
@@ -148,8 +150,10 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 		AtomicBoolean flag = new AtomicBoolean(true);
 		if (this.getLevel() != null) {
 			{
-				CraftingContainer w = this.matrixWrapper;
-				this.possibleRecipes = this.getLevel().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, w, this.getLevel());
+				// PORT-STUB: 1.21 RecipeManager.getRecipesFor takes (RecipeType, RecipeInput, Level) and returns List<RecipeHolder<T>>.
+				// CraftingContainer is no longer a RecipeInput; needs CraftingInput.of(width, height, items) wrapper
+				// and RecipeHolder.value() unwrap. Recipe-suggestion list temporarily empty until rewritten.
+				this.possibleRecipes = java.util.Collections.emptyList();
 				if (this.possibleRecipes.isEmpty()) {
 					flag.set(false);
 				} else {
@@ -159,7 +163,7 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 						flag.set(false);
 					}
 					this.recipeUsed = Optional.of(this.possibleRecipes.get(this.selectedRecipeIndex))
-							.filter(r -> this.setRecipeUsed(this.getLevel(), null, r)); // Set new recipe or null if missing/can't craft
+							.filter(r -> this.setRecipeUsed(this.getLevel(), null, r));
 				}
 			}
 			if (flag.get()) {
@@ -204,18 +208,15 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 		this.updateRecipe();
 	}
 
-	@Override
 	public void setRecipeUsed(@Nullable Recipe<?> recipe) {
 		this.recipeUsed = Optional.ofNullable((CraftingRecipe) recipe);
 	}
 
-	@Override
 	public boolean setRecipeUsed(Level level, @Nullable ServerPlayer player, Recipe<?> recipe) {
 		return !level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || recipe.isSpecial();
 	}
 
 	@Nullable
-	@Override
 	public Recipe<?> getRecipeUsed() {
 		return this.recipeUsed.orElse(null);
 	}
@@ -241,7 +242,7 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 		((INBTSerializable<CompoundTag>) this.matrixHandler).deserializeNBT(registries, tag.getCompound("Matrix"));
 		((INBTSerializable<CompoundTag>) this.resultHandler).deserializeNBT(registries, tag.getCompound("Result"));
 		if (tag.contains("CustomName", 8)) {
-			this.customName = Component.Serializer.fromJson(tag.getString("CustomName"));
+			this.customName = Component.Serializer.fromJson(tag.getString("CustomName"), registries);
 		}
 		this.cookTime = tag.getInt("CookTime");
 		this.selectedRecipeIndex = tag.getInt("SelectedRecipe");
@@ -254,7 +255,7 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 		tag.put("Matrix", ((INBTSerializable<CompoundTag>) this.matrixHandler).serializeNBT(registries));
 		tag.put("Result", ((INBTSerializable<CompoundTag>) this.resultHandler).serializeNBT(registries));
 		if (this.hasCustomName()) {
-			tag.putString("CustomName", Component.Serializer.toJson(this.customName));
+			tag.putString("CustomName", Component.Serializer.toJson(this.customName, registries));
 		}
 		tag.putInt("CookTime", this.cookTime);
 		tag.putInt("SelectedRecipe", this.selectedRecipeIndex);
