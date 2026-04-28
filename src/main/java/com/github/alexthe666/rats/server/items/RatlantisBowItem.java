@@ -67,7 +67,7 @@ public class RatlantisBowItem extends BowItem {
 							arrow.setSecondsOnFire(100);
 						}
 
-						stack.hurtAndBreak(1, player, user -> user.broadcastBreakEvent(player.getUsedItemHand()));
+						stack.hurtAndBreak(1, player, player.getUsedItemHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? net.minecraft.world.entity.EquipmentSlot.MAINHAND : net.minecraft.world.entity.EquipmentSlot.OFFHAND);
 						if (flag1 || player.getAbilities().instabuild && (itemstack.is(Items.SPECTRAL_ARROW) || itemstack.is(Items.TIPPED_ARROW))) {
 							arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 						}

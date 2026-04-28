@@ -47,8 +47,8 @@ public class RatTubeBlockEntity extends BlockEntity {
 		return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
 	}
 
-	public CompoundTag getUpdateTag() {
-		return this.saveWithId();
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return this.saveWithId(registries);
 	}
 
 	private void updateRat(Rat rat) {

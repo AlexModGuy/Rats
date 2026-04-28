@@ -40,21 +40,21 @@ public class RatlantisArrowRenderer extends ArrowRenderer<RatlantisArrow> {
 		PoseStack.Pose pose = stack.last();
 		Matrix4f matrix4f = pose.pose();
 		Matrix3f matrix3f = pose.normal();
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, 1);
-		this.vertex(matrix4f, matrix3f, vertexBuilder, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, 1);
+		this.vertex(pose, vertexBuilder, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, 1);
 
 		for (int j = 0; j < 4; ++j) {
 			stack.mulPose(Axis.XP.rotationDegrees(90.0F));
-			this.vertex(matrix4f, matrix3f, vertexBuilder, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, 1);
-			this.vertex(matrix4f, matrix3f, vertexBuilder, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, 1);
-			this.vertex(matrix4f, matrix3f, vertexBuilder, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, 1);
-			this.vertex(matrix4f, matrix3f, vertexBuilder, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, 1);
+			this.vertex(pose, vertexBuilder, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, 1);
+			this.vertex(pose, vertexBuilder, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, 1);
+			this.vertex(pose, vertexBuilder, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, 1);
+			this.vertex(pose, vertexBuilder, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, 1);
 		}
 
 		stack.popPose();

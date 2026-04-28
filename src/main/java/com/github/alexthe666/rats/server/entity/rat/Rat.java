@@ -237,8 +237,8 @@ public class Rat extends DiggingRat {
 	}
 
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data);
 		if (this.getRandom().nextInt(15) == 0 && this.level().getDifficulty() != Difficulty.PEACEFUL && type != MobSpawnType.CONVERSION) {
 			this.setPlagued(true);
 		}

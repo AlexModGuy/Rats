@@ -409,8 +409,8 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 	}
 
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data);
 		this.setColorVariant(RatVariant.getRandomVariant(this.getRandom(), false));
 		this.setMale(this.getRandom().nextBoolean());
 		return data;

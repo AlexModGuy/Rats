@@ -137,8 +137,8 @@ public class RatBaron extends AbstractRat implements Enemy {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data);
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(RatlantisItemRegistry.AVIATOR_HAT.get()));
 		this.setGuaranteedDrop(EquipmentSlot.HEAD);
 		if (type != MobSpawnType.MOB_SUMMONED) {

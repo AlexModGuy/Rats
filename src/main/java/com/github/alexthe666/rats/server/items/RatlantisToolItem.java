@@ -45,7 +45,7 @@ public class RatlantisToolItem {
 		public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
 			if (Objects.requireNonNull(NeoForgeRegistries.BLOCKS.tags()).getTag(BlockTags.BASE_STONE_OVERWORLD).contains(state.getBlock())) {
 				if (!level.isClientSide() && state.getDestroySpeed(level, pos) != 0.0F) {
-					stack.hurtAndBreak(0, living, user -> user.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+					stack.hurtAndBreak(0, living, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
 				}
 				return true;
 			} else {
@@ -79,7 +79,7 @@ public class RatlantisToolItem {
 		public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
 			if (Objects.requireNonNull(NeoForgeRegistries.BLOCKS.tags()).getTag(BlockTags.LEAVES).contains(state.getBlock())) {
 				if (!level.isClientSide() && state.getDestroySpeed(level, pos) != 0.0F) {
-					stack.hurtAndBreak(0, living, user -> user.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+					stack.hurtAndBreak(0, living, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
 				}
 				return true;
 			} else {
@@ -97,7 +97,7 @@ public class RatlantisToolItem {
 		public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
 			if (Objects.requireNonNull(NeoForgeRegistries.BLOCKS.tags()).getTag(BlockTags.SAND).contains(state.getBlock())) {
 				if (!level.isClientSide() && state.getDestroySpeed(level, pos) != 0.0F) {
-					stack.hurtAndBreak(0, living, user -> user.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+					stack.hurtAndBreak(0, living, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
 				}
 				return true;
 			} else {
@@ -143,7 +143,7 @@ public class RatlantisToolItem {
 			}
 
 			if (tilledAny && context.getPlayer() != null) {
-				context.getItemInHand().hurtAndBreak(1, context.getPlayer(), user -> user.broadcastBreakEvent(context.getHand()));
+				context.getItemInHand().hurtAndBreak(1, context.getPlayer(), context.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? net.minecraft.world.entity.EquipmentSlot.MAINHAND : net.minecraft.world.entity.EquipmentSlot.OFFHAND);
 				return InteractionResult.SUCCESS;
 			}
 			return InteractionResult.PASS;

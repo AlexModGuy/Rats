@@ -131,8 +131,8 @@ public class RatBeastMount extends RatMountBase implements IAnimatedEntity {
 	}
 
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
-		spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
+		spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData);
 		this.setColorVariant(this.getRandom().nextInt(4));
 		return spawnData;
 	}

@@ -100,7 +100,7 @@ public class RatShot extends ThrowableProjectile {
 					}
 				} else if (thrower instanceof Mob mob) {
 					rat.setTarget(mob.getTarget());
-					rat.setTame(false);
+					rat.setTame(false, true);
 					rat.setOwnerUUID(mob.getUUID());
 				}
 				if (thrower instanceof RatSummoner ratter) {

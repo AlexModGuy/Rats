@@ -188,8 +188,8 @@ public class RatKing extends Monster implements RatSummoner {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
-		spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
+		spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData);
 		for (int i = 0; i < RAT_COUNT; i++) {
 			int color = this.getRandom().nextInt(4);
 			this.setRatColors(i, color);

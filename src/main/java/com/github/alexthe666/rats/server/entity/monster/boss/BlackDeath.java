@@ -149,7 +149,7 @@ public class BlackDeath extends Monster implements RatSummoner {
 			double dist = 20F;
 			for (Rat rat : this.level().getEntitiesOfClass(Rat.class, new AABB(this.getX() - dist, this.getY() - dist, this.getZ() - dist, this.getX() + dist, this.getY() + dist, this.getZ() + dist))) {
 				if (rat.isOwnedBy(this)) {
-					rat.setTame(false);
+					rat.setTame(false, true);
 					rat.setOwnerUUID(null);
 					rat.setFleePos(rat.blockPosition());
 					rat.setTarget(null);
@@ -319,8 +319,8 @@ public class BlackDeath extends Monster implements RatSummoner {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		SpawnGroupData finalData = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		SpawnGroupData finalData = super.finalizeSpawn(accessor, difficulty, type, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
 		return finalData;

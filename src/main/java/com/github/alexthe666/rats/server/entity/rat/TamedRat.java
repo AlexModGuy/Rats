@@ -342,7 +342,7 @@ public class TamedRat extends InventoryRat {
 		boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
 		if (flag) {
 			this.doEnchantDamageEffects(this, entity);
-			this.getMainHandItem().hurtAndBreak(1, this, rat -> rat.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+			this.getMainHandItem().hurtAndBreak(1, this, EquipmentSlot.MAINHAND);
 			RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof PostAttackUpgrade, (stack, slot) -> ((PostAttackUpgrade) stack.getItem()).afterHit(this, (LivingEntity) entity));
 		}
 		return flag;
@@ -763,10 +763,10 @@ public class TamedRat extends InventoryRat {
 		baby.setAge(-24000);
 		baby.setCommand(RatCommand.SIT);
 		if (mother.isTame()) {
-			baby.setTame(true);
+			baby.setTame(true, true);
 			baby.setOwnerUUID(mother.getOwnerUUID());
 		} else if (father.isTame()) {
-			baby.setTame(true);
+			baby.setTame(true, true);
 			baby.setOwnerUUID(father.getOwnerUUID());
 		}
 		this.level().addFreshEntity(baby);
@@ -1014,12 +1014,12 @@ public class TamedRat extends InventoryRat {
 	}
 
 	@Override
-	public void setTame(boolean tamed) {
+	public void setTame(boolean tamed, boolean applyTamingSideEffects) {
 		if (tamed) {
 			Arrays.fill(this.armorDropChances, 1.1F);
 			Arrays.fill(this.handDropChances, 1.1F);
 		}
-		super.setTame(tamed);
+		super.setTame(tamed, applyTamingSideEffects);
 	}
 
 	@Override

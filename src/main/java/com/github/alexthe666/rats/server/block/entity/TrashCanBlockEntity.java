@@ -33,11 +33,11 @@ public class TrashCanBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		this.handleUpdateTag(packet.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider registries) {
+		this.handleUpdateTag(packet.getTag(), registries);
 	}
 
-	public CompoundTag getUpdateTag() {
-		return this.saveWithId();
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return this.saveWithId(registries);
 	}
 }

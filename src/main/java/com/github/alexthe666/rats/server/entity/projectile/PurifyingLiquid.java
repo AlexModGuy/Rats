@@ -66,7 +66,7 @@ public class PurifyingLiquid extends ThrowableItemProjectile {
 									if (!this.level().isClientSide()) {
 										EventHooks.onFinalizeSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
 									}
-									rat.setTame(false);
+									rat.setTame(false, true);
 									rat.setOwnerUUID(null);
 									this.level().addFreshEntity(rat);
 									living.discard();
