@@ -24,14 +24,14 @@ public class RatsBlockItem extends BlockItem {
 		super(block, properties);
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Item.canEquip removed; equip-by-class is now driven by EQUIPMENT data component on the item.
 	public boolean canEquip(ItemStack stack, EquipmentSlot armorType, Entity entity) {
 		return this.getBlock() instanceof WearableOnHead && EquipmentSlot.HEAD == armorType;
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Item.getRarity(ItemStack) removed; rarity now comes from DataComponents.RARITY.
 	public Rarity getRarity(ItemStack stack) {
-		return this.getBlock() instanceof CustomItemRarity rarity ? rarity.getRarity() : super.getRarity(stack);
+		return this.getBlock() instanceof CustomItemRarity rarity ? rarity.getRarity() : Rarity.COMMON;
 	}
 
 	@Override

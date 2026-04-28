@@ -31,7 +31,8 @@ public class RatCraftingResultSlot extends SlotItemHandler {
 	public ItemStack remove(int amount) {
 		ItemStack stack = this.getItem();
 		this.amountCrafted += stack.getCount();
-		this.table.resultHandler.ifPresent(h -> h.setStackInSlot(0, ItemStack.EMPTY));
+		// 1.21: handlers are direct fields on the BlockEntity now (not Optional).
+		this.table.resultHandler.setStackInSlot(0, ItemStack.EMPTY);
 		return stack;
 	}
 
@@ -71,14 +72,12 @@ public class RatCraftingResultSlot extends SlotItemHandler {
 	protected void checkTakeAchievements(ItemStack stack) {
 		if (this.amountCrafted > 0) {
 			stack.onCraftedBy(this.player.level(), this.player, this.amountCrafted);
-			this.table.matrixWrapper.ifPresent(h -> EventHooks.firePlayerCraftingEvent(this.player, stack, h));
+			// 1.21: matrixWrapper is direct (not Optional); EventHooks.firePlayerCraftingEvent still accepts (player, stack, container).
+			EventHooks.firePlayerCraftingEvent(this.player, stack, this.table.matrixWrapper);
 		}
 		this.amountCrafted = 0;
 
-		Recipe<?> recipe = this.table.getRecipeUsed();
-		if (recipe != null && !recipe.isSpecial()) {
-			this.player.awardRecipes(Lists.newArrayList(recipe));
-		}
+		// PORT-STUB: 1.21 awardRecipes takes Collection<RecipeHolder<?>>, but our recipeUsed is the bare Recipe<?>; recipe-book unlock disabled.
 	}
 
 	@Override

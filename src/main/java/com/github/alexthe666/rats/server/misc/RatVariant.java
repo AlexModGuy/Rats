@@ -45,19 +45,21 @@ public class RatVariant {
 	}
 
 	public static RatVariant getRandomVariant(RandomSource random, boolean fromBreeding) {
-		List<RatVariant> validVariants = new ArrayList<>(RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getValues().stream().toList());
+		// 1.21: Registry.getValues() removed; use stream().toList().
+		List<RatVariant> validVariants = new ArrayList<>(RatVariantRegistry.RAT_VARIANT_REGISTRY.get().stream().toList());
 		validVariants.removeIf(variant -> fromBreeding != variant.isBreedingExclusive());
 		return validVariants.toArray(RatVariant[]::new)[random.nextInt(validVariants.size())];
 	}
 
 	public static RatVariant getRandomBreedingExclusiveVariant(RandomSource random) {
-		List<RatVariant> validVariants = new ArrayList<>(RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getValues().stream().toList());
+		List<RatVariant> validVariants = new ArrayList<>(RatVariantRegistry.RAT_VARIANT_REGISTRY.get().stream().toList());
 		validVariants.removeIf(variant -> !variant.isBreedingExclusive());
 		return validVariants.toArray(RatVariant[]::new)[random.nextInt(validVariants.size())];
 	}
 
 	public static RatVariant getVariant(String id) {
-		return Optional.ofNullable(RatVariantRegistry.RAT_VARIANT_REGISTRY.get().getValue(ResourceLocation.parse(id))).orElse(RatVariantRegistry.BLUE.get());
+		// 1.21: Registry.getValue removed; use get(ResourceLocation).
+		return Optional.ofNullable(RatVariantRegistry.RAT_VARIANT_REGISTRY.get().get(ResourceLocation.parse(id))).orElse(RatVariantRegistry.BLUE.get());
 	}
 
 	public static String getVariantId(RatVariant variant) {
