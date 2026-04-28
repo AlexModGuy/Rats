@@ -4,7 +4,9 @@ import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.CombinedUpgrade;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
@@ -27,8 +29,8 @@ public class RatUpgradeUtils {
 					return stack;
 				}
 				if (stack.getItem() instanceof CombinedUpgrade combined) {
-					CompoundTag tag = stack.getTag();
-					if (tag != null && tag.contains("Items", 9)) {
+					CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+					if (tag.contains("Items", 9)) {
 						NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
 						ContainerHelper.loadAllItems(tag, upgradeList, rat.level().registryAccess());
 						for (ItemStack selectedUpgrade : upgradeList) {
@@ -59,8 +61,8 @@ public class RatUpgradeUtils {
 					function.accept(stack, slot);
 				}
 				if (stack.getItem() instanceof CombinedUpgrade combined) {
-					CompoundTag tag = stack.getTag();
-					if (tag != null && tag.contains("Items", 9)) {
+					CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+					if (tag.contains("Items", 9)) {
 						NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
 						ContainerHelper.loadAllItems(tag, upgradeList, rat.level().registryAccess());
 						for (ItemStack selectedUpgrade : upgradeList) {
@@ -79,8 +81,8 @@ public class RatUpgradeUtils {
 			ItemStack stack = rat.getItemBySlot(slot);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof CombinedUpgrade combined) {
-					CompoundTag tag = stack.getTag();
-					if (tag != null && tag.contains("Items", 9)) {
+					CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+					if (tag.contains("Items", 9)) {
 						NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
 						ContainerHelper.loadAllItems(tag, upgradeList, rat.level().registryAccess());
 						for (ItemStack selectedUpgrade : upgradeList) {
