@@ -22,12 +22,12 @@ public class PlagueMobEffect extends MobEffect {
 	}
 
 	@Override
-	public void applyEffectTick(LivingEntity entity, int amplifier) {
-
+	public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
+		return true;
 	}
 
 	@Override
-	public boolean isDurationEffectTick(int duration, int amplifier) {
+	public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
 		return duration > 0;
 	}
 
@@ -36,20 +36,17 @@ public class PlagueMobEffect extends MobEffect {
 	}
 
 	@Override
-	public void addAttributeModifiers(LivingEntity entity, AttributeMap attributes, int amplifier) {
+	public void onEffectAdded(LivingEntity entity, int amplifier) {
 		MobEffectInstance effect = entity.getEffect(RatsEffectRegistry.PLAGUE);
 		if (!entity.isRemoved() && effect != null && entity.level() instanceof ServerLevel) {
 			entity.playSound(RatsSoundRegistry.PLAGUE_SPREAD.get(), 1.0F, 1.0F);
 			PacketDistributor.sendToPlayersTrackingEntity(entity, new SyncPlaguePacket(entity.getId(), effect));
 		}
-		super.addAttributeModifiers(entity, attributes, amplifier);
+		super.onEffectAdded(entity, amplifier);
 	}
 
 	@Override
-	public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributes, int amplifier) {
-		if (!entity.isRemoved() && entity.level() instanceof ServerLevel) {
-			PacketDistributor.sendToPlayersTrackingEntity(entity, new SyncPlaguePacket(entity.getId(), new MobEffectInstance(RatsEffectRegistry.PLAGUE, 0)));
-		}
-		super.removeAttributeModifiers(entity, attributes, amplifier);
+	public void onEffectStarted(LivingEntity entity, int amplifier) {
+		super.onEffectStarted(entity, amplifier);
 	}
 }

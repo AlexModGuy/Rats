@@ -1,9 +1,9 @@
 package com.github.alexthe666.rats.server.effect;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -16,32 +16,24 @@ public class ConfitByaldiMobEffect extends MobEffect {
 	}
 
 	@Override
-	public void applyEffectTick(LivingEntity living, int amplifier) {
+	public boolean applyEffectTick(ServerLevel level, LivingEntity living, int amplifier) {
 		if (living.getHealth() < living.getMaxHealth()) {
 			living.heal(1.0F);
 		}
 		if (living instanceof Player player) {
 			player.getFoodData().eat(1, 0.1F);
 		}
+		return true;
 	}
 
 	@Override
-	public boolean isDurationEffectTick(int duration, int amplifier) {
+	public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
 		return duration % 40 == 0;
 	}
 
 	@Override
-	public void removeAttributeModifiers(LivingEntity living, AttributeMap map, int amplifier) {
-		super.removeAttributeModifiers(living, map, amplifier);
-		living.setAbsorptionAmount(living.getAbsorptionAmount() - (float) (20 * (amplifier + 1)));
-		if (living.getHealth() > living.getMaxHealth()) {
-			living.setHealth(living.getMaxHealth());
-		}
-	}
-
-	@Override
-	public void addAttributeModifiers(LivingEntity living, AttributeMap map, int amplifier) {
+	public void onEffectStarted(LivingEntity living, int amplifier) {
+		super.onEffectStarted(living, amplifier);
 		living.setAbsorptionAmount(living.getAbsorptionAmount() + (float) (20 * (amplifier + 1)));
-		super.addAttributeModifiers(living, map, amplifier);
 	}
 }
