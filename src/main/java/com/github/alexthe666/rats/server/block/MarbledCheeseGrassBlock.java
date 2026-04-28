@@ -32,7 +32,7 @@ public class MarbledCheeseGrassBlock extends GrassBlock implements BonemealableB
 						}
 
 						if (level.getBlockState(blockpos).is(Blocks.DIRT) && level.getMaxLocalRawBrightness(blockpos.above()) >= 4 && level.getBlockState(blockpos.above()).getLightBlock(level, pos.above()) <= 2) {
-							level.setBlockAndUpdate(blockpos, Blocks.GRASS.defaultBlockState());
+							level.setBlockAndUpdate(blockpos, Blocks.SHORT_GRASS.defaultBlockState());
 						}
 					}
 				}

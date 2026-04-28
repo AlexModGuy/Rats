@@ -102,23 +102,23 @@ public class RatlantisStructureRegistry {
 								AlwaysTrueTest.INSTANCE,
 								RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY_STAIRS.get().defaultBlockState()),
 						new ProcessorRule(
-								new RandomBlockMatchTest(Blocks.GRASS, 0.2F),
+								new RandomBlockMatchTest(Blocks.SHORT_GRASS, 0.2F),
 								AlwaysTrueTest.INSTANCE,
 								RatlantisBlockRegistry.MARBLED_CHEESE_GRASS.get().defaultBlockState()),
 						new ProcessorRule(
-								new RandomBlockMatchTest(Blocks.GRASS, 0.15F),
+								new RandomBlockMatchTest(Blocks.SHORT_GRASS, 0.15F),
 								AlwaysTrueTest.INSTANCE,
 								RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_MOSSY.get().defaultBlockState()),
 						new ProcessorRule(
-								new RandomBlockMatchTest(Blocks.GRASS, 0.05F),
+								new RandomBlockMatchTest(Blocks.SHORT_GRASS, 0.05F),
 								AlwaysTrueTest.INSTANCE,
 								RatlantisBlockRegistry.MARBLED_CHEESE_BRICK.get().defaultBlockState()),
 						new ProcessorRule(
-								new RandomBlockMatchTest(Blocks.GRASS, 0.05F),
+								new RandomBlockMatchTest(Blocks.SHORT_GRASS, 0.05F),
 								AlwaysTrueTest.INSTANCE,
 								RatlantisBlockRegistry.MARBLED_CHEESE_BRICK_CRACKED.get().defaultBlockState()),
 						new ProcessorRule(
-								new RandomBlockMatchTest(Blocks.GRASS, 0.01F),
+								new RandomBlockMatchTest(Blocks.SHORT_GRASS, 0.01F),
 								AlwaysTrueTest.INSTANCE,
 								RatlantisBlockRegistry.MARBLED_CHEESE_TILE.get().defaultBlockState()),
 						new ProcessorRule(

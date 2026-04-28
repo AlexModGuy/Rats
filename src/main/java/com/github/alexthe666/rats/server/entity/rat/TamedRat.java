@@ -153,7 +153,7 @@ public class TamedRat extends InventoryRat {
 	public int randomEffectCooldown = 0;
 	private int updateNavigationCooldown;
 	public boolean isCurrentlyWorking;
-	private final Multimap<Attribute, AttributeModifier> attributeChanges = HashMultimap.create();
+	private final Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> attributeChanges = HashMultimap.create();
 
 	public TamedRat(EntityType<? extends TamableAnimal> type, Level level) {
 		super(type, level);
@@ -1292,8 +1292,9 @@ public class TamedRat extends InventoryRat {
 		this.setNoGravity(RatUpgradeUtils.hasUpgrade(this, RatlantisItemRegistry.RAT_UPGRADE_ETHEREAL.get()) || this.isFlying());
 	}
 
-	public void tryIncreaseStat(String itemName, Attribute stat, double value) {
-		AttributeModifier modifier = new AttributeModifier(itemName + " " + Component.translatable(stat.getDescriptionId()).getString() + " Modifier", value, AttributeModifier.Operation.ADDITION);
+	public void tryIncreaseStat(String itemName, net.minecraft.core.Holder<Attribute> stat, double value) {
+		net.minecraft.resources.ResourceLocation modifierId = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("rats", "stat_modifier_" + itemName.toLowerCase().replaceAll("[^a-z0-9_]", "_"));
+		AttributeModifier modifier = new AttributeModifier(modifierId, value, AttributeModifier.Operation.ADD_VALUE);
 		Objects.requireNonNull(this.getAttribute(stat)).addTransientModifier(modifier);
 		this.attributeChanges.put(stat, modifier);
 	}
