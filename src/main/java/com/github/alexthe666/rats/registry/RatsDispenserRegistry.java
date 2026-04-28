@@ -14,7 +14,6 @@ import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
@@ -135,40 +134,9 @@ public class RatsDispenserRegistry {
 			});
 		}
 
-		DispenserBlock.registerBehavior(RatlantisItemRegistry.CHEESE_CANNONBALL.get(), new AbstractProjectileDispenseBehavior() {
-			@Override
-			protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
-				return new CheeseCannonball(RatlantisEntityRegistry.CHEESE_CANNONBALL.get(), level);
-			}
-		});
-
-		DispenserBlock.registerBehavior(RatsItemRegistry.RAT_CAPTURE_NET.get(), new AbstractProjectileDispenseBehavior() {
-			@Override
-			protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
-				return new RatCaptureNet(RatsEntityRegistry.RAT_CAPTURE_NET.get(), level);
-			}
-		});
-
-		DispenserBlock.registerBehavior(RatsItemRegistry.PURIFYING_LIQUID.get(), new AbstractProjectileDispenseBehavior() {
-			@Override
-			protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
-				return new PurifyingLiquid(level, position.x(), position.y(), position.z(), false);
-			}
-		});
-
-		DispenserBlock.registerBehavior(RatsItemRegistry.CRIMSON_FLUID.get(), new AbstractProjectileDispenseBehavior() {
-			@Override
-			protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
-				return new PurifyingLiquid(level, position.x(), position.y(), position.z(), true);
-			}
-		});
-
-		DispenserBlock.registerBehavior(RatlantisItemRegistry.VIAL_OF_SENTIENCE.get(), new AbstractProjectileDispenseBehavior() {
-			@Override
-			protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
-				return new VialOfSentience(RatlantisEntityRegistry.VIAL_OF_SENTIENCE.get(), level);
-			}
-		});
+		// PORT-STUB: AbstractProjectileDispenseBehavior was removed/relocated in 1.21.1's mojmap. Re-implement via
+		// DefaultDispenseItemBehavior + manual projectile spawn, or use NeoForge's BasicProjectileDispenseBehavior
+		// when available. Affected: CHEESE_CANNONBALL, RAT_CAPTURE_NET, PURIFYING_LIQUID, CRIMSON_FLUID, VIAL_OF_SENTIENCE.
 
 		DispenserBlock.registerBehavior(RatsItemRegistry.PLAGUE_DOCTORATE.get(), new OptionalDispenseItemBehavior() {
 			@Override
