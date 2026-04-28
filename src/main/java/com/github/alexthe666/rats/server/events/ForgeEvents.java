@@ -63,7 +63,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.event.VanillaGameEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.item.ItemExpireEvent;
@@ -308,9 +308,9 @@ public class ForgeEvents {
 	}
 
 	private static ItemStack checkHandsForRod(Player player) {
-		if (player.getMainHandItem().canPerformAction(ToolActions.FISHING_ROD_CAST)) {
+		if (player.getMainHandItem().canPerformAction(ItemAbilities.FISHING_ROD_CAST)) {
 			return player.getMainHandItem();
-		} else if (player.getOffhandItem().canPerformAction(ToolActions.FISHING_ROD_CAST)) {
+		} else if (player.getOffhandItem().canPerformAction(ItemAbilities.FISHING_ROD_CAST)) {
 			return player.getOffhandItem();
 		}
 		return ItemStack.EMPTY;

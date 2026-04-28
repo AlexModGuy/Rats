@@ -156,10 +156,7 @@ public class PiedPiper extends Raider implements RatSummoner {
 		this.getEntityData().set(RAT_COUNT, count);
 	}
 
-	@Override
-	public MobType getMobType() {
-		return MobType.ILLAGER;
-	}
+	// PORT-STUB: 1.21 removed LivingEntity.getMobType(); use EntityTypeTags.ILLAGER on the entity type instead.
 
 	@Nullable
 	@Override

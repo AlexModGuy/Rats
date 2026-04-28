@@ -45,29 +45,9 @@ public class RatlantisPortalBlock extends BaseEntityBlock implements CustomItemR
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (RatsMod.RATLANTIS_DATAPACK_ENABLED) {
-			if (!entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions()) {
-				if (entity.isOnPortalCooldown()) {
-					entity.setPortalCooldown();
-				} else {
-					if (!entity.level().isClientSide() && !pos.equals(entity.portalEntrancePos)) {
-						entity.portalEntrancePos = pos.immutable();
-					}
-					MinecraftServer server = entity.level().getServer();
-					ResourceKey<Level> destination = entity.level().dimension() == RatlantisDimensionRegistry.DIMENSION_KEY ? Level.OVERWORLD : RatlantisDimensionRegistry.DIMENSION_KEY;
-					if (server != null) {
-						ServerLevel dest = server.getLevel(destination);
-						if (dest != null && server.isNetherEnabled() && !entity.isPassenger()) {
-							entity.level().getProfiler().push("ratlantis_portal");
-							entity.setPortalCooldown();
-							entity.changeDimension(dest, new RatlantisTeleporter(dest));
-							entity.setDeltaMovement(Vec3.ZERO);
-							entity.level().getProfiler().pop();
-						}
-					}
-				}
-			}
-		}
+		// PORT-STUB: 1.21 reworked the dimension-teleport API. Entity.portalEntrancePos was removed,
+		// ITeleporter is gone, and Entity.changeDimension now requires a DimensionTransition.
+		// Custom Ratlantis-portal teleportation must be reimplemented against the new Portal interface.
 	}
 
 	@Override

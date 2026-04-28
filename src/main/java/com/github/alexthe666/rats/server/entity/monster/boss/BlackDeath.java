@@ -101,7 +101,7 @@ public class BlackDeath extends Monster implements RatSummoner {
 				return this.mob.getLastHurtByMob() != null && !this.mob.getLastHurtByMob().getType().is(RatsEntityTags.PLAGUE_LEGION) && super.canUse();
 			}
 		});
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, entity -> NOT_PLAGUE.and(EntitySelector.NO_CREATIVE_OR_SPECTATOR).and(living -> living.getMobType() != MobType.UNDEAD).test(entity)));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, entity -> NOT_PLAGUE.and(EntitySelector.NO_CREATIVE_OR_SPECTATOR).and(living -> !living.getType().is(net.minecraft.tags.EntityTypeTags.UNDEAD)).test(entity)));
 	}
 
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {

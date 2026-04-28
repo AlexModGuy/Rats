@@ -18,7 +18,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.IForgeShearable;
+import net.neoforged.neoforge.common.IShearable;
+import net.minecraft.server.level.ServerLevel;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -28,7 +29,7 @@ import java.util.function.Predicate;
 public class RatUseShearsGoal extends BaseRatHarvestGoal {
 	private static final ItemStack SHEAR_STACK = new ItemStack(Items.SHEARS);
 	private final TamedRat rat;
-	private final Predicate<LivingEntity> SHEAR_PREDICATE = entity -> entity instanceof IForgeShearable && ((IForgeShearable) entity).isShearable(SHEAR_STACK, entity.level(), entity.blockPosition());
+	private final Predicate<LivingEntity> SHEAR_PREDICATE = entity -> entity instanceof IShearable && ((IShearable) entity).isShearable(SHEAR_STACK, entity.level(), entity.blockPosition());
 
 	public RatUseShearsGoal(TamedRat rat) {
 		super(rat);
@@ -55,8 +56,10 @@ public class RatUseShearsGoal extends BaseRatHarvestGoal {
 		if (this.getTargetEntity() != null && this.getTargetEntity().isAlive() && this.rat.getMainHandItem().isEmpty()) {
 			this.rat.getNavigation().moveTo(this.getTargetEntity(), 1.25D);
 			if (this.rat.distanceToSqr(this.getTargetEntity()) < this.rat.getRatHarvestDistance(0.0D)) {
-				if (this.getTargetEntity() instanceof IForgeShearable shearable) {
-					List<ItemStack> drops = shearable.onSheared(null, SHEAR_STACK, this.rat.level(), this.getTargetEntity().blockPosition(), 0);
+				if (this.getTargetEntity() instanceof IShearable shearable) {
+					List<ItemStack> drops = this.rat.level() instanceof ServerLevel sl
+							? shearable.onSheared(null, SHEAR_STACK, sl, this.getTargetEntity().blockPosition())
+							: java.util.Collections.emptyList();
 					this.rat.gameEvent(GameEvent.ENTITY_INTERACT);
 					for (ItemStack stack : drops) {
 						this.getTargetEntity().spawnAtLocation(stack, 0.0F);
