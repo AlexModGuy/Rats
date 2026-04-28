@@ -2,7 +2,9 @@ package com.github.alexthe666.rats.server.items;
 
 import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.model.hats.RatlantisArmorModel;
+import com.github.alexthe666.rats.registry.RatsArmorMaterialRegistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -22,8 +24,8 @@ import java.util.function.Consumer;
 
 public class RatlantisArmorItem extends ArmorItem {
 
-	public RatlantisArmorItem(ArmorMaterial material, Type type, Item.Properties properties) {
-		super(material, type, properties);
+	public RatlantisArmorItem(Holder<ArmorMaterial> material, Type type, Item.Properties properties) {
+		super(material, type, properties.durability(RatsArmorMaterialRegistry.durabilityFor(material, type)));
 	}
 
 	@Override

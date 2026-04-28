@@ -19,11 +19,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import com.github.alexthe666.rats.registry.RatsArmorMaterialRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,8 +36,8 @@ public class HatItem extends ArmorItem {
 
 	private final int loreLines;
 
-	public HatItem(Item.Properties properties, ArmorMaterial material, int loreLines) {
-		super(material, Type.HELMET, properties);
+	public HatItem(Item.Properties properties, Holder<ArmorMaterial> material, int loreLines) {
+		super(material, Type.HELMET, properties.durability(RatsArmorMaterialRegistry.durabilityFor(material, Type.HELMET)));
 		this.loreLines = loreLines;
 	}
 
