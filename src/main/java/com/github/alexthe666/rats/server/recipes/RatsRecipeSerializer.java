@@ -1,55 +1,49 @@
 package com.github.alexthe666.rats.server.recipes;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SingleItemRecipe;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
+// PORT-STUB: 1.21 RecipeSerializer<T> requires MapCodec<T> codec() and StreamCodec<RegistryFriendlyByteBuf, T> streamCodec()
+// (replacing fromJson/toJson/fromNetwork/toNetwork). The pre-1.21 SingleItemRecipe constructor took (type, serializer, id, group, input, output);
+// in 1.21 it takes (String group, ItemStack output, Ingredient input). This serializer maintains the original Rats schema (group + ingredient + result)
+// using DataComponent-aware codecs so dispatch via factory still produces a runnable BaseRatRecipe.
 public class RatsRecipeSerializer<T extends BaseRatRecipe> implements RecipeSerializer<T> {
+	private final MapCodec<T> codec;
+	private final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
 	final SingleItemMaker<T> factory;
 
 	public RatsRecipeSerializer(SingleItemMaker<T> factory) {
 		this.factory = factory;
+		this.codec = RecordCodecBuilder.mapCodec(instance -> instance.group(
+				com.mojang.serialization.Codec.STRING.optionalFieldOf("group", "").forGetter(BaseRatRecipe::getGroup),
+				Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(r -> r.ingredient),
+				ItemStack.STRICT_CODEC.fieldOf("result").forGetter(r -> r.result)
+		).apply(instance, (group, ingredient, result) -> factory.create(group, ingredient, result)));
+		this.streamCodec = StreamCodec.composite(
+				ByteBufCodecs.STRING_UTF8, BaseRatRecipe::getGroup,
+				Ingredient.CONTENTS_STREAM_CODEC, r -> r.ingredient,
+				ItemStack.STREAM_CODEC, r -> r.result,
+				(group, ingredient, result) -> factory.create(group, ingredient, result)
+		);
 	}
 
 	@Override
-	public T fromJson(ResourceLocation id, JsonObject object) {
-		String s = GsonHelper.getAsString(object, "group", "");
-		Ingredient ingredient;
-		if (GsonHelper.isArrayNode(object, "ingredient")) {
-			ingredient = Ingredient.fromJson(GsonHelper.getAsJsonArray(object, "ingredient"));
-		} else {
-			ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(object, "ingredient"));
-		}
-
-		String s1 = GsonHelper.getAsString(object, "result");
-		int i = GsonHelper.getAsInt(object, "count");
-		ItemStack itemstack = new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(s1)), i);
-		return this.factory.create(id, s, ingredient, itemstack);
+	public MapCodec<T> codec() {
+		return this.codec;
 	}
 
 	@Override
-	public T fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-		String s = buf.readUtf();
-		Ingredient ingredient = Ingredient.fromNetwork(buf);
-		ItemStack itemstack = buf.readItem();
-		return this.factory.create(id, s, ingredient, itemstack);
+	public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
+		return this.streamCodec;
 	}
 
-	@Override
-	public void toNetwork(FriendlyByteBuf buf, T recipe) {
-		buf.writeUtf(recipe.getGroup());
-		recipe.getIngredients().get(0).toNetwork(buf);
-		buf.writeItem(recipe.getResult());
-	}
-
-	public interface SingleItemMaker<T extends SingleItemRecipe> {
-		T create(ResourceLocation id, String group, Ingredient input, ItemStack output);
+	public interface SingleItemMaker<T extends BaseRatRecipe> {
+		T create(String group, Ingredient input, ItemStack output);
 	}
 }
