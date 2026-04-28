@@ -4,7 +4,9 @@ import com.github.alexthe666.rats.server.inventory.RatUpgradeMenu;
 import com.github.alexthe666.rats.server.inventory.container.RatUpgradeContainer;
 import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
@@ -52,9 +54,9 @@ public class RatListUpgradeItem extends BaseRatUpgradeItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, context, tooltip, flag);
-		CompoundTag tag = stack.getTag();
+		CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
 
-		if (tag != null && tag.contains("Items", 9)) {
+		if (tag.contains("Items", 9)) {
 			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
 			ContainerHelper.loadAllItems(tag, nonnulllist, net.minecraft.core.RegistryAccess.EMPTY);
 			int i = 0;

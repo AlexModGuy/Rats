@@ -7,7 +7,9 @@ import com.github.alexthe666.rats.server.inventory.container.RatUpgradeContainer
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.CombinedUpgrade;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
@@ -33,8 +35,8 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements Combin
 
 	public static boolean canCombineWithUpgrade(ItemStack combiner, ItemStack stack) {
 		if (stack.getItem() instanceof CombinedUpgrade) return false;
-		CompoundTag tag = combiner.getTag();
-		if (tag != null && tag.contains("Items", 9)) {
+		CompoundTag tag = combiner.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+		if (tag.contains("Items", 9)) {
 			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
 			ContainerHelper.loadAllItems(tag, nonnulllist, net.minecraft.core.RegistryAccess.EMPTY);
 			for (ItemStack contained : nonnulllist) {
@@ -60,9 +62,9 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements Combin
 		if (stack.is(RatsItemRegistry.RAT_UPGRADE_COMBINED_CREATIVE.get())) {
 			return true;
 		}
-		CompoundTag tag = stack.getTag();
+		CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
 		boolean flag = false;
-		if (tag != null && tag.contains("Items", 9)) {
+		if (tag.contains("Items", 9)) {
 			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(this.getUpgradeSlots(), ItemStack.EMPTY);
 			ContainerHelper.loadAllItems(tag, nonnulllist, net.minecraft.core.RegistryAccess.EMPTY);
 			flag = !nonnulllist.isEmpty();
