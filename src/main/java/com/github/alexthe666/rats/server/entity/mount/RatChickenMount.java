@@ -31,10 +31,8 @@ public class RatChickenMount extends RatMountBase {
 		this.riderXZ = 0.1F;
 	}
 
-	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-		return this.isBaby() ? dimensions.height * 0.85F : dimensions.height * 0.92F;
-	}
+	// PORT-STUB: 1.21 removed Entity.getStandingEyeHeight in favor of EntityAttachments registered on EntityDimensions.
+	// Custom eye-height for the rat-chicken ride is dropped; vanilla chicken eye-height applies.
 
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()

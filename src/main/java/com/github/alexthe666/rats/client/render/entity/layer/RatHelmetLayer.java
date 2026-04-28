@@ -74,8 +74,9 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 					if (itemstack.getItem() instanceof HatItem hat) {
 						hat.transformOnHead(rat, stack);
 					}
-					if (armoritem instanceof DyeableArmorItem dyeable) {
-						int i = dyeable.getColor(itemstack);
+					// PORT-STUB: 1.21 DyeableArmorItem replaced by DataComponents.DYED_COLOR; ArmorTrim moved to DataComponents.TRIM.
+					if (itemstack.has(net.minecraft.core.component.DataComponents.DYED_COLOR)) {
+						int i = net.minecraft.world.item.component.DyedItemColor.getOrDefault(itemstack, 0);
 						float f = (float) (i >> 16 & 255) / 255.0F;
 						float f1 = (float) (i >> 8 & 255) / 255.0F;
 						float f2 = (float) (i & 255) / 255.0F;
@@ -84,8 +85,7 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 					} else {
 						this.renderModel(stack, buffer, light, model, 1.0F, 1.0F, 1.0F, getArmorResource(rat, itemstack, EquipmentSlot.HEAD, null));
 					}
-					ArmorTrim.getTrim(rat.level().registryAccess(), itemstack).ifPresent(trim ->
-							this.renderTrim(armoritem.getMaterial(), stack, buffer, light, trim, model));
+					// PORT-STUB: armor trim rendering disabled until ArmorTrim.getTrim API migrated to component-based access.
 					if (itemstack.hasFoil()) {
 						this.renderGlint(stack, buffer, light, model);
 					}
@@ -144,10 +144,10 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 		model.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, red, green, blue));
 	}
 
+	// PORT-STUB: 1.21 ArmorTrim.outerTexture(material) requires Holder<ArmorMaterial> and Sheets.armorTrimsSheet takes a boolean.
+	// Trim rendering is disabled until the new component-based trim API is wired up.
+	@SuppressWarnings("unused")
 	private void renderTrim(ArmorMaterial material, PoseStack stack, MultiBufferSource buffer, int light, ArmorTrim trim, Model model) {
-		TextureAtlasSprite textureatlassprite = this.armorTrimAtlas.getSprite(trim.outerTexture(material));
-		VertexConsumer vertexconsumer = textureatlassprite.wrap(buffer.getBuffer(Sheets.armorTrimsSheet()));
-		model.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 	}
 
 	private void renderGlint(PoseStack stack, MultiBufferSource buffer, int light, Model model) {
@@ -157,7 +157,12 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 	//copy of HumanoidArmorLayer.getArmorResource, a method provided by forge
 	public ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, @Nullable String type) {
 		ArmorItem item = (ArmorItem) stack.getItem();
-		String texture = item.getMaterial().getName();
+		// PORT-STUB: 1.21 ArmorItem.getMaterial returns Holder<ArmorMaterial>; ArmorMaterial.getName() removed.
+		// Derive a string key from the material's holder ResourceLocation (or fallback to "iron").
+		net.minecraft.core.Holder<net.minecraft.world.item.ArmorMaterial> matHolder = item.getMaterial();
+		String texture = matHolder.unwrapKey()
+				.map(k -> k.location().getNamespace() + ":" + k.location().getPath())
+				.orElse("minecraft:iron");
 		String domain = "minecraft";
 		int idx = texture.indexOf(':');
 		if (idx != -1) {
@@ -166,7 +171,7 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 		}
 		String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (1), type == null ? "" : String.format("_%s", type));
 
-		s1 = ClientHooks.getArmorTexture(entity, stack, s1, slot, type);
+		// PORT-STUB: ClientHooks.getArmorTexture signature changed in 1.21; skip the hook call until migrated.
 		ResourceLocation resourcelocation = ARMOR_TEXTURE_RES_MAP.get(s1);
 
 		if (resourcelocation == null) {
