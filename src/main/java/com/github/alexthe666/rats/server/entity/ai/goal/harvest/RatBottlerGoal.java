@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BeehiveBlock;
@@ -67,7 +67,7 @@ public class RatBottlerGoal extends BaseRatHarvestGoal {
 					this.stop();
 				} else if (block.is(Blocks.WATER_CAULDRON)) {
 					LayeredCauldronBlock.lowerFillLevel(block, this.rat.level(), pos);
-					this.giveOrDropItem(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER));
+					this.giveOrDropItem(PotionContents.createItemStack(Items.POTION, Potions.WATER));
 					this.rat.level().playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
 					this.stop();
 				}

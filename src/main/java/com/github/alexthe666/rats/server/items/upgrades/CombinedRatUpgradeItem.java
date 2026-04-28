@@ -21,7 +21,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -80,7 +79,7 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements Combin
 			ItemStack stack = player.getItemInHand(hand);
 			if (!player.isShiftKeyDown()) {
 				if (!level.isClientSide()) {
-					NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+					((ServerPlayer) player).openMenu(new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player1) {
 							return new RatUpgradeMenu(id, new RatUpgradeContainer(stack), player.getInventory(), stack);

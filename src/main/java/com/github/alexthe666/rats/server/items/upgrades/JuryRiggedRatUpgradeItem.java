@@ -19,7 +19,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -53,7 +52,7 @@ public class JuryRiggedRatUpgradeItem extends BaseRatUpgradeItem implements Comb
 
 		if (!player.isShiftKeyDown() && !this.isUpgradeLocked(stack)) {
 			if (!level.isClientSide()) {
-				NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+				((ServerPlayer) player).openMenu(new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player1) {
 						return new JuryRiggedRatUpgradeMenu(id, new RatUpgradeContainer(stack), player1.getInventory(), stack);

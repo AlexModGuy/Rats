@@ -44,7 +44,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -84,7 +84,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(0, new UseItemGoal<>(this, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.INVISIBILITY), RatsSoundRegistry.PLAGUE_DOCTOR_DISAPPEAR.get(), doctor -> !this.level().isDay() && !doctor.isInvisible()));
+		this.goalSelector.addGoal(0, new UseItemGoal<>(this, PotionContents.createItemStack(Items.POTION, Potions.INVISIBILITY), RatsSoundRegistry.PLAGUE_DOCTOR_DISAPPEAR.get(), doctor -> !this.level().isDay() && !doctor.isInvisible()));
 		this.goalSelector.addGoal(0, new UseItemGoal<>(this, new ItemStack(Items.MILK_BUCKET), RatsSoundRegistry.PLAGUE_DOCTOR_REAPPEAR.get(), doctor -> this.level().isDay() && doctor.isInvisible()));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zombie.class, 8.0F, 1.1D, 1.35D));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Evoker.class, 12.0F, 1.1D, 1.35D));

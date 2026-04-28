@@ -143,8 +143,9 @@ public class RatsItemRegistry {
 	public static final DeferredHolder<Item, Item> PLAGUE_DOCTOR_MASK = ITEMS.register("plague_doctor_mask", () -> new HatItem(new Item.Properties().stacksTo(1), RatsArmorMaterialRegistry.PLAGUE_MASK, 1));
 	public static final DeferredHolder<Item, Item> BLACK_DEATH_MASK = ITEMS.register("black_death_mask", () -> new HatItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.RARE), RatsArmorMaterialRegistry.PLAGUE_MASK, 1));
 	public static final DeferredHolder<Item, Item> EXTERMINATOR_HAT = ITEMS.register("exterminator_hat", () -> new HatItem(new Item.Properties().stacksTo(1), RatsArmorMaterialRegistry.GENERIC_HAT, 0));
-	public static final DeferredHolder<Item, Item> MUSIC_DISC_MICE_ON_VENUS = ITEMS.register("music_disc_mice_on_venus", () -> new RecordItem(13, RatsSoundRegistry.MICE_ON_VENUS, new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 280 * 20));
-	public static final DeferredHolder<Item, Item> MUSIC_DISC_LIVING_MICE = ITEMS.register("music_disc_living_mice", () -> new RecordItem(13, RatsSoundRegistry.LIVING_MICE, new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 188 * 20));
+	// PORT-STUB: 1.21 removed RecordItem; music discs now use the JUKEBOX_PLAYABLE data component referencing a JukeboxSong registered via datapack. Discs ship as plain Items until JukeboxSong entries are generated.
+	public static final DeferredHolder<Item, Item> MUSIC_DISC_MICE_ON_VENUS = ITEMS.register("music_disc_mice_on_venus", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+	public static final DeferredHolder<Item, Item> MUSIC_DISC_LIVING_MICE = ITEMS.register("music_disc_living_mice", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
 
 
 	public static final DeferredHolder<Item, Item> RAT_UPGRADE_BASIC = ITEMS.register("rat_upgrade_basic", () -> new BaseRatUpgradeItem(new Item.Properties()));
