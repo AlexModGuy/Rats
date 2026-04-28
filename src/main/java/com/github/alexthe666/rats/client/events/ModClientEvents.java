@@ -24,7 +24,6 @@ import com.github.alexthe666.rats.server.items.*;
 import com.github.alexthe666.rats.server.items.upgrades.DemonRatUpgradeItem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.model.EntityModel;
@@ -119,12 +118,15 @@ public class ModClientEvents {
 
 			ItemProperties.register(RatsItemRegistry.RAT_UPGRADE_DEMON.get(), ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "soul"), (stack, level, living, i) -> DemonRatUpgradeItem.isSoulVersion(stack) ? 1 : 0);
 		});
+	}
 
-		MenuScreens.register(RatsMenuRegistry.RAT_CRAFTING_TABLE_CONTAINER.get(), RatCraftingTableScreen::new);
-		MenuScreens.register(RatsMenuRegistry.RAT_UPGRADE_CONTAINER.get(), RatUpgradeScreen::new);
-		MenuScreens.register(RatsMenuRegistry.RAT_UPGRADE_JR_CONTAINER.get(), JuryRiggedRatUpgradeScreen::new);
-		MenuScreens.register(RatsMenuRegistry.UPGRADE_COMBINER_CONTAINER.get(), UpgradeCombinerScreen::new);
-		MenuScreens.register(RatsMenuRegistry.AUTO_CURDLER_CONTAINER.get(), AutoCurdlerScreen::new);
+	@SubscribeEvent
+	public static void registerMenuScreens(net.neoforged.neoforge.client.event.RegisterMenuScreensEvent event) {
+		event.register(RatsMenuRegistry.RAT_CRAFTING_TABLE_CONTAINER.get(), RatCraftingTableScreen::new);
+		event.register(RatsMenuRegistry.RAT_UPGRADE_CONTAINER.get(), RatUpgradeScreen::new);
+		event.register(RatsMenuRegistry.RAT_UPGRADE_JR_CONTAINER.get(), JuryRiggedRatUpgradeScreen::new);
+		event.register(RatsMenuRegistry.UPGRADE_COMBINER_CONTAINER.get(), UpgradeCombinerScreen::new);
+		event.register(RatsMenuRegistry.AUTO_CURDLER_CONTAINER.get(), AutoCurdlerScreen::new);
 	}
 
 	@SubscribeEvent
