@@ -1,40 +1,32 @@
 package com.github.alexthe666.rats.server.advancements;
 
-import com.github.alexthe666.rats.RatsMod;
-import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
+import java.util.Optional;
+
+// 1.21: SimpleCriterionTrigger uses Codec-based instances; deserializeTrigger/getId/createInstance(JsonObject,...) gone.
 public class BlackDeathSummonedTrigger extends SimpleCriterionTrigger<BlackDeathSummonedTrigger.TriggerInstance> {
 
-	static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "black_death_summoned");
-
 	@Override
-	protected BlackDeathSummonedTrigger.TriggerInstance createInstance(JsonObject object, ContextAwarePredicate predicate, DeserializationContext context) {
-		return new TriggerInstance(predicate);
+	public Codec<TriggerInstance> codec() {
+		return TriggerInstance.CODEC;
 	}
 
 	public void trigger(ServerPlayer player) {
 		this.trigger(player, instance -> true);
 	}
 
-	@Override
-	public ResourceLocation getId() {
-		return ID;
-	}
+	public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleCriterionTrigger.SimpleInstance {
+		public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+				ContextAwarePredicate.CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player)
+		).apply(instance, TriggerInstance::new));
 
-	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-
-		public TriggerInstance(ContextAwarePredicate predicate) {
-			super(BlackDeathSummonedTrigger.ID, predicate);
-		}
-
-		public static BlackDeathSummonedTrigger.TriggerInstance summoned() {
-			return new BlackDeathSummonedTrigger.TriggerInstance(ContextAwarePredicate.ANY);
+		public static TriggerInstance summoned() {
+			return new TriggerInstance(Optional.empty());
 		}
 	}
 }

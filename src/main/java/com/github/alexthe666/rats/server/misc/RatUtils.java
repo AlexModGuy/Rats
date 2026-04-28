@@ -246,8 +246,8 @@ public class RatUtils {
 		BlockState blockState = level.getBlockState(pos);
 		Block block = blockState.getBlock();
 		if (!level.isClientSide()) {
-			if (block.isRandomlyTicking(blockState) && randomTickInt == 0) {
-				block.randomTick(blockState, (ServerLevel) level, pos, level.getRandom());
+			if (blockState.isRandomlyTicking() && randomTickInt == 0) {
+				blockState.randomTick((ServerLevel) level, pos, level.getRandom());
 			}
 
 			if (beTickInt == 0) {

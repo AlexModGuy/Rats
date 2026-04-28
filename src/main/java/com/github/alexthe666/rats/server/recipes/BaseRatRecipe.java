@@ -15,4 +15,8 @@ public abstract class BaseRatRecipe extends SingleItemRecipe {
 	public final ItemStack getResult() {
 		return this.result;
 	}
+
+	public final Ingredient getInputIngredient() {
+		return this.ingredient;
+	}
 }

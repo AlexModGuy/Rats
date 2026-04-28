@@ -22,13 +22,13 @@ public class RatsRecipeSerializer<T extends BaseRatRecipe> implements RecipeSeri
 		this.factory = factory;
 		this.codec = RecordCodecBuilder.mapCodec(instance -> instance.group(
 				com.mojang.serialization.Codec.STRING.optionalFieldOf("group", "").forGetter(BaseRatRecipe::getGroup),
-				Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(r -> r.ingredient),
-				ItemStack.STRICT_CODEC.fieldOf("result").forGetter(r -> r.result)
+				Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(BaseRatRecipe::getInputIngredient),
+				ItemStack.STRICT_CODEC.fieldOf("result").forGetter(BaseRatRecipe::getResult)
 		).apply(instance, (group, ingredient, result) -> factory.create(group, ingredient, result)));
 		this.streamCodec = StreamCodec.composite(
 				ByteBufCodecs.STRING_UTF8, BaseRatRecipe::getGroup,
-				Ingredient.CONTENTS_STREAM_CODEC, r -> r.ingredient,
-				ItemStack.STREAM_CODEC, r -> r.result,
+				Ingredient.CONTENTS_STREAM_CODEC, BaseRatRecipe::getInputIngredient,
+				ItemStack.STREAM_CODEC, BaseRatRecipe::getResult,
 				(group, ingredient, result) -> factory.create(group, ingredient, result)
 		);
 	}
