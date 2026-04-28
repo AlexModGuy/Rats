@@ -4,7 +4,9 @@ import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.loot.*;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -13,14 +15,18 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RatsLootRegistry {
 
-	public static final ResourceLocation CHRISTMAS_GIFTS = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "christmas_rat_gifts");
-	public static final ResourceLocation PET_SHOP_HOTV = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "gameplay/hero_of_the_village/pet_shop_owner");
-	public static final ResourceLocation RATLANTIS_RAT_EXCLUSIVE_DROPS = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "gameplay/ratlantis_exclusive_rat_loot");
+	private static ResourceKey<LootTable> lootKey(String path) {
+		return ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, path));
+	}
 
-	public static final ResourceLocation RATLANTIS_FISH = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "gameplay/fishing/ratlantis");
-	public static final ResourceLocation RATLANTIS_FISHING_JUNK = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "gameplay/fishing/ratlantis_junk");
-	public static final ResourceLocation RATLANTIS_FISHING_TREASURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "gameplay/fishing/ratlantis_treasure");
-	public static final ResourceLocation RATLANTIS_FISHING_FISH = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "gameplay/fishing/ratlantis_fish");
+	public static final ResourceKey<LootTable> CHRISTMAS_GIFTS = lootKey("christmas_rat_gifts");
+	public static final ResourceKey<LootTable> PET_SHOP_HOTV = lootKey("gameplay/hero_of_the_village/pet_shop_owner");
+	public static final ResourceKey<LootTable> RATLANTIS_RAT_EXCLUSIVE_DROPS = lootKey("gameplay/ratlantis_exclusive_rat_loot");
+
+	public static final ResourceKey<LootTable> RATLANTIS_FISH = lootKey("gameplay/fishing/ratlantis");
+	public static final ResourceKey<LootTable> RATLANTIS_FISHING_JUNK = lootKey("gameplay/fishing/ratlantis_junk");
+	public static final ResourceKey<LootTable> RATLANTIS_FISHING_TREASURE = lootKey("gameplay/fishing/ratlantis_treasure");
+	public static final ResourceKey<LootTable> RATLANTIS_FISHING_FISH = lootKey("gameplay/fishing/ratlantis_fish");
 
 
 	public static final DeferredRegister<LootItemConditionType> CONDITIONS = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, RatsMod.MODID);

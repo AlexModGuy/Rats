@@ -84,7 +84,7 @@ public class RatFarmGoal extends BaseRatHarvestGoal {
 						if (this.holdingBonemeal()) {
 							this.rat.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
 							if (block.getBlock() instanceof BonemealableBlock bonemealable) {
-								if (bonemealable.isValidBonemealTarget(this.rat.level(), this.getTargetBlock(), block, this.rat.level().isClientSide())) {
+								if (bonemealable.isValidBonemealTarget(this.rat.level(), this.getTargetBlock(), block).isClientSide())) {
 									if (!this.rat.level().isClientSide()) {
 										this.rat.level().levelEvent(2005, this.getTargetBlock(), 0);
 										this.rat.level().playSound(null, this.getTargetBlock(), SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS);
@@ -131,7 +131,7 @@ public class RatFarmGoal extends BaseRatHarvestGoal {
 
 	private boolean canPlantBeBonemealed(BlockPos pos, BlockState state) {
 		if (state.getBlock() instanceof BonemealableBlock bonemealable && state.is(BlockTags.BEE_GROWABLES)) {
-			if (bonemealable.isValidBonemealTarget(this.rat.level(), pos, state, this.rat.level().isClientSide())) {
+			if (bonemealable.isValidBonemealTarget(this.rat.level(), pos, state).isClientSide())) {
 				return bonemealable.isBonemealSuccess(this.rat.level(), this.rat.level().getRandom(), pos, state);
 			}
 		}
