@@ -44,7 +44,7 @@ public class RatlantisToolItem {
 
 		@Override
 		public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
-			if (Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTag(BlockTags.BASE_STONE_OVERWORLD).contains(state.getBlock())) {
+			if (state.is(BlockTags.BASE_STONE_OVERWORLD)) {
 				if (!level.isClientSide() && state.getDestroySpeed(level, pos) != 0.0F) {
 					stack.hurtAndBreak(0, living, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
 				}
@@ -64,7 +64,7 @@ public class RatlantisToolItem {
 
 		@Override
 		public float getDestroySpeed(ItemStack stack, BlockState state) {
-			if (Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTag(BlockTags.LEAVES).contains(state.getBlock())) {
+			if (state.is(BlockTags.LEAVES)) {
 				return this.speed * 1.5F;
 			}
 			return super.getDestroySpeed(stack, state);
@@ -78,7 +78,7 @@ public class RatlantisToolItem {
 
 		@Override
 		public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
-			if (Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTag(BlockTags.LEAVES).contains(state.getBlock())) {
+			if (state.is(BlockTags.LEAVES)) {
 				if (!level.isClientSide() && state.getDestroySpeed(level, pos) != 0.0F) {
 					stack.hurtAndBreak(0, living, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
 				}
@@ -96,7 +96,7 @@ public class RatlantisToolItem {
 
 		@Override
 		public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
-			if (Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTag(BlockTags.SAND).contains(state.getBlock())) {
+			if (state.is(BlockTags.SAND)) {
 				if (!level.isClientSide() && state.getDestroySpeed(level, pos) != 0.0F) {
 					stack.hurtAndBreak(0, living, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
 				}

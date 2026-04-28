@@ -382,7 +382,7 @@ public class RatsCreativeTabRegistry {
 			level = ModClientEvents.getClientLevel();
 		}
 		if (level != null) {
-			for (Item item : BuiltInRegistries.ITEM.tags().getTag(Tags.Items.ORES)) {
+			for (Item item : BuiltInRegistries.ITEM.holders().filter(h -> h.is(Tags.Items.ORES)).map(net.minecraft.core.Holder::value).toList()) {
 				ItemStack oreDrop = OreRatNuggetItem.getIngot(level, new ItemStack(item));
 				if (!uniqueOres.contains(oreDrop) && !oreDrop.isEmpty()) {
 					uniqueOres.add(oreDrop);

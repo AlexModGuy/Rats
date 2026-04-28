@@ -101,7 +101,7 @@ public class RatTreeUtils {
 			for (int i = 0; i < 25; i++) {
 				ObjectArrayList<ItemStack> lootStacks = loot.getRandomItems(context.create(LootContextParamSets.BLOCK));
 				for (ItemStack stack : lootStacks) {
-					if (BuiltInRegistries.ITEM.tags().getTag(ItemTags.SAPLINGS).contains(stack.getItem()) || Block.byItem(stack.getItem()) instanceof SaplingBlock) {
+					if (stack.is(ItemTags.SAPLINGS) || Block.byItem(stack.getItem()) instanceof SaplingBlock) {
 						return Block.byItem(stack.getItem());
 					}
 				}
