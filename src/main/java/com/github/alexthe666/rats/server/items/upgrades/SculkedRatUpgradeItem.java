@@ -33,7 +33,7 @@ public class SculkedRatUpgradeItem extends BaseRatUpgradeItem implements StatBoo
 	}
 
 	@Override
-	public Map<Attribute, Double> getAttributeBoosts() {
+	public Map<net.minecraft.core.Holder<Attribute>, Double> getAttributeBoosts() {
 		return Map.of(Attributes.MAX_HEALTH, 18.0D);
 	}
 }
