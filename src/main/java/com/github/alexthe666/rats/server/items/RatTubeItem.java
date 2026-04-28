@@ -45,7 +45,7 @@ public class RatTubeItem extends Item {
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		InteractionResult actionresulttype = this.tryPlace(new BlockPlaceContext(context));
-		return actionresulttype != InteractionResult.SUCCESS && this.isEdible() ? this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult() : actionresulttype;
+		return actionresulttype != InteractionResult.SUCCESS && (this.components().has(net.minecraft.core.component.DataComponents.FOOD)) ? this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult() : actionresulttype;
 	}
 
 	public InteractionResult tryPlace(BlockPlaceContext context) {

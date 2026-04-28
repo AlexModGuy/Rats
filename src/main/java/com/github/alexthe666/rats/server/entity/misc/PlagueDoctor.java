@@ -225,7 +225,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	public boolean canHoldItem(ItemStack stack) {
 		Item item = stack.getItem();
 		ItemStack itemstack = this.getItemBySlot(EquipmentSlot.MAINHAND);
-		return itemstack.isEmpty() || (item.isEdible() && !itemstack.getItem().isEdible());
+		return itemstack.isEmpty() || (item.components().has(net.minecraft.core.component.DataComponents.FOOD) && !itemstack.has(net.minecraft.core.component.DataComponents.FOOD));
 	}
 
 	@Override

@@ -77,7 +77,7 @@ public class RatUtils {
 	}
 
 	public static boolean isRatFood(ItemStack stack) {
-		return (stack.getItem().isEdible() || stack.is(Tags.Items.SEEDS) || stack.is(Items.WHEAT)) && !stack.is(RatsItemRegistry.RAW_RAT.get()) && !stack.is(RatsItemRegistry.COOKED_RAT.get());
+		return (stack.has(net.minecraft.core.component.DataComponents.FOOD) || stack.is(Tags.Items.SEEDS) || stack.is(Items.WHEAT)) && !stack.is(RatsItemRegistry.RAW_RAT.get()) && !stack.is(RatsItemRegistry.COOKED_RAT.get());
 	}
 
 	public static boolean shouldRaidItem(ItemStack stack) {

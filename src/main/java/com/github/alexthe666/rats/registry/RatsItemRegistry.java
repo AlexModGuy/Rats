@@ -42,8 +42,8 @@ public class RatsItemRegistry {
 	//stick of cheese
 
 	public static final DeferredHolder<Item, Item> CHEESE = ITEMS.register("cheese", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.5F).build())));
-	public static final DeferredHolder<Item, Item> RAW_RAT = ITEMS.register("raw_rat", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3F).meat().build())));
-	public static final DeferredHolder<Item, Item> COOKED_RAT = ITEMS.register("cooked_rat", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).meat().build())));
+	public static final DeferredHolder<Item, Item> RAW_RAT = ITEMS.register("raw_rat", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3F).build())));
+	public static final DeferredHolder<Item, Item> COOKED_RAT = ITEMS.register("cooked_rat", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
 	public static final DeferredHolder<Item, Item> RAT_PELT = ITEMS.register("rat_pelt", () -> new Item(new Item.Properties()));
 	public static final DeferredHolder<Item, Item> RAT_PAW = ITEMS.register("rat_paw", () -> new Item(new Item.Properties()));
 	public static final DeferredHolder<Item, Item> CHEESE_STICK = ITEMS.register("cheese_stick", () -> new RatStaffItem(new Item.Properties().stacksTo(1)));
@@ -67,7 +67,7 @@ public class RatsItemRegistry {
 		}
 	});
 	public static final DeferredHolder<Item, Item> ASSORTED_VEGETABLES = ITEMS.register("assorted_vegetables", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationModifier(0.3F).build())));
-	public static final DeferredHolder<Item, Item> RAT_BURGER = ITEMS.register("rat_burger", () -> new LoreTagItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).meat().build()), 1));
+	public static final DeferredHolder<Item, Item> RAT_BURGER = ITEMS.register("rat_burger", () -> new LoreTagItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build()), 1));
 	public static final DeferredHolder<Item, Item> RAT_SACK = ITEMS.register("rat_sack", () -> new RatSackItem(new Item.Properties().stacksTo(1)));
 	public static final DeferredHolder<Item, Item> RAT_ARROW = ITEMS.register("rat_arrow", () -> new RatArrowItem(new Item.Properties().stacksTo(1)));
 	public static final DeferredHolder<Item, Item> RAT_CAPTURE_NET = ITEMS.register("rat_capture_net", () -> new RatCaptureNetItem(new Item.Properties().stacksTo(1)));
@@ -121,12 +121,12 @@ public class RatsItemRegistry {
 	public static final DeferredHolder<Item, Item> RAT_SEED_BOWL = ITEMS.register("rat_seed_bowl", () -> new RatDecorationItem(new Item.Properties()));
 	public static final DeferredHolder<Item, Item> RAT_BREEDING_LANTERN = ITEMS.register("rat_breeding_lantern", () -> new RatDecorationItem(new Item.Properties()));
 	public static final DeferredHolder<Item, Item> RAT_WHEEL = ITEMS.register("rat_wheel", () -> new RatDecorationItem(new Item.Properties()));
-	public static final DeferredHolder<Item, Item> CONFIT_BYALDI = ITEMS.register("confit_byaldi", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(50).saturationModifier(1.0F).effect(() -> new MobEffectInstance(RatsEffectRegistry.SYNESTHESIA, 2400), 1.0F).alwaysEat().build())));
-	public static final DeferredHolder<Item, Item> POTATO_PANCAKE = ITEMS.register("potato_pancake", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.5F).alwaysEat().build())));
+	public static final DeferredHolder<Item, Item> CONFIT_BYALDI = ITEMS.register("confit_byaldi", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(50).saturationModifier(1.0F).effect(() -> new MobEffectInstance(RatsEffectRegistry.SYNESTHESIA, 2400), 1.0F).alwaysEdible().build())));
+	public static final DeferredHolder<Item, Item> POTATO_PANCAKE = ITEMS.register("potato_pancake", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.5F).alwaysEdible().build())));
 	public static final DeferredHolder<Item, Item> LITTLE_BLACK_SQUASH_BALLS = ITEMS.register("little_black_squash_balls", () -> new Item(new Item.Properties()));
 	public static final DeferredHolder<Item, Item> LITTLE_BLACK_WORM = ITEMS.register("little_black_worm", () -> new LoreTagItem(new Item.Properties(), 1));
 	public static final DeferredHolder<Item, Item> CENTIPEDE = ITEMS.register("centipede", () -> new Item(new Item.Properties()));
-	public static final DeferredHolder<Item, Item> POTATO_KNISHES = ITEMS.register("potato_knishes", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(50).saturationModifier(1.0F).effect(() -> new MobEffectInstance(RatsEffectRegistry.SYNESTHESIA, 2400), 1.0F).alwaysEat().build())));
+	public static final DeferredHolder<Item, Item> POTATO_KNISHES = ITEMS.register("potato_knishes", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(50).saturationModifier(1.0F).effect(() -> new MobEffectInstance(RatsEffectRegistry.SYNESTHESIA, 2400), 1.0F).alwaysEdible().build())));
 	public static final DeferredHolder<Item, Item> TINY_COIN = ITEMS.register("tiny_coin", () -> new Item(new Item.Properties()));
 	public static final DeferredHolder<Item, Item> TOKEN_FRAGMENT = ITEMS.register("token_fragment", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final DeferredHolder<Item, Item> TOKEN_PIECE = ITEMS.register("token_piece", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
