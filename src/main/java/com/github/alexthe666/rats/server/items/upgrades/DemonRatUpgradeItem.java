@@ -25,12 +25,14 @@ public class DemonRatUpgradeItem extends StatBoostingRatUpgradeItem implements G
 	}
 
 	public static boolean isSoulVersion(ItemStack stack) {
-		return stack.getTag() != null && stack.getTag().getBoolean("Soul");
+		return stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).copyTag().getBoolean("Soul");
 	}
 
 	public static ItemStack getDemonUpgrade(boolean soul) {
 		ItemStack stack = new ItemStack(RatsItemRegistry.RAT_UPGRADE_DEMON.get());
-		stack.getOrCreateTag().putBoolean("Soul", soul);
+		net.minecraft.nbt.CompoundTag tag = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
+		tag.putBoolean("Soul", soul);
+		stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(tag));
 		return stack;
 	}
 
