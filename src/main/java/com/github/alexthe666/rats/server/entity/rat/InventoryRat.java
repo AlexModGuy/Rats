@@ -78,7 +78,9 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 			if (!itemstack.isEmpty()) {
 				CompoundTag compoundtag = new CompoundTag();
 				compoundtag.putByte("Slot", (byte) i);
-				itemstack.save(compoundtag);
+				// 1.21: ItemStack.save now requires a HolderLookup.Provider; use registry access from level (or wrap as needed).
+				Tag saved = itemstack.save(this.level().registryAccess(), compoundtag);
+				if (saved instanceof CompoundTag c) compoundtag = c;
 				listtag.add(compoundtag);
 			}
 		}
@@ -106,7 +108,8 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 			CompoundTag compoundtag = listtag.getCompound(i);
 			int j = compoundtag.getByte("Slot") & 255;
 			if (j < this.getInventory().getContainerSize()) {
-				this.getInventory().setItem(j, ItemStack.of(compoundtag));
+				// 1.21: ItemStack.of(CompoundTag) replaced with parse-with-registries.
+				this.getInventory().setItem(j, ItemStack.parseOptional(this.level().registryAccess(), compoundtag));
 			}
 		}
 
@@ -201,13 +204,12 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 			if (sp.containerMenu != sp.inventoryMenu) {
 				sp.closeContainer();
 			}
-
-			sp.nextContainerCounter();
-			PacketDistributor.sendToPlayer(sp, new OpenRatScreenPacket(sp.containerCounter, this.getId()));
-			sp.containerMenu = new RatMenu(sp.containerCounter, this.getInventory(), sp.getInventory());
-			sp.initMenu(sp.containerMenu);
+			// PORT-STUB: 1.21 makes ServerPlayer.containerCounter / nextContainerCounter / initMenu private; use openMenu(MenuProvider).
+			java.util.OptionalInt menuId = sp.openMenu(new net.minecraft.world.SimpleMenuProvider(
+					(id, inv, p) -> new RatMenu(id, this.getInventory(), inv),
+					net.minecraft.network.chat.Component.empty()));
+			menuId.ifPresent(id -> PacketDistributor.sendToPlayer(sp, new OpenRatScreenPacket(id, this.getId())));
 			this.inventoryOpen = true;
-			NeoForge.EVENT_BUS.post(new PlayerContainerEvent.Open(sp, sp.containerMenu));
 		}
 	}
 
@@ -240,7 +242,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 	public void setCommandInteger(int command) {
 		if (!this.level().isClientSide() && command != this.getCommandInteger()) {
 			this.getNavigation().stop();
-			this.goalSelector.getRunningGoals().forEach(WrappedGoal::stop);
+			this.goalSelector.getAvailableGoals().stream().filter(WrappedGoal::isRunning).forEach(WrappedGoal::stop);
 			if (this instanceof TamedRat rat) rat.crafting = false;
 		}
 		this.getEntityData().set(COMMAND, command);

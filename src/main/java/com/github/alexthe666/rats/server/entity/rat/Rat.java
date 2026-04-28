@@ -35,7 +35,6 @@ import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -164,8 +163,8 @@ public class Rat extends DiggingRat {
 	}
 
 	@Override
-	public int getExperienceReward() {
-		return this.hasPlague() ? 10 : super.getExperienceReward();
+	public int getExperienceReward(net.minecraft.server.level.ServerLevel level, Entity killer) {
+		return this.hasPlague() ? 10 : super.getExperienceReward(level, killer);
 	}
 
 	@Nullable
@@ -254,7 +253,9 @@ public class Rat extends DiggingRat {
 				this.setGuaranteedDrop(EquipmentSlot.HEAD);
 			} else if ((RatsDateFetcher.isNewYearsEve() && this.getRandom().nextFloat() <= 0.25F) || RatsDateFetcher.isAlexsBDay() || RatsDateFetcher.isGizmosBDay() || (RatConfig.ratsSpawnWithPartyHats && this.getRandom().nextInt(100) == 0)) {
 				ItemStack stack = new ItemStack(RatsItemRegistry.PARTY_HAT.get());
-				((DyeableLeatherItem) stack.getItem()).setColor(stack, (int) (this.getRandom().nextFloat() * 0xFFFFFF));
+				// 1.21: DyeableLeatherItem replaced by DataComponents.DYED_COLOR.
+				stack.set(net.minecraft.core.component.DataComponents.DYED_COLOR,
+						new net.minecraft.world.item.component.DyedItemColor((int) (this.getRandom().nextFloat() * 0xFFFFFF), false));
 				this.setItemSlot(EquipmentSlot.HEAD, stack);
 				this.setGuaranteedDrop(EquipmentSlot.HEAD);
 			} else if (RatsDateFetcher.isPirateDay() && this.getRandom().nextFloat() <= 0.25F) {
@@ -391,7 +392,10 @@ public class Rat extends DiggingRat {
 	public boolean doHurtTarget(Entity entity) {
 		boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
 		if (flag && this.hasPlague()) {
-			this.doEnchantDamageEffects(this, entity);
+			// 1.21: doEnchantDamageEffects renamed to doEnchantDamageEffects (unchanged) but handled by EnchantmentHelper.doPostAttackEffects.
+			if (this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+				net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffects(serverLevel, entity, this.damageSources().mobAttack(this));
+			}
 			if (entity instanceof LivingEntity living && this.rollForPlague(living)) {
 				living.addEffect(new MobEffectInstance(RatsEffectRegistry.PLAGUE, 6000));
 			}

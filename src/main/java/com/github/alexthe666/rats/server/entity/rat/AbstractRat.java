@@ -63,6 +63,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 
 public abstract class AbstractRat extends TamableAnimal implements IAnimatedEntity {
 
+	@Override
+	public boolean isFood(net.minecraft.world.item.ItemStack stack) {
+		return com.github.alexthe666.rats.server.misc.RatUtils.isRatFood(stack);
+	}
+
 	public static final Animation ANIMATION_EAT = Animation.create(10);
 	public static final Animation ANIMATION_IDLE_SCRATCH = Animation.create(25);
 	public static final Animation ANIMATION_IDLE_SNIFF = Animation.create(20);
