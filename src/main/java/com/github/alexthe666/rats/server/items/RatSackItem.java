@@ -8,8 +8,11 @@ import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -29,48 +32,49 @@ public class RatSackItem extends Item {
 		super(properties);
 	}
 
+	private static CompoundTag readTag(ItemStack stack) {
+		return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+	}
+
+	private static void writeTag(ItemStack stack, CompoundTag tag) {
+		stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+	}
+
 	public static void packRatIntoSack(ItemStack sack, TamedRat rat, int ratCount) {
-		CompoundTag tag = sack.getTag();
-		if (tag == null) {
-			tag = new CompoundTag();
-			sack.setTag(tag);
-		}
+		CompoundTag tag = readTag(sack);
 		CompoundTag ratTag = new CompoundTag();
 		rat.addAdditionalSaveData(ratTag);
 		if (rat.hasCustomName()) {
-			ratTag.putString("CustomName", Component.Serializer.toJson(rat.getCustomName()));
+			ratTag.putString("CustomName", Component.Serializer.toJson(rat.getCustomName(), RegistryAccess.EMPTY));
 		}
 		tag.put("Rat_" + ratCount, ratTag);
+		writeTag(sack, tag);
 	}
 
 	public static int getRatsInSack(ItemStack sack) {
 		int ratCount = 0;
-		if (sack.getTag() != null) {
-			for (String tagInfo : sack.getTag().getAllKeys()) {
-				if (tagInfo.contains("Rat")) {
-					ratCount++;
-				}
-			}
+		CompoundTag tag = readTag(sack);
+		for (String tagInfo : tag.getAllKeys()) {
+			if (tagInfo.contains("Rat")) ratCount++;
 		}
 		return ratCount;
 	}
 
 	public static int ejectRatsFromSack(ItemStack stack, Level level, BlockPos pos) {
 		int ratCount = 0;
-		if (stack.getTag() != null) {
-			for (String tagInfo : stack.getTag().getAllKeys()) {
-				if (tagInfo.contains("Rat")) {
-					ratCount++;
-					CompoundTag ratTag = stack.getTag().getCompound(tagInfo);
-					TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), level);
-					rat.readAdditionalSaveData(ratTag);
-					if (!ratTag.getString("CustomName").isEmpty()) {
-						rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
-					}
-					rat.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
-					if (!level.isClientSide()) {
-						level.addFreshEntity(rat);
-					}
+		CompoundTag tag = readTag(stack);
+		for (String tagInfo : tag.getAllKeys()) {
+			if (tagInfo.contains("Rat")) {
+				ratCount++;
+				CompoundTag ratTag = tag.getCompound(tagInfo);
+				TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), level);
+				rat.readAdditionalSaveData(ratTag);
+				if (!ratTag.getString("CustomName").isEmpty()) {
+					rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName"), RegistryAccess.EMPTY));
+				}
+				rat.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
+				if (!level.isClientSide()) {
+					level.addFreshEntity(rat);
 				}
 			}
 		}
@@ -81,20 +85,19 @@ public class RatSackItem extends Item {
 	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		int ratCount = 0;
 		List<String> ratNames = new ArrayList<>();
-		if (stack.getTag() != null) {
-			for (String tagInfo : stack.getTag().getAllKeys()) {
-				if (tagInfo.contains("Rat")) {
-					CompoundTag ratTag = stack.getTag().getCompound(tagInfo);
-					ratCount++;
-					String ratName = I18n.get("entity.rats.rat");
-					if (!ratTag.getString("CustomName").isEmpty()) {
-						Component ratNameTag = Component.Serializer.fromJson(ratTag.getString("CustomName"));
-						if (ratNameTag != null) {
-							ratName = ratNameTag.getString();
-						}
+		CompoundTag tag = readTag(stack);
+		for (String tagInfo : tag.getAllKeys()) {
+			if (tagInfo.contains("Rat")) {
+				CompoundTag ratTag = tag.getCompound(tagInfo);
+				ratCount++;
+				String ratName = I18n.get("entity.rats.rat");
+				if (!ratTag.getString("CustomName").isEmpty()) {
+					Component ratNameTag = Component.Serializer.fromJson(ratTag.getString("CustomName"), RegistryAccess.EMPTY);
+					if (ratNameTag != null) {
+						ratName = ratNameTag.getString();
 					}
-					ratNames.add(ratName);
 				}
+				ratNames.add(ratName);
 			}
 		}
 		tooltip.add(Component.translatable(RatsLangConstants.RAT_SACK_CONTAINED_RATS, ratCount, RatConfig.ratSackCapacity).withStyle(ChatFormatting.GRAY));
@@ -120,7 +123,7 @@ public class RatSackItem extends Item {
 
 			if (ratCount > 0) {
 				context.getPlayer().displayClientMessage(Component.translatable(RatsLangConstants.RAT_SACK_RELEASED_RATS, ratCount), true);
-				stack.setTag(new CompoundTag());
+				writeTag(stack, new CompoundTag());
 				return InteractionResult.SUCCESS;
 			}
 		}
