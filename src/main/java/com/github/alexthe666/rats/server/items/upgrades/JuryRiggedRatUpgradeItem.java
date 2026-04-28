@@ -74,7 +74,7 @@ public class JuryRiggedRatUpgradeItem extends BaseRatUpgradeItem implements Comb
 		CompoundTag tag = stack.getTag();
 		if (tag != null && tag.contains("Items", 9)) {
 			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(this.getUpgradeSlots(), ItemStack.EMPTY);
-			ContainerHelper.loadAllItems(tag, nonnulllist);
+			ContainerHelper.loadAllItems(tag, nonnulllist, net.minecraft.core.RegistryAccess.EMPTY);
 			return !nonnulllist.get(0).isEmpty() && !nonnulllist.get(1).isEmpty();
 		}
 		return false;

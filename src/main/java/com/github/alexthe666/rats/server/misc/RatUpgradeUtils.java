@@ -30,7 +30,7 @@ public class RatUpgradeUtils {
 					CompoundTag tag = stack.getTag();
 					if (tag != null && tag.contains("Items", 9)) {
 						NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
-						ContainerHelper.loadAllItems(tag, upgradeList);
+						ContainerHelper.loadAllItems(tag, upgradeList, rat.level().registryAccess());
 						for (ItemStack selectedUpgrade : upgradeList) {
 							if (selectedUpgrade.getItem() == item) {
 								return selectedUpgrade;
@@ -62,7 +62,7 @@ public class RatUpgradeUtils {
 					CompoundTag tag = stack.getTag();
 					if (tag != null && tag.contains("Items", 9)) {
 						NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
-						ContainerHelper.loadAllItems(tag, upgradeList);
+						ContainerHelper.loadAllItems(tag, upgradeList, rat.level().registryAccess());
 						for (ItemStack selectedUpgrade : upgradeList) {
 							if (upgrade.test(selectedUpgrade.getItem())) {
 								function.accept(selectedUpgrade, slot);
@@ -82,7 +82,7 @@ public class RatUpgradeUtils {
 					CompoundTag tag = stack.getTag();
 					if (tag != null && tag.contains("Items", 9)) {
 						NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
-						ContainerHelper.loadAllItems(tag, upgradeList);
+						ContainerHelper.loadAllItems(tag, upgradeList, rat.level().registryAccess());
 						for (ItemStack selectedUpgrade : upgradeList) {
 							if (selectedUpgrade.getItem() instanceof BaseRatUpgradeItem upgrade && function.apply(upgrade) != def) {
 								return function.apply(upgrade);

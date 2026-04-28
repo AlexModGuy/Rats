@@ -290,8 +290,9 @@ public class UpgradeCombinerBlockEntity extends BaseContainerBlockEntity impleme
 		}
 		CompoundTag tag = combiner.getTag();
 		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-		if (tag != null && tag.contains("Items")) {
-			ContainerHelper.loadAllItems(tag, nonnulllist);
+		net.minecraft.core.HolderLookup.Provider provider = this.getLevel() != null ? this.getLevel().registryAccess() : null;
+		if (tag != null && tag.contains("Items") && provider != null) {
+			ContainerHelper.loadAllItems(tag, nonnulllist, provider);
 		}
 		int addIndex = -1;
 		for (int i = 0; i < nonnulllist.size(); i++) {
@@ -304,7 +305,7 @@ public class UpgradeCombinerBlockEntity extends BaseContainerBlockEntity impleme
 			return combiner.copy();
 		}
 		nonnulllist.set(addIndex, stack.copy());
-		ContainerHelper.saveAllItems(tag, nonnulllist);
+		if (provider != null) ContainerHelper.saveAllItems(tag, nonnulllist, provider);
 		combiner.setTag(tag);
 		return combiner.copy();
 	}

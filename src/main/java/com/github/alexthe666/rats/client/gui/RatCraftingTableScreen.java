@@ -70,7 +70,7 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(graphics);
+		this.renderBackground(graphics, mouseX, mouseY, partialTicks);
 		if (this.recipeBook.isVisible() && this.widthTooNarrow) {
 			this.renderBg(graphics, partialTicks, mouseX, mouseY);
 			this.recipeBook.render(graphics, mouseX, mouseY, partialTicks);
@@ -108,7 +108,7 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-		this.renderBackground(graphics);
+		this.renderBackground(graphics, mouseX, mouseY, partialTicks);
 		graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 		int l = this.table.getCookProgressionScaled();
 		graphics.blit(TEXTURE, this.leftPos + 96, this.topPos + 39, 0, 211, l, 16);

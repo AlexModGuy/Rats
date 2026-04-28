@@ -37,7 +37,7 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements Combin
 		CompoundTag tag = combiner.getTag();
 		if (tag != null && tag.contains("Items", 9)) {
 			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-			ContainerHelper.loadAllItems(tag, nonnulllist);
+			ContainerHelper.loadAllItems(tag, nonnulllist, net.minecraft.core.RegistryAccess.EMPTY);
 			for (ItemStack contained : nonnulllist) {
 				if (!(stack.getItem() instanceof BaseRatUpgradeItem) || stack.getItem() == contained.getItem() || RatsUpgradeConflictRegistry.doesConflict(contained, stack)) {
 					return false;
@@ -65,7 +65,7 @@ public class CombinedRatUpgradeItem extends BaseRatUpgradeItem implements Combin
 		boolean flag = false;
 		if (tag != null && tag.contains("Items", 9)) {
 			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(this.getUpgradeSlots(), ItemStack.EMPTY);
-			ContainerHelper.loadAllItems(tag, nonnulllist);
+			ContainerHelper.loadAllItems(tag, nonnulllist, net.minecraft.core.RegistryAccess.EMPTY);
 			flag = !nonnulllist.isEmpty();
 		}
 		return flag;

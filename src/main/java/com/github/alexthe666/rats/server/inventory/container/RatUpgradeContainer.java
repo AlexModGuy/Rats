@@ -22,11 +22,11 @@ public class RatUpgradeContainer implements WorldlyContainer {
 
 	private void readFromNBT(CompoundTag tagCompound) {
 		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-		ContainerHelper.loadAllItems(tagCompound, this.items);
+		ContainerHelper.loadAllItems(tagCompound, this.items, net.minecraft.core.RegistryAccess.EMPTY);
 	}
 
 	private void writeToNBT(CompoundTag tagCompound) {
-		ContainerHelper.saveAllItems(tagCompound, this.items);
+		ContainerHelper.saveAllItems(tagCompound, this.items, net.minecraft.core.RegistryAccess.EMPTY);
 	}
 
 	@Override

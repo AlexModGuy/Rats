@@ -40,7 +40,7 @@ public class UpgradeSeparatorBlockEntity extends BlockEntity {
 				int spawnedItem = 0;
 				if (CompoundNBT1 != null && CompoundNBT1.contains("Items", 9)) {
 					NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-					ContainerHelper.loadAllItems(CompoundNBT1, nonnulllist);
+					ContainerHelper.loadAllItems(CompoundNBT1, nonnulllist, net.minecraft.core.RegistryAccess.EMPTY);
 					for (ItemStack itemstack : nonnulllist) {
 						if (!itemstack.isEmpty()) {
 							ItemEntity splitEntity = new ItemEntity(level, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), itemstack.copy());

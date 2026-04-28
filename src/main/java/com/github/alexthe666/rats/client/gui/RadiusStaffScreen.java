@@ -71,7 +71,7 @@ public class RadiusStaffScreen extends Screen {
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(graphics);
+		this.renderBackground(graphics, mouseX, mouseY, partialTicks);
 
 		super.render(graphics, mouseX, mouseY, partialTicks);
 		int i = (this.width - 248) / 2 + 10;

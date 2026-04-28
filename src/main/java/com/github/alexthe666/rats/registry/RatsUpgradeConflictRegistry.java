@@ -51,7 +51,7 @@ public class RatsUpgradeConflictRegistry {
 			CompoundTag tag = newItem.getTag();
 			if (tag != null && tag.contains("Items", 9)) {
 				NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
-				ContainerHelper.loadAllItems(tag, upgradeList);
+				ContainerHelper.loadAllItems(tag, upgradeList, net.minecraft.core.RegistryAccess.EMPTY);
 				for (ItemStack selectedUpgrade : upgradeList) {
 					if (doesConflict(selectedUpgrade, existingItem)) {
 						return true;
@@ -62,7 +62,7 @@ public class RatsUpgradeConflictRegistry {
 			CompoundTag tag = existingItem.getTag();
 			if (tag != null && tag.contains("Items", 9)) {
 				NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
-				ContainerHelper.loadAllItems(tag, upgradeList);
+				ContainerHelper.loadAllItems(tag, upgradeList, net.minecraft.core.RegistryAccess.EMPTY);
 				for (ItemStack selectedUpgrade : upgradeList) {
 					if (doesConflict(selectedUpgrade, newItem)) {
 						return true;

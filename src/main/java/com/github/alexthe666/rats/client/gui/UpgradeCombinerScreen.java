@@ -33,7 +33,7 @@ public class UpgradeCombinerScreen extends AbstractContainerScreen<UpgradeCombin
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-		this.renderBackground(graphics);
+		this.renderBackground(graphics, mouseX, mouseY, partialTicks);
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
 		graphics.blit(TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight);

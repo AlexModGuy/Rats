@@ -57,7 +57,7 @@ public class RatListUpgradeItem extends BaseRatUpgradeItem {
 
 		if (tag != null && tag.contains("Items", 9)) {
 			NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-			ContainerHelper.loadAllItems(tag, nonnulllist);
+			ContainerHelper.loadAllItems(tag, nonnulllist, net.minecraft.core.RegistryAccess.EMPTY);
 			int i = 0;
 			for (ItemStack itemstack : nonnulllist) {
 				if (!itemstack.isEmpty()) {

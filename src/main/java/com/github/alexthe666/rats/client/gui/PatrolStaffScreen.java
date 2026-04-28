@@ -80,7 +80,7 @@ public class PatrolStaffScreen extends Screen {
 
 	@Override
 	public void render(GuiGraphics graphics, int x, int y, float partialTicks) {
-		this.renderBackground(graphics);
+		this.renderBackground(graphics, x, y, partialTicks);
 		super.render(graphics, x, y, partialTicks);
 		int i = (this.width - 248) / 2 + 10;
 		int j = (this.height - 166) / 2 + 8;
