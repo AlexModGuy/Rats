@@ -3,8 +3,10 @@ package com.github.alexthe666.rats.registry;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.block.entity.AutoCurdlerBlockEntity;
 import com.github.alexthe666.rats.server.block.entity.RatCageWheelBlockEntity;
+import com.github.alexthe666.rats.server.block.entity.RatCraftingTableBlockEntity;
 import com.github.alexthe666.rats.server.block.entity.RatQuarryBlockEntity;
 import com.github.alexthe666.rats.server.block.entity.UpgradeCombinerBlockEntity;
+import com.github.alexthe666.rats.server.entity.rat.InventoryRat;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -54,5 +56,17 @@ public final class RatsCapabilities {
                 Capabilities.ItemHandler.BLOCK,
                 RatsBlockEntityRegistry.UPGRADE_COMBINER.get(),
                 (be, side) -> be.itemHandler(side));
+
+        // RatCraftingTable — buffer (top/sides), result (bottom)
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                RatsBlockEntityRegistry.RAT_CRAFTING_TABLE.get(),
+                (be, side) -> be.itemHandler(side));
+
+        // Rat carrying inventory (entity-attached item handler)
+        event.registerEntity(
+                Capabilities.ItemHandler.ENTITY,
+                RatsEntityRegistry.RAT.get(),
+                (rat, ctx) -> rat.itemHandler);
     }
 }

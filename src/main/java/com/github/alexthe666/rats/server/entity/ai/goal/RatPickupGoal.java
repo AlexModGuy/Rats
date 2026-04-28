@@ -16,8 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -119,14 +118,14 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 
 	private void executeTask(BlockEntity entity) {
 		if (this.type == PickupType.INVENTORY) {
-			LazyOptional<IItemHandler> handler = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, this.rat.pickupFacing);
-			if (handler.resolve().isPresent()) {
-				int slot = RatUtils.getItemSlotFromItemHandler(this.rat, handler.resolve().get(), this.rat.level().getRandom());
+			IItemHandler handler = entity.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, entity.getBlockPos(), this.rat.pickupFacing);
+			if (handler != null) {
+				int slot = RatUtils.getItemSlotFromItemHandler(this.rat, handler, this.rat.level().getRandom());
 				int extractSize = RatUpgradeUtils.hasUpgrade(this.rat, RatsItemRegistry.RAT_UPGRADE_PLATTER.get()) ? 64 : 1;
 				ItemStack stack = ItemStack.EMPTY;
 				try {
-					if (handler.resolve().get().getSlots() > 0 && handler.resolve().get().extractItem(slot, extractSize, true) != ItemStack.EMPTY) {
-						stack = handler.resolve().get().extractItem(slot, extractSize, false);
+					if (handler.getSlots() > 0 && handler.extractItem(slot, extractSize, true) != ItemStack.EMPTY) {
+						stack = handler.extractItem(slot, extractSize, false);
 					}
 				} catch (Exception e) {
 					//container is empty
@@ -140,9 +139,8 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 				}
 			}
 		} else if (this.type == PickupType.ENERGY) {
-			LazyOptional<IEnergyStorage> handler = entity.getCapability(ForgeCapabilities.ENERGY, this.rat.pickupFacing);
-			if (handler.resolve().isPresent()) {
-				IEnergyStorage storage = handler.resolve().get();
+			IEnergyStorage storage = entity.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, entity.getBlockPos(), this.rat.pickupFacing);
+			if (storage != null) {
 				int howMuchWeWant = this.rat.getRFTransferRate() - this.rat.getHeldRF();
 				int recievedEnergy = 0;
 				try {
@@ -158,9 +156,8 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 				}
 			}
 		} else if (this.type == PickupType.FLUID) {
-			LazyOptional<IFluidHandler> handler = entity.getCapability(ForgeCapabilities.FLUID_HANDLER, this.rat.pickupFacing);
-			if (handler.resolve().isPresent()) {
-				IFluidHandler fluidHandler = handler.resolve().get();
+			IFluidHandler fluidHandler = entity.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, entity.getBlockPos(), this.rat.pickupFacing);
+			if (fluidHandler != null) {
 				int currentAmount = 0;
 				if (!this.rat.transportingFluid.isEmpty()) {
 					currentAmount = this.rat.transportingFluid.getAmount();

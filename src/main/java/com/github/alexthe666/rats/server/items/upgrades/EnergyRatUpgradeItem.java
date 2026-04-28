@@ -18,8 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,14 +65,11 @@ public class EnergyRatUpgradeItem extends BaseRatUpgradeItem implements ChangesO
 	public void tick(TamedRat rat) {
 		if (RatConfig.ratsChargeHeldItems && rat.getHeldRF() > 0 && !rat.getMainHandItem().isEmpty()) {
 			ItemStack stack = rat.getMainHandItem();
-			LazyOptional<IEnergyStorage> optional = stack.getCapability(ForgeCapabilities.ENERGY);
-			if (optional.resolve().isPresent()) {
-				IEnergyStorage energyStorage = optional.resolve().get();
-				if (energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()) {
-					int energyToTransfer = Math.min(rat.getHeldRF(), this.chargeRate);
-					energyToTransfer = energyStorage.receiveEnergy(energyToTransfer, false);
-					rat.setHeldRF(Math.max(0, rat.getHeldRF() - energyToTransfer));
-				}
+			IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+			if (energyStorage != null && energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()) {
+				int energyToTransfer = Math.min(rat.getHeldRF(), this.chargeRate);
+				energyToTransfer = energyStorage.receiveEnergy(energyToTransfer, false);
+				rat.setHeldRF(Math.max(0, rat.getHeldRF() - energyToTransfer));
 			}
 		}
 	}

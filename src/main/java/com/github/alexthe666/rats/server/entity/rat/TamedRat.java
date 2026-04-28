@@ -86,8 +86,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -792,17 +791,10 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public boolean tryDepositItemInContainers(ItemStack burntItem) {
-		if (this.level().getBlockEntity(this.blockPosition()) != null) {
-			BlockEntity te = this.level().getBlockEntity(this.blockPosition());
-			if (te != null) {
-				LazyOptional<IItemHandler> handler = te.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP);
-				if (handler.resolve().isPresent()) {
-					if (ItemHandlerHelper.insertItem(handler.resolve().get(), burntItem, true).isEmpty()) {
-						ItemHandlerHelper.insertItem(handler.resolve().get(), burntItem, false);
-						return true;
-					}
-				}
-			}
+		IItemHandler handler = this.level().getCapability(Capabilities.ItemHandler.BLOCK, this.blockPosition(), Direction.UP);
+		if (handler != null && ItemHandlerHelper.insertItem(handler, burntItem, true).isEmpty()) {
+			ItemHandlerHelper.insertItem(handler, burntItem, false);
+			return true;
 		}
 		return false;
 	}

@@ -28,9 +28,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -52,7 +50,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 	private static final EntityDataAccessor<Byte> VISIBILITY_FLAGS = SynchedEntityData.defineId(InventoryRat.class, EntityDataSerializers.BYTE);
 
 	private RatContainer inventory;
-	private LazyOptional<?> itemHandler = null;
+	public IItemHandler itemHandler = null;
 	private boolean inventoryOpen;
 
 	protected InventoryRat(EntityType<? extends TamableAnimal> type, Level level) {
@@ -146,25 +144,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 		}
 
 		this.getInventory().addListener(this);
-		this.itemHandler = LazyOptional.of(() -> new InvWrapper(this.getInventory()));
-	}
-
-	@NotNull
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-		if (this.isAlive() && capability == ForgeCapabilities.ITEM_HANDLER && this.itemHandler != null)
-			return this.itemHandler.cast();
-		return super.getCapability(capability, facing);
-	}
-
-	@Override
-	public void invalidateCaps() {
-		super.invalidateCaps();
-		if (this.itemHandler != null) {
-			LazyOptional<?> oldHandler = this.itemHandler;
-			this.itemHandler = null;
-			oldHandler.invalidate();
-		}
+		this.itemHandler = new InvWrapper(this.getInventory());
 	}
 
 	@Override

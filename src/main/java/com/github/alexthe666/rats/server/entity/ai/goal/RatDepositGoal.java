@@ -20,8 +20,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -64,7 +63,7 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 				if (this.rat.getMainHandItem().getCount() < 64 && !this.getItemsOfTypeAround(this.rat.getMainHandItem()).isEmpty())
 					return false;
 			}
-			if (te.getCapability(ForgeCapabilities.ITEM_HANDLER, this.rat.depositFacing).resolve().isEmpty()) {
+			if (te.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, te.getBlockPos(), this.rat.depositFacing) == null) {
 				return false;
 			}
 
@@ -72,14 +71,14 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 			if (this.rat.getRFTransferRate() <= 0 || this.rat.getHeldRF() <= 0) {
 				return false;
 			}
-			if (te.getCapability(ForgeCapabilities.ENERGY, this.rat.depositFacing).resolve().isEmpty()) {
+			if (te.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, te.getBlockPos(), this.rat.depositFacing) == null) {
 				return false;
 			}
 		} else if (this.type == DepositType.FLUID) {
 			if (this.rat.transportingFluid.isEmpty() || this.rat.transportingFluid.getAmount() == 0) {
 				return false;
 			}
-			if (te.getCapability(ForgeCapabilities.FLUID_HANDLER, this.rat.depositFacing).resolve().isEmpty()) {
+			if (te.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, te.getBlockPos(), this.rat.depositFacing) == null) {
 				return false;
 			}
 		}
@@ -156,9 +155,8 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 
 	private void executeTask(BlockEntity entity) {
 		if (this.type == DepositType.INVENTORY) {
-			LazyOptional<IItemHandler> handler = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, this.rat.depositFacing);
-			if (handler.resolve().isPresent()) {
-				IItemHandler resolvedHandler = handler.resolve().get();
+			IItemHandler resolvedHandler = entity.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, entity.getBlockPos(), this.rat.depositFacing);
+			if (resolvedHandler != null) {
 				ItemStack duplicate = this.rat.getItemInHand(InteractionHand.MAIN_HAND).copy();
 				if (!ItemHandlerHelper.insertItem(resolvedHandler, duplicate, true).equals(duplicate)) {
 					ItemStack shrunkenStack = ItemHandlerHelper.insertItem(resolvedHandler, duplicate, false);
@@ -170,9 +168,8 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 				}
 			}
 		} else if (this.type == DepositType.ENERGY) {
-			LazyOptional<IEnergyStorage> handler = entity.getCapability(ForgeCapabilities.ENERGY, this.rat.depositFacing);
-			if (handler.resolve().isPresent()) {
-				IEnergyStorage storage = handler.resolve().get();
+			IEnergyStorage storage = entity.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, entity.getBlockPos(), this.rat.depositFacing);
+			if (storage != null) {
 				int howMuchWeHave = this.rat.getHeldRF();
 				int inputtedEnergy = 0;
 				try {
@@ -188,9 +185,8 @@ public class RatDepositGoal extends Goal implements RatWorkGoal {
 			}
 		} else if (this.type == DepositType.FLUID) {
 			FluidStack copiedFluid = this.rat.transportingFluid.copy();
-			LazyOptional<IFluidHandler> handler = entity.getCapability(ForgeCapabilities.FLUID_HANDLER, this.rat.depositFacing);
-			if (handler.resolve().isPresent()) {
-				IFluidHandler fluidHandler = handler.resolve().get();
+			IFluidHandler fluidHandler = entity.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, entity.getBlockPos(), this.rat.depositFacing);
+			if (fluidHandler != null) {
 				if (!this.rat.transportingFluid.isEmpty()) {
 					int minusAmount = 0;
 					try {

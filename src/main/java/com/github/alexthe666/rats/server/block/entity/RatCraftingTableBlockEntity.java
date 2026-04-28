@@ -35,15 +35,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import net.neoforged.neoforge.items.wrapper.EmptyHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -90,15 +86,14 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 		}
 	};
 
-	private final static EmptyHandler EMPTYHANDLER = new EmptyHandler();
-	public final LazyOptional<IItemHandlerModifiable> bufferHandler = LazyOptional.of(() -> new TableItemHandlers.BufferHandler(this));
-	public final LazyOptional<IItemHandlerModifiable> matrixHandler = LazyOptional.of(() -> new TableItemHandlers.MatrixHandler(this));
-	public final LazyOptional<IItemHandlerModifiable> resultHandler = LazyOptional.of(() -> new TableItemHandlers.ResultHandler(this));
+	public final IItemHandlerModifiable bufferHandler = new TableItemHandlers.BufferHandler(this);
+	public final IItemHandlerModifiable matrixHandler = new TableItemHandlers.MatrixHandler(this);
+	public final IItemHandlerModifiable resultHandler = new TableItemHandlers.ResultHandler(this);
 
-	protected final LazyOptional<IItemHandlerModifiable> combinedHandler = LazyOptional.of(() ->
-			new CombinedInvWrapper(this.matrixHandler.orElse(EMPTYHANDLER), this.bufferHandler.orElse(EMPTYHANDLER)));
-	public final LazyOptional<CraftingContainer> matrixWrapper = LazyOptional.of(() ->
-			new CraftingContainerWrapper(this.matrixHandler.orElse(EMPTYHANDLER)));
+	protected final IItemHandlerModifiable combinedHandler =
+			new CombinedInvWrapper(this.matrixHandler, this.bufferHandler);
+	public final CraftingContainer matrixWrapper =
+			new CraftingContainerWrapper(this.matrixHandler);
 
 	public RatCraftingTableBlockEntity(BlockPos pos, BlockState state) {
 		super(RatsBlockEntityRegistry.RAT_CRAFTING_TABLE.get(), pos, state);
@@ -127,8 +122,9 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 			}
 			if (te.cookTime >= te.totalCookTime) {
 				te.cookTime = 0;
-				ItemStack addStack = te.recipeUsed.map(r -> r.assemble(te.matrixWrapper.resolve().orElseThrow(), level.registryAccess())).orElse(ItemStack.EMPTY);
-				te.resultHandler.ifPresent(h -> h.setStackInSlot(0, addStack.copyWithCount(addStack.getCount() + h.getStackInSlot(0).getCount())));
+				ItemStack addStack = te.recipeUsed.map(r -> r.assemble(te.matrixWrapper, level.registryAccess())).orElse(ItemStack.EMPTY);
+				IItemHandlerModifiable rh = te.resultHandler;
+				rh.setStackInSlot(0, addStack.copyWithCount(addStack.getCount() + rh.getStackInSlot(0).getCount()));
 				te.consumeIngredients(null);
 				te.updateRecipe();
 			}
@@ -144,14 +140,15 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 	}
 
 	public void updateHelper() {
-		this.bufferHandler.ifPresent(handler -> ((TableItemHandlers.BufferHandler) handler).fillStackedContents(this.itemHelper));
+		((TableItemHandlers.BufferHandler) this.bufferHandler).fillStackedContents(this.itemHelper);
 		this.checkIfRecipeIsValid(this.recipeUsed, this.itemHelper);
 	}
 
 	public void updateRecipe() {
 		AtomicBoolean flag = new AtomicBoolean(true);
 		if (this.getLevel() != null) {
-			this.matrixWrapper.ifPresent(w -> {
+			{
+				CraftingContainer w = this.matrixWrapper;
 				this.possibleRecipes = this.getLevel().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, w, this.getLevel());
 				if (this.possibleRecipes.isEmpty()) {
 					flag.set(false);
@@ -164,7 +161,7 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 					this.recipeUsed = Optional.of(this.possibleRecipes.get(this.selectedRecipeIndex))
 							.filter(r -> this.setRecipeUsed(this.getLevel(), null, r)); // Set new recipe or null if missing/can't craft
 				}
-			});
+			}
 			if (flag.get()) {
 				this.checkIfRecipeIsValid(this.recipeUsed, this.itemHelper);
 				if (!this.hasValidRecipe)
@@ -177,8 +174,8 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 	}
 
 	private boolean checkIfResultFits(Level level, Optional<CraftingRecipe> recipe) {
-		if (recipe.isPresent() && this.resultHandler.resolve().isPresent()) {
-			ItemStack checkStack = this.resultHandler.resolve().get().getStackInSlot(0);
+		if (recipe.isPresent()) {
+			ItemStack checkStack = this.resultHandler.getStackInSlot(0);
 			ItemStack resultStack = recipe.get().getResultItem(level.registryAccess());
 			return (ItemStack.isSameItemSameTags(checkStack, resultStack) && checkStack.getCount() + resultStack.getCount() <= checkStack.getMaxStackSize()) || checkStack.isEmpty();
 		}
@@ -191,11 +188,10 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 
 	@Override
 	public void clearContent() {
-		this.combinedHandler.ifPresent(h -> {
-			for (int i = 0; i < h.getSlots(); i++) {
-				h.setStackInSlot(i, ItemStack.EMPTY);
-			}
-		});
+		IItemHandlerModifiable h = this.combinedHandler;
+		for (int i = 0; i < h.getSlots(); i++) {
+			h.setStackInSlot(i, ItemStack.EMPTY);
+		}
 		this.updateRecipe();
 	}
 
@@ -241,9 +237,9 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.loadAdditional(tag, registries);
-		this.bufferHandler.ifPresent(handler -> ((INBTSerializable<CompoundTag>) handler).deserializeNBT(tag.getCompound("Buffer")));
-		this.matrixHandler.ifPresent(handler -> ((INBTSerializable<CompoundTag>) handler).deserializeNBT(tag.getCompound("Matrix")));
-		this.resultHandler.ifPresent(handler -> ((INBTSerializable<CompoundTag>) handler).deserializeNBT(tag.getCompound("Result")));
+		((INBTSerializable<CompoundTag>) this.bufferHandler).deserializeNBT(registries, tag.getCompound("Buffer"));
+		((INBTSerializable<CompoundTag>) this.matrixHandler).deserializeNBT(registries, tag.getCompound("Matrix"));
+		((INBTSerializable<CompoundTag>) this.resultHandler).deserializeNBT(registries, tag.getCompound("Result"));
 		if (tag.contains("CustomName", 8)) {
 			this.customName = Component.Serializer.fromJson(tag.getString("CustomName"));
 		}
@@ -254,9 +250,9 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 	@Override
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.saveAdditional(tag, registries);
-		this.bufferHandler.ifPresent(h -> tag.put("Buffer", ((INBTSerializable<CompoundTag>) h).serializeNBT()));
-		this.matrixHandler.ifPresent(h -> tag.put("Matrix", ((INBTSerializable<CompoundTag>) h).serializeNBT()));
-		this.resultHandler.ifPresent(h -> tag.put("Result", ((INBTSerializable<CompoundTag>) h).serializeNBT()));
+		tag.put("Buffer", ((INBTSerializable<CompoundTag>) this.bufferHandler).serializeNBT(registries));
+		tag.put("Matrix", ((INBTSerializable<CompoundTag>) this.matrixHandler).serializeNBT(registries));
+		tag.put("Result", ((INBTSerializable<CompoundTag>) this.resultHandler).serializeNBT(registries));
 		if (this.hasCustomName()) {
 			tag.putString("CustomName", Component.Serializer.toJson(this.customName));
 		}
@@ -284,44 +280,35 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 		return new RatCraftingTableMenu(id, inventory, this, this.dataAccess);
 	}
 
-	@Override
-	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (!this.remove && cap == ForgeCapabilities.ITEM_HANDLER) {
-			if (side == Direction.DOWN) {
-				return this.resultHandler.cast();
-			} else {
-				return this.bufferHandler.cast();
-			}
-		}
-		return super.getCapability(cap, side);
+	public IItemHandlerModifiable itemHandler(@Nullable Direction side) {
+		if (this.remove) return null;
+		return side == Direction.DOWN ? this.resultHandler : this.bufferHandler;
 	}
 
 	public void consumeIngredients(@Nullable Player player) {
 		this.recipeUsed.ifPresent(recipe -> {
-			NonNullList<ItemStack> remainingStacks = this.matrixWrapper.map(recipe::getRemainingItems)
-					.orElse(NonNullList.withSize(0, ItemStack.EMPTY));
+			NonNullList<ItemStack> remainingStacks = recipe.getRemainingItems(this.matrixWrapper);
 
 			if (this.hasValidRecipe) {
-				this.bufferHandler.ifPresent(h ->
-						recipe.getIngredients().forEach(i -> {
-							for (int j = 0; j < h.getSlots(); j++) {
-								if (i.test(h.getStackInSlot(j))) {
-									h.extractItem(j, 1, false);
-									break;
-								}
-							}
-						}));
+				IItemHandlerModifiable h = this.bufferHandler;
+				recipe.getIngredients().forEach(i -> {
+					for (int j = 0; j < h.getSlots(); j++) {
+						if (i.test(h.getStackInSlot(j))) {
+							h.extractItem(j, 1, false);
+							break;
+						}
+					}
+				});
 			}
 
 			// Handle container items
 			IntStream.range(0, remainingStacks.size())
 					.mapToObj(i -> {
 						ItemStack stack = remainingStacks.get(i);
-						return this.hasValidRecipe ? stack : this.matrixHandler.map(h -> h.insertItem(i, stack, false)).orElse(stack);
+						return this.hasValidRecipe ? stack : this.matrixHandler.insertItem(i, stack, false);
 					}) // Insert back the corresponding matrix slot if crafted from there
 					.filter(stack -> !stack.isEmpty())
-					.map(stack -> this.bufferHandler.map(h ->
-							ItemHandlerHelper.insertItemStacked(h, stack, false)).orElse(stack))
+					.map(stack -> ItemHandlerHelper.insertItemStacked(this.bufferHandler, stack, false))
 					.filter(stack -> !stack.isEmpty())
 					.forEach(stack -> {
 						if (player != null) {
@@ -334,9 +321,7 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 	}
 
 	private void outputStack(ItemStack stack) {
-		ItemStack newStack = this.getCapability(ForgeCapabilities.ITEM_HANDLER)
-				.map(h -> ItemHandlerHelper.insertItemStacked(h, stack, false))
-				.orElse(stack);
+		ItemStack newStack = ItemHandlerHelper.insertItemStacked(this.bufferHandler, stack, false);
 
 		if (!newStack.isEmpty() && this.getLevel() != null) {
 			ItemEntity item = new ItemEntity(this.getLevel(), this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY() + 1.0D, this.getBlockPos().getZ() + 0.5F, newStack);
