@@ -49,8 +49,7 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 		float uDif = uMax - uMin;
 		float vDif = vMax - vMin;
 		RenderSystem.enableBlend();
-		BufferBuilder vertexBuffer = Tesselator.getInstance().getBuilder();
-		vertexBuffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+		BufferBuilder vertexBuffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 		Matrix4f matrix4f = stack.last().pose();
 		for (int xTile = 0; xTile <= xTileCount; xTile++) {
 			int width = (xTile == xTileCount) ? xRemainder : 16;
@@ -77,7 +76,7 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 				vertexBuffer.addVertex(matrix4f, x, y + maskTop, 0).setUv(uMin + uLocalDif, vMin + vLocalDif);
 			}
 		}
-		BufferUploader.drawWithShader(vertexBuffer.end());
+		BufferUploader.drawWithShader(vertexBuffer.buildOrThrow());
 		RenderSystem.disableBlend();
 	}
 

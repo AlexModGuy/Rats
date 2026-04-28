@@ -24,12 +24,12 @@ public class RatsIconRenderUtil {
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderTexture(0, icon);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+			buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 			buffer.addVertex(matrix4f, -0.5F, -0.5F, 0).setUv(1.0F, 1.0F);
 			buffer.addVertex(matrix4f, -0.5F, 0.5F, 0).setUv(1.0F, 0.0F);
 			buffer.addVertex(matrix4f, 0.5F, 0.5F, 0).setUv(0.0F, 0.0F);
 			buffer.addVertex(matrix4f, 0.5F, -0.5F, 0).setUv(0.0F, 1.0F);
-			tesselator.end();
+			net.minecraft.client.renderer.BufferUploader.drawWithShader(buffer.buildOrThrow());
 			RenderSystem.disableBlend();
 			RenderSystem.depthMask(true);
 			stack.popPose();
@@ -55,8 +55,6 @@ public class RatsIconRenderUtil {
 
 	public static void renderMovingAABB(AABB boundingBox, PoseStack stack) {
 		Tesselator tessellator = Tesselator.getInstance();
-		VertexConsumer vertexbuffer = tessellator.getBuilder();
-		BufferBuilder buffer = tessellator.getBuilder();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		float f3 = Minecraft.getInstance().isPaused() ? 0.0F : (float) (System.currentTimeMillis() % 3000L) / 3000.0F;
 		Matrix4f matrix4f = stack.last().pose();
@@ -66,7 +64,8 @@ public class RatsIconRenderUtil {
 		float minY = (float) boundingBox.minY * 0.125F;
 		float maxZ = (float) boundingBox.maxZ * 0.125F;
 		float minZ = (float) boundingBox.minZ * 0.125F;
-		buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL);
+		BufferBuilder buffer = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL);
+		VertexConsumer vertexbuffer = buffer;
 		//north
 		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).setUv(f3 + minX - maxX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(0.0F, 0.0F, -1.0F);
 		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).setUv(f3 + maxX - minX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(0.0F, 0.0F, -1.0F);
@@ -102,6 +101,6 @@ public class RatsIconRenderUtil {
 		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).setUv(f3 + minX - maxX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(1.0F, 0.0F, 0.0F);
 		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(1.0F, 0.0F, 0.0F);
 		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(1.0F, 0.0F, 0.0F);
-		tessellator.end();
+		net.minecraft.client.renderer.BufferUploader.drawWithShader(buffer.buildOrThrow());
 	}
 }

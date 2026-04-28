@@ -325,7 +325,7 @@ public class ForgeClientEvents {
 				if (rat == null) return;
 				ItemStack heldItem = Minecraft.getInstance().player.getItemInHand(InteractionHand.MAIN_HAND);
 				Tesselator tessellator = Tesselator.getInstance();
-				BufferBuilder buffer = tessellator.getBuilder();
+				BufferBuilder buffer = null; // PORT-STUB: 1.21 removed Tesselator.getBuilder(); buffer is now obtained inline via tessellator.begin(...)
 				PoseStack stack = event.getPoseStack();
 				float bob = 1.5F + 0.3F * (Mth.sin((event.getPartialTick() + Minecraft.getInstance().player.tickCount) * 0.1F) + 1F);
 				final Vec3 viewPosition = Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition();
@@ -391,11 +391,11 @@ public class ForgeClientEvents {
 							float pdx = (float) (node.pos().getX() - prev.pos().getX());
 							float pdy = (float) (node.pos().getY() - prev.pos().getY());
 							float pdz = (float) (node.pos().getZ() - prev.pos().getZ());
-							buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+							buffer = tessellator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 							Matrix4f matrix4f = stack.last().pose();
 							buffer.addVertex(matrix4f, pdx, pdy, pdz).setColor(r, g, b, 1.0F);
 							buffer.addVertex(matrix4f, 0.0F, 0.0F, 0.0F).setColor(r, g, b, 1.0F);
-							tessellator.end();
+							net.minecraft.client.renderer.BufferUploader.drawWithShader(buffer.buildOrThrow());
 							stack.popPose();
 						}
 
