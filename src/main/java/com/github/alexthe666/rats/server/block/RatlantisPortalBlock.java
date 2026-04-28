@@ -87,7 +87,7 @@ public class RatlantisPortalBlock extends BaseEntityBlock implements CustomItemR
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 }
