@@ -8,7 +8,6 @@ import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.entity.misc.LaserPortal;
 import com.github.alexthe666.rats.server.entity.projectile.ThrownBlock;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncThrownBlockPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -222,7 +221,7 @@ public class NeoRatlantean extends Monster {
 					if (!this.level().isClientSide()) {
 						this.level().addFreshEntity(thrownBlock);
 					}
-					RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncThrownBlockPacket(thrownBlock.getId(), pos.asLong()));
+					PacketDistributor.sendToAllPlayers(new SyncThrownBlockPacket(thrownBlock.getId(), pos.asLong()));
 					this.level().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 					this.summonCooldown = RatConfig.neoratlanteanBlockAttackCooldown;
 				}

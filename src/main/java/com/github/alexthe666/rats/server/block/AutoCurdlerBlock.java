@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.block;
 
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import com.github.alexthe666.rats.server.block.entity.AutoCurdlerBlockEntity;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.UpdateCurdlerFluidPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -100,7 +99,7 @@ public class AutoCurdlerBlock extends BaseEntityBlock {
 									player.getInventory().add(new ItemStack(Items.BUCKET));
 								}
 							}
-							RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateCurdlerFluidPacket(pos.asLong(), te.getTank().getFluid()));
+							PacketDistributor.sendToAllPlayers(new UpdateCurdlerFluidPacket(pos.asLong(), te.getTank().getFluid()));
 						}
 					}
 				}

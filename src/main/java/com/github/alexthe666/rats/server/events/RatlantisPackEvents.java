@@ -20,7 +20,7 @@ public class RatlantisPackEvents {
 		if (event.getLevel() instanceof ServerLevel server && server.dimension().equals(Level.OVERWORLD) && event.getLevel().getServer() != null) {
 			boolean enabled = event.getLevel().getServer().getWorldData().getDataConfiguration().dataPacks().getEnabled().contains("ratlantis");
 			RatsMod.RATLANTIS_DATAPACK_ENABLED = enabled;
-			RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new ChangeRatlantisStatusPacket(enabled));
+			PacketDistributor.sendToAllPlayers(new ChangeRatlantisStatusPacket(enabled));
 			RatsMod.LOGGER.debug("Overworld loaded! Ratlantis datapack is {} for this world.", enabled ? "enabled" : "disabled");
 		}
 	}
@@ -36,7 +36,7 @@ public class RatlantisPackEvents {
 			event.getPlayerList().getPlayers().forEach(player -> {
 				boolean enabled = player.serverLevel().getServer().getWorldData().getDataConfiguration().dataPacks().getEnabled().contains("ratlantis");
 				RatsMod.RATLANTIS_DATAPACK_ENABLED = enabled;
-				RatsNetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new ChangeRatlantisStatusPacket(enabled));
+				PacketDistributor.sendToPlayer(player, new ChangeRatlantisStatusPacket(enabled));
 				RatsMod.LOGGER.debug("Ratlantis datapack flag has been set to {} for {} ({})", enabled, player.getDisplayName().getString(), player.getStringUUID());
 			});
 		}

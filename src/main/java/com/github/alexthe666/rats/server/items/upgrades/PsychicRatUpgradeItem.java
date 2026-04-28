@@ -11,7 +11,6 @@ import com.github.alexthe666.rats.server.entity.projectile.ThrownBlock;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.HoldsItemUpgrade;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.TickRatUpgrade;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncThrownBlockPacket;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -90,7 +89,7 @@ public class PsychicRatUpgradeItem extends StatBoostingRatUpgradeItem implements
 					if (!rat.level().isClientSide()) {
 						rat.level().addFreshEntity(thrownBlock);
 					}
-					RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncThrownBlockPacket(thrownBlock.getId(), pos.asLong()));
+					PacketDistributor.sendToAllPlayers(new SyncThrownBlockPacket(thrownBlock.getId(), pos.asLong()));
 				} else {
 					rat.rangedAttackCooldown += 5;
 				}

@@ -7,7 +7,6 @@ import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.inventory.RatMenu;
 import com.github.alexthe666.rats.server.message.RatCommandPacket;
 import com.github.alexthe666.rats.server.message.RatUpgradeVisibilityPacket;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.google.common.collect.Lists;
@@ -59,27 +58,27 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 			}));
 			this.addRenderableWidget(new CommandPressButton(i + 123, j + 52, button -> {
 				this.rat.setCommand(RatCommand.values()[this.currentDisplayCommand]);
-				RatsNetworkHandler.CHANNEL.sendToServer(new RatCommandPacket(this.rat.getId(), this.currentDisplayCommand));
+				PacketDistributor.sendToServer(new RatCommandPacket(this.rat.getId(), this.currentDisplayCommand));
 			}));
 			this.addRenderableWidget(new CommandPressButton(i + 123, j + 52, button -> {
 				this.rat.setCommand(RatCommand.values()[this.currentDisplayCommand]);
-				RatsNetworkHandler.CHANNEL.sendToServer(new RatCommandPacket(this.rat.getId(), this.currentDisplayCommand));
+				PacketDistributor.sendToServer(new RatCommandPacket(this.rat.getId(), this.currentDisplayCommand));
 			}));
 
 			this.addRenderableWidget(new UpgradeVisibilityButton(i + 39, j + 15, this.rat.isSlotVisible(EquipmentSlot.CHEST), button -> {
 				((UpgradeVisibilityButton) button).toggleVisibility();
 				this.rat.setSlotVisibility(EquipmentSlot.CHEST, ((UpgradeVisibilityButton) button).getUpgradeVisibility());
-				RatsNetworkHandler.CHANNEL.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.CHEST, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
+				PacketDistributor.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.CHEST, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
 			}));
 			this.addRenderableWidget(new UpgradeVisibilityButton(i + 39, j + 33, this.rat.isSlotVisible(EquipmentSlot.LEGS), button -> {
 				((UpgradeVisibilityButton) button).toggleVisibility();
 				this.rat.setSlotVisibility(EquipmentSlot.LEGS, ((UpgradeVisibilityButton) button).getUpgradeVisibility());
-				RatsNetworkHandler.CHANNEL.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.LEGS, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
+				PacketDistributor.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.LEGS, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
 			}));
 			this.addRenderableWidget(new UpgradeVisibilityButton(i + 39, j + 51, this.rat.isSlotVisible(EquipmentSlot.FEET), button -> {
 				((UpgradeVisibilityButton) button).toggleVisibility();
 				this.rat.setSlotVisibility(EquipmentSlot.FEET, ((UpgradeVisibilityButton) button).getUpgradeVisibility());
-				RatsNetworkHandler.CHANNEL.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.FEET, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
+				PacketDistributor.sendToServer(new RatUpgradeVisibilityPacket(this.rat.getId(), EquipmentSlot.FEET, ((UpgradeVisibilityButton) button).getUpgradeVisibility()));
 			}));
 
 		}

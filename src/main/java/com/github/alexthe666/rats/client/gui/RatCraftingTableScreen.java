@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.client.gui;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.inventory.RatCraftingTableMenu;
 import com.github.alexthe666.rats.server.message.CycleRatRecipePacket;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -54,11 +53,11 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 		}));
 		this.addRenderableWidget(new CycleResultButton(this.leftPos + 100, this.topPos + 58, false, button -> {
 			this.table.incrementRecipeIndex(false);
-			RatsNetworkHandler.CHANNEL.sendToServer(new CycleRatRecipePacket(this.table.getCraftingTable().getBlockPos().asLong(), false));
+			PacketDistributor.sendToServer(new CycleRatRecipePacket(this.table.getCraftingTable().getBlockPos().asLong(), false));
 		}));
 		this.addRenderableWidget(new CycleResultButton(this.leftPos + 100, this.topPos + 28, true, button -> {
 			this.table.incrementRecipeIndex(true);
-			RatsNetworkHandler.CHANNEL.sendToServer(new CycleRatRecipePacket(this.table.getCraftingTable().getBlockPos().asLong(), true));
+			PacketDistributor.sendToServer(new CycleRatRecipePacket(this.table.getCraftingTable().getBlockPos().asLong(), true));
 		}));
 		this.addWidget(this.recipeBook);
 	}

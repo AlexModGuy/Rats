@@ -7,7 +7,6 @@ import com.github.alexthe666.rats.server.inventory.RatMenu;
 import com.github.alexthe666.rats.server.inventory.container.RatContainer;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
 import com.github.alexthe666.rats.server.message.OpenRatScreenPacket;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -224,7 +223,7 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 			}
 
 			sp.nextContainerCounter();
-			RatsNetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> sp), new OpenRatScreenPacket(sp.containerCounter, this.getId()));
+			PacketDistributor.sendToPlayer(sp, new OpenRatScreenPacket(sp.containerCounter, this.getId()));
 			sp.containerMenu = new RatMenu(sp.containerCounter, this.getInventory(), sp.getInventory());
 			sp.initMenu(sp.containerMenu);
 			this.inventoryOpen = true;

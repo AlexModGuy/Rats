@@ -1,7 +1,6 @@
 package com.github.alexthe666.rats.server.entity.ai.goal.harvest;
 
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.UpdateRatFluidPacket;
 import com.github.alexthe666.rats.server.misc.RatUtils;
 import net.minecraft.sounds.SoundEvents;
@@ -61,7 +60,7 @@ public class RatMilkCowGoal extends BaseRatHarvestGoal {
 					if (this.rat.transportingFluid.isEmpty() || this.rat.transportingFluid.getAmount() < this.rat.getMBTransferRate()) {
 						this.rat.transportingFluid = milkFluid.copy();
 						if (!this.rat.level().isClientSide()) {
-							RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateRatFluidPacket(this.rat.getId(), this.rat.transportingFluid));
+							PacketDistributor.sendToAllPlayers(new UpdateRatFluidPacket(this.rat.getId(), this.rat.transportingFluid));
 						}
 						this.rat.playSound(SoundEvents.COW_MILK, 1, 1);
 						this.rat.gameEvent(GameEvent.ENTITY_INTERACT);

@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.client.gui;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.util.EntityRenderingUtil;
 import com.github.alexthe666.rats.server.items.upgrades.MobFilterUpgradeItem;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.UpdateMobFilterPacket;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -28,6 +27,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -322,7 +322,7 @@ public class MobFilterScreen extends Screen {
 
 	@Override
 	public void onClose() {
-		RatsNetworkHandler.CHANNEL.sendToServer(new UpdateMobFilterPacket(this.hand, this.isWhitelist, this.selectedMobs));
+		PacketDistributor.sendToServer(new UpdateMobFilterPacket(this.hand, this.isWhitelist, this.selectedMobs));
 		super.onClose();
 	}
 

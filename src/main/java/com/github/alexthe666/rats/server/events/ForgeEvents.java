@@ -14,7 +14,6 @@ import com.github.alexthe666.rats.server.items.RatSackItem;
 import com.github.alexthe666.rats.server.items.RatStaffItem;
 import com.github.alexthe666.rats.server.message.DismountRatPacket;
 import com.github.alexthe666.rats.server.message.ManageRatStaffPacket;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncArmSwingPacket;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
@@ -368,12 +367,12 @@ public class ForgeEvents {
 						passenger.stopRiding();
 						Vec3 dismountPos = passenger.getDismountLocationForPassenger(event.getEntity());
 						passenger.setPos(dismountPos.x(), dismountPos.y(), dismountPos.z());
-						RatsNetworkHandler.CHANNEL.sendToServer(new DismountRatPacket(passenger.getId()));
+						PacketDistributor.sendToServer(new DismountRatPacket(passenger.getId()));
 					}
 				}
 			}
 			handleArmSwing(event.getItemStack(), event.getEntity());
-			RatsNetworkHandler.CHANNEL.sendToServer(new SyncArmSwingPacket(event.getItemStack()));
+			PacketDistributor.sendToServer(new SyncArmSwingPacket(event.getItemStack()));
 		}
 	}
 
@@ -435,7 +434,7 @@ public class ForgeEvents {
 			if (rat != null) {
 				event.getEntity().swing(event.getHand());
 				if (!event.getLevel().isClientSide()) {
-					RatsNetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), new ManageRatStaffPacket(rat.getId(), event.getPos(), event.getFace().ordinal(), false, true, staff.getStaff(stack)));
+					PacketDistributor.sendToPlayer((ServerPlayer) event.getEntity(), new ManageRatStaffPacket(rat.getId(), event.getPos(), event.getFace().ordinal(), false, true, staff.getStaff(stack)));
 				}
 			} else {
 				event.getEntity().displayClientMessage(Component.translatable(RatsLangConstants.RAT_STAFF_NO_RAT).withStyle(ChatFormatting.RED), true);

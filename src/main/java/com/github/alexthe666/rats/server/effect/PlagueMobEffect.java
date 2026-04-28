@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.server.effect;
 
 import com.github.alexthe666.rats.registry.RatsEffectRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncPlaguePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
@@ -41,7 +40,7 @@ public class PlagueMobEffect extends MobEffect {
 		MobEffectInstance effect = entity.getEffect(RatsEffectRegistry.PLAGUE);
 		if (!entity.isRemoved() && effect != null && entity.level() instanceof ServerLevel) {
 			entity.playSound(RatsSoundRegistry.PLAGUE_SPREAD.get(), 1.0F, 1.0F);
-			RatsNetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new SyncPlaguePacket(entity.getId(), effect));
+			PacketDistributor.sendToPlayersTrackingEntity(entity, new SyncPlaguePacket(entity.getId(), effect));
 		}
 		super.addAttributeModifiers(entity, attributes, amplifier);
 	}
@@ -49,7 +48,7 @@ public class PlagueMobEffect extends MobEffect {
 	@Override
 	public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributes, int amplifier) {
 		if (!entity.isRemoved() && entity.level() instanceof ServerLevel) {
-			RatsNetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new SyncPlaguePacket(entity.getId(), new MobEffectInstance(RatsEffectRegistry.PLAGUE, 0)));
+			PacketDistributor.sendToPlayersTrackingEntity(entity, new SyncPlaguePacket(entity.getId(), new MobEffectInstance(RatsEffectRegistry.PLAGUE, 0)));
 		}
 		super.removeAttributeModifiers(entity, attributes, amplifier);
 	}

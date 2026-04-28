@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.server.entity.ai.goal;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.RatCommand;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.UpdateRatFluidPacket;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
@@ -197,7 +196,7 @@ public class RatPickupGoal extends Goal implements RatWorkGoal {
 						this.rat.transportingFluid.setAmount(this.rat.transportingFluid.getAmount() + Math.max(drainedStack.getAmount(), 0));
 					}
 					if (!this.rat.level().isClientSide()) {
-						RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateRatFluidPacket(this.rat.getId(), this.rat.transportingFluid));
+						PacketDistributor.sendToAllPlayers(new UpdateRatFluidPacket(this.rat.getId(), this.rat.transportingFluid));
 					}
 					SoundEvent sound = this.rat.transportingFluid.isEmpty() ? SoundEvents.BUCKET_FILL : SoundEvents.BUCKET_EMPTY;
 					this.rat.playSound(sound, 1, 1);

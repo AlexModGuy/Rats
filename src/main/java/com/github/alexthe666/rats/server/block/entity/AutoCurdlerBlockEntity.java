@@ -6,7 +6,6 @@ import com.github.alexthe666.rats.registry.RatsBlockRegistry;
 import com.github.alexthe666.rats.registry.RatsParticleRegistry;
 import com.github.alexthe666.rats.registry.RatsSoundRegistry;
 import com.github.alexthe666.rats.server.inventory.AutoCurdlerMenu;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.UpdateCurdlerFluidPacket;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.core.BlockPos;
@@ -259,7 +258,7 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 	public void setChanged() {
 		super.setChanged();
 		if (this.getLevel() != null && !this.getLevel().isClientSide()) {
-			RatsNetworkHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateCurdlerFluidPacket(this.getBlockPos().asLong(), this.tank.getFluid()));
+			PacketDistributor.sendToAllPlayers(new UpdateCurdlerFluidPacket(this.getBlockPos().asLong(), this.tank.getFluid()));
 		}
 	}
 

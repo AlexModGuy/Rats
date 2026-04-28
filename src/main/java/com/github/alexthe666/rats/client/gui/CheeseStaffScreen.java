@@ -3,7 +3,6 @@ package com.github.alexthe666.rats.client.gui;
 import com.github.alexthe666.rats.client.util.EntityRenderingUtil;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SyncRatStaffPacket;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.client.Minecraft;
@@ -43,29 +42,29 @@ public class CheeseStaffScreen extends Screen {
 		Component topText = Component.translatable(RatsLangConstants.RAT_STAFF_DEPOSIT_POS, this.getPosName(), Component.translatable("rats.direction." + this.clickedFace.getName()));
 		int maxLength = Math.max(150, Minecraft.getInstance().font.width(topText.getString()) + 20);
 		this.addRenderableWidget(Button.builder(topText, button -> {
-			RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, this.clickedFace, 0));
+			PacketDistributor.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, this.clickedFace, 0));
 			Minecraft.getInstance().setScreen(null);
 			this.init();
 		}).bounds(i - maxLength / 2, j + 60, maxLength, 20).build());
 		this.addRenderableWidget(Button.builder(Component.translatable(RatsLangConstants.RAT_STAFF_PICKUP_POS, this.getPosName(), Component.translatable("rats.direction." + this.clickedFace.getName())), button -> {
-			RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, this.clickedFace, 1));
+			PacketDistributor.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, this.clickedFace, 1));
 			Minecraft.getInstance().setScreen(null);
 			this.init();
 		}).bounds(i - maxLength / 2, j + 85, maxLength, 20).build());
 		this.addRenderableWidget(Button.builder(Component.translatable(RatsLangConstants.RAT_STAFF_SET_HOME, getPosName()), button -> {
 			this.rat.setHomePoint(GlobalPos.of(Minecraft.getInstance().player.level().dimension(), this.pos));
-			RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, Direction.UP, 2));
+			PacketDistributor.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, Direction.UP, 2));
 			this.init();
 		}).bounds(i - maxLength / 2, j + 110, maxLength, 20).build());
 		this.addRenderableWidget(Button.builder(Component.translatable(RatsLangConstants.RAT_STAFF_REMOVE_HOME), button -> {
 			this.rat.setHomePoint(null);
-			RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, Direction.UP, 3));
+			PacketDistributor.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, Direction.UP, 3));
 			this.init();
 		}).bounds(i - maxLength / 2, j + 135, maxLength, 20).build());
 		this.addRenderableWidget(Button.builder(Component.translatable(RatsLangConstants.RAT_STAFF_REMOVE_TRANSPORT_POS), button -> {
 			this.rat.setPickupPos(null);
 			this.rat.setDepositPos(null);
-			RatsNetworkHandler.CHANNEL.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, Direction.UP, 7));
+			PacketDistributor.sendToServer(new SyncRatStaffPacket(this.rat.getId(), this.pos, Direction.UP, 7));
 			this.init();
 		}).bounds(i - maxLength / 2, j + 160, maxLength, 20).build());
 		((Button) this.renderables.get(0)).visible = !this.isNoInventoryAtPos();

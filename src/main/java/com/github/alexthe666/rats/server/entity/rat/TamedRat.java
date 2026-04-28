@@ -23,7 +23,6 @@ import com.github.alexthe666.rats.server.items.RatStaffItem;
 import com.github.alexthe666.rats.server.items.upgrades.*;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.*;
 import com.github.alexthe666.rats.server.message.ManageRatStaffPacket;
-import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
 import com.github.alexthe666.rats.server.message.SetDancingRatPacket;
 import com.github.alexthe666.rats.server.misc.RatUpgradeUtils;
 import com.github.alexthe666.rats.server.misc.RatUtils;
@@ -951,7 +950,7 @@ public class TamedRat extends InventoryRat {
 				player.getCapability(RatsCapabilityRegistry.SELECTED_RAT).ifPresent(cap -> cap.setSelectedRat(this));
 				player.swing(hand);
 				if (!this.level().isClientSide() && player instanceof ServerPlayer sp) {
-					RatsNetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> sp), new ManageRatStaffPacket(this.getId(), BlockPos.ZERO, Direction.NORTH.ordinal(), false, false));
+					PacketDistributor.sendToPlayer(sp, new ManageRatStaffPacket(this.getId(), BlockPos.ZERO, Direction.NORTH.ordinal(), false, false));
 				}
 				player.displayClientMessage(Component.translatable(RatsLangConstants.RAT_STAFF_BIND, this.getName()), true);
 				return InteractionResult.SUCCESS;
@@ -1346,7 +1345,7 @@ public class TamedRat extends InventoryRat {
 		this.setDancing(partying);
 		this.jukeboxPos = pos;
 		if (this.level().isClientSide()) {
-			RatsNetworkHandler.CHANNEL.sendToServer(new SetDancingRatPacket(this.getId(), partying, pos.asLong(), moves));
+			PacketDistributor.sendToServer(new SetDancingRatPacket(this.getId(), partying, pos.asLong(), moves));
 		}
 	}
 
