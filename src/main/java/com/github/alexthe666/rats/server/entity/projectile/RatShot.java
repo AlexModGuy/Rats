@@ -107,7 +107,7 @@ public class RatShot extends ThrowableProjectile {
 					ratter.setRatsSummoned(ratter.getRatsSummoned() + 1);
 				}
 				if (this.level() instanceof ServerLevelAccessor accessor) {
-					EventHooks.onFinalizeSpawn(rat, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.REINFORCEMENT, null, null);
+					EventHooks.finalizeMobSpawn(rat, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.REINFORCEMENT, null);
 				}
 				rat.setColorVariant(this.getColorVariant());
 				if (rat instanceof Rat plagueable) {

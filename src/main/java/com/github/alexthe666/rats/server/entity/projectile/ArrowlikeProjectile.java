@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.network.NetworkHooks;
+import net.minecraft.server.level.ServerEntity;
 
 import javax.annotation.Nullable;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -304,7 +304,7 @@ public abstract class ArrowlikeProjectile extends Projectile {
 	public abstract boolean explodesOnHit();
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+		return super.getAddEntityPacket(serverEntity);
 	}
 }

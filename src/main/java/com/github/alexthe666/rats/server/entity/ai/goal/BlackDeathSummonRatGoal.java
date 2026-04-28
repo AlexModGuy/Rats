@@ -23,7 +23,7 @@ public class BlackDeathSummonRatGoal extends BlackDeathAbstractSummonGoal {
 		this.death.level().broadcastEntityEvent(this.death, (byte) 82);
 
 		Rat rat = new Rat(RatsEntityRegistry.RAT.get(), this.death.level());
-		EventHooks.onFinalizeSpawn(rat, (ServerLevel) this.death.level(), this.death.level().getCurrentDifficultyAt(this.death.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+		EventHooks.finalizeMobSpawn(rat, (ServerLevel) this.death.level(), this.death.level().getCurrentDifficultyAt(this.death.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
 		rat.copyPosition(this.death);
 		rat.setPlagued(true);
 		this.death.level().addFreshEntity(rat);

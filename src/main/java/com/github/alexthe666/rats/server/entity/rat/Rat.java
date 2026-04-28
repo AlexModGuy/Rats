@@ -212,7 +212,7 @@ public class Rat extends DiggingRat {
 		if (this.ratKingTransformTicks == 200 && !this.level().isClientSide()) {
 			RatKing king = new RatKing(RatsEntityRegistry.RAT_KING.get(), this.level());
 			king.copyPosition(this);
-			EventHooks.onFinalizeSpawn(king, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+			EventHooks.finalizeMobSpawn(king, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null);
 			this.level().addFreshEntity(king);
 			this.discard();
 		}

@@ -14,7 +14,7 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.network.NetworkHooks;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.network.syncher.SynchedEntityData;
 
 public class PiratWoodBoat extends Boat {
@@ -68,8 +68,8 @@ public class PiratWoodBoat extends Boat {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+		return super.getAddEntityPacket(serverEntity);
 	}
 
 	public enum Type {

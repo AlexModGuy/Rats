@@ -271,7 +271,7 @@ public class RatUtils {
 			newRat.setLeashedTo(rat.getLeashHolder(), true);
 			rat.setLeashedTo(null, true);
 		}
-		EventHooks.onFinalizeSpawn(newRat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);
+		EventHooks.finalizeMobSpawn(newRat, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null);
 		newRat.readAdditionalSaveData(tag);
 		newRat.setColorVariant(rat.getColorVariant());
 		for (EquipmentSlot slot : EquipmentSlot.values()) {

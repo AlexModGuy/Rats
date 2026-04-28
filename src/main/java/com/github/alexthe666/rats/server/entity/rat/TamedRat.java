@@ -484,7 +484,7 @@ public class TamedRat extends InventoryRat {
 			Entity entity = this.getMountEntityType().create(this.level());
 			entity.copyPosition(this);
 			if (entity instanceof Mob mob && this.level() instanceof ServerLevelAccessor accessor) {
-				EventHooks.onFinalizeSpawn(mob, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+				EventHooks.finalizeMobSpawn(mob, accessor, this.level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
 			}
 			this.level().addFreshEntity(entity);
 

@@ -64,14 +64,14 @@ public abstract class AbstractGarbageBlock extends FallingBlock {
 								return;
 							if (RatConfig.ratsSpawnLikeMonsters && !this.isDarkEnoughForMonsterSpawns(level, mob.blockPosition(), random))
 								return;
-							EventHooks.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null, null);
+							EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null);
 							this.postInitSpawn(mob, random);
 							level.tryAddFreshEntityWithPassengers(mob);
 						} else {
 							if (mob instanceof PiedPiper && !level.getGameRules().getBoolean(RatsMod.SPAWN_PIPERS))
 								return;
 							if (this.isDarkEnoughForMonsterSpawns(level, mob.blockPosition(), random)) {
-								EventHooks.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null, null);
+								EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(pos), this.spawnReason, null);
 								this.postInitSpawn(mob, random);
 								level.tryAddFreshEntityWithPassengers(mob);
 							}

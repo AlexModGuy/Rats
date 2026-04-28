@@ -148,7 +148,7 @@ public class RatsDispenserRegistry {
 					doctor.copyPosition(villager);
 					villager.discard();
 					doctor.setWillDespawn(false);
-					EventHooks.onFinalizeSpawn(doctor, source.level(), source.level().getCurrentDifficultyAt(source.pos()), MobSpawnType.CONVERSION, null, null);
+					EventHooks.finalizeMobSpawn(doctor, source.level(), source.level().getCurrentDifficultyAt(source.pos()), MobSpawnType.CONVERSION, null);
 					source.level().addFreshEntity(doctor);
 					doctor.setNoAi(villager.isNoAi());
 					if (villager.hasCustomName()) {
@@ -178,7 +178,7 @@ public class RatsDispenserRegistry {
 					BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), source.level());
 					death.copyPosition(doctor);
 					doctor.discard();
-					EventHooks.onFinalizeSpawn(death, source.level(), source.level().getCurrentDifficultyAt(source.pos()), MobSpawnType.CONVERSION, null, null);
+					EventHooks.finalizeMobSpawn(death, source.level(), source.level().getCurrentDifficultyAt(source.pos()), MobSpawnType.CONVERSION, null);
 					source.level().addFreshEntity(death);
 					death.setNoAi(doctor.isNoAi());
 					if (doctor.hasCustomName()) {

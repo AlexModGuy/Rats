@@ -63,7 +63,7 @@ public class RatArrow extends AbstractArrow {
 				rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName"), net.minecraft.core.RegistryAccess.EMPTY));
 			}
 			if (ratTag.isEmpty()) {
-				EventHooks.onFinalizeSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);
+				EventHooks.finalizeMobSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null);
 				if (this.getOwner() instanceof Player player) {
 					rat.tame(player);
 				}

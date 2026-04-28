@@ -342,7 +342,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 			if (this.isAlive() && level.getCurrentDifficultyAt(this.blockPosition()).getDifficulty() != Difficulty.PEACEFUL) {
 				BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), level);
 				death.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-				EventHooks.onFinalizeSpawn(death, level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+				EventHooks.finalizeMobSpawn(death, level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null);
 				death.setNoAi(this.isNoAi());
 				if (!this.getMainHandItem().isEmpty()) {
 					this.spawnAtLocation(this.getMainHandItem());
@@ -472,7 +472,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 			if (!this.isBaby() && !this.level().isClientSide()) {
 				BlackDeath death = new BlackDeath(RatsEntityRegistry.BLACK_DEATH.get(), this.level());
 				death.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-				EventHooks.onFinalizeSpawn(death, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(death.blockPosition()), MobSpawnType.TRIGGERED, null, null);
+				EventHooks.finalizeMobSpawn(death, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(death.blockPosition()), MobSpawnType.TRIGGERED, null);
 				if (this.hasCustomName()) {
 					death.setCustomName(this.getCustomName());
 				}

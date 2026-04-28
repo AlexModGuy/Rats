@@ -89,7 +89,7 @@ public class AirRaidSirenBlock extends Block implements CustomItemRarity {
 			level.setBlockAndUpdate(pos, Blocks.OAK_FENCE.defaultBlockState());
 			RatBaron baron = new RatBaron(RatlantisEntityRegistry.RAT_BARON.get(), level);
 			baron.setPos(pos.getX() + 0.5D, pos.getY() + 5D, pos.getZ() + 0.5D);
-			EventHooks.onFinalizeSpawn(baron, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
+			EventHooks.finalizeMobSpawn(baron, (ServerLevelAccessor) level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null);
 			baron.restrictTo(pos, 16);
 
 			if (level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
