@@ -218,7 +218,7 @@ public class RatUtils {
 			for (BlockPos pos : allBlocks) {
 				BlockState block = level.getBlockState(pos);
 				if (block.getBlock() instanceof BonemealableBlock igrowable) {
-					if (igrowable.isValidBonemealTarget(level, pos, block)) && level.getRandom().nextInt(3) == 0) {
+					if (igrowable.isValidBonemealTarget(level, pos, block) && level.getRandom().nextInt(3) == 0) {
 						if (!level.isClientSide()) {
 							level.levelEvent(2005, pos, 0);
 							igrowable.performBonemeal((ServerLevel) level, level.getRandom(), pos, block);
@@ -231,7 +231,7 @@ public class RatUtils {
 
 	private static boolean canPlantBeBonemealed(Level level, BlockPos pos, BlockState BlockState) {
 		if (BlockState.getBlock() instanceof BonemealableBlock igrowable && !(BlockState.getBlock() instanceof TallGrassBlock) && !(BlockState.getBlock() instanceof GrassBlock)) {
-			if (igrowable.isValidBonemealTarget(level, pos, BlockState))) {
+			if (igrowable.isValidBonemealTarget(level, pos, BlockState)) {
 				if (!level.isClientSide()) {
 					//  igrowable.grow(level, level.rand, target, BlockState);
 					return igrowable.isBonemealSuccess(level, level.getRandom(), pos, BlockState);
