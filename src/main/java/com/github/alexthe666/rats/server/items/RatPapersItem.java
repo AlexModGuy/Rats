@@ -6,8 +6,10 @@ import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import com.github.alexthe666.rats.server.misc.RatsLangConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,6 +35,10 @@ public class RatPapersItem extends Item {
 		return isEntityBound(stack);
 	}
 
+	private static CompoundTag readTag(ItemStack stack) {
+		return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+	}
+
 	@Override
 	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		if (!isEntityBound(stack)) {
@@ -40,13 +46,14 @@ public class RatPapersItem extends Item {
 			tooltip.add(Component.translatable("item.rats.rat_papers.desc1").withStyle(ChatFormatting.GRAY));
 		}
 		tooltip.add(Component.translatable("item.rats.rat_papers.desc2").withStyle(ChatFormatting.GRAY));
-		if (stack.getTag() != null && !stack.getTag().isEmpty()) {
+		CompoundTag nbt = readTag(stack);
+		if (!nbt.isEmpty()) {
 			String ratName = I18n.get("entity.rats.tamed_rat");
-			String entity = stack.getTag().getString("RatName");
+			String entity = nbt.getString("RatName");
 			Component rat = Component.empty();
-			if (stack.getTag().hasUUID("RatUUID")) {
+			if (nbt.hasUUID("RatUUID")) {
 				if (entity.isEmpty()) {
-					rat = Component.literal(ratName + " (" + stack.getTag().getUUID("RatUUID") + ")").withStyle(ChatFormatting.GRAY);
+					rat = Component.literal(ratName + " (" + nbt.getUUID("RatUUID") + ")").withStyle(ChatFormatting.GRAY);
 				} else {
 					rat = Component.literal(entity).withStyle(ChatFormatting.GRAY);
 				}
@@ -56,12 +63,12 @@ public class RatPapersItem extends Item {
 	}
 
 	public static boolean isEntityBound(ItemStack stack) {
-		return stack.getOrCreateTag().hasUUID("RatUUID");
+		return readTag(stack).hasUUID("RatUUID");
 	}
 
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
-		CompoundTag nbt = stack.getOrCreateTag();
+		CompoundTag nbt = readTag(stack);
 		if (target instanceof Player transferTo) {
 			try {
 				if (nbt.hasUUID("RatUUID")) {
@@ -90,7 +97,7 @@ public class RatPapersItem extends Item {
 				nbt.putString("RatName", rat.getCustomName().getString());
 			}
 			nbt.putUUID("RatUUID", rat.getUUID());
-			stack.setTag(nbt);
+			stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
 
 			return InteractionResult.sidedSuccess(player.level().isClientSide());
 		}
