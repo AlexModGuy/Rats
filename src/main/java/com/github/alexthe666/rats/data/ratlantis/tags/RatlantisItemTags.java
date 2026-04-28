@@ -73,11 +73,12 @@ public class RatlantisItemTags extends ItemTagsProvider {
 		this.tag(net.minecraft.tags.ItemTags.HEAD_ARMOR).add(
 				RatlantisItemRegistry.RATLANTIS_HELMET.get(), RatlantisItemRegistry.AVIATOR_HAT.get(),
 				RatlantisItemRegistry.MILITARY_HAT.get(), RatlantisItemRegistry.GHOST_PIRAT_HAT.get());
-		this.tag(Tags.Items.ARMORS_CHESTPLATES).add(RatlantisItemRegistry.RATLANTIS_CHESTPLATE.get());
-		this.tag(Tags.Items.ARMORS_LEGGINGS).add(RatlantisItemRegistry.RATLANTIS_LEGGINGS.get());
-		this.tag(Tags.Items.ARMORS_BOOTS).add(RatlantisItemRegistry.RATLANTIS_BOOTS.get());
+		// 1.21: Tags.Items.ARMORS_X / TOOLS_BOWS folded into vanilla ItemTags.X_ARMOR / BOWS.
+		this.tag(net.minecraft.tags.ItemTags.CHEST_ARMOR).add(RatlantisItemRegistry.RATLANTIS_CHESTPLATE.get());
+		this.tag(net.minecraft.tags.ItemTags.LEG_ARMOR).add(RatlantisItemRegistry.RATLANTIS_LEGGINGS.get());
+		this.tag(net.minecraft.tags.ItemTags.FOOT_ARMOR).add(RatlantisItemRegistry.RATLANTIS_BOOTS.get());
 
-		this.tag(Tags.Items.TOOLS_BOWS).add(RatlantisItemRegistry.RATLANTIS_BOW.get());
+		this.tag(ItemTags.BOW_ENCHANTABLE).add(RatlantisItemRegistry.RATLANTIS_BOW.get());
 
 		this.tag(ItemTags.CLUSTER_MAX_HARVESTABLES).add(RatlantisItemRegistry.RATLANTIS_PICKAXE.get());
 		this.tag(ItemTags.AXES).add(RatlantisItemRegistry.RATLANTIS_AXE.get());

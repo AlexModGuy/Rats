@@ -139,9 +139,20 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 	}
 
 	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return this.curdlerStacks;
+	}
+
+	@Override
+	protected void setItems(NonNullList<ItemStack> items) {
+		this.curdlerStacks = items;
+	}
+
+	@Override
 	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		super.loadAdditional(compound, registries);
-		this.tank.readFromNBT(compound);
+		// 1.21: FluidTank.readFromNBT now requires HolderLookup.Provider.
+		this.tank.readFromNBT(registries, compound);
 		this.curdlerStacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		ContainerHelper.loadAllItems(compound, this.curdlerStacks, registries);
 		this.cookTime = compound.getInt("CookTime");
@@ -151,7 +162,8 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 	@Override
 	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		super.saveAdditional(compound, registries);
-		this.tank.writeToNBT(compound);
+		// 1.21: FluidTank.writeToNBT now requires HolderLookup.Provider.
+		this.tank.writeToNBT(registries, compound);
 		compound.putInt("CookTime", (short) this.cookTime);
 		compound.putInt("CookTimeTotal", (short) this.totalCookTime);
 		ContainerHelper.saveAllItems(compound, this.curdlerStacks, registries);
@@ -299,7 +311,7 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 	}
 
 	@Override
-	public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction direction) {
+	public boolean canPlaceItemThroughFace(int index, ItemStack stack, @org.jetbrains.annotations.Nullable Direction direction) {
 		return this.canPlaceItem(index, stack);
 	}
 

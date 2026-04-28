@@ -147,8 +147,9 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 					this.onItemEaten();
 				}
 				int healAmount = 1;
-				if (this.getMainHandItem().has(net.minecraft.core.component.DataComponents.FOOD)) {
-					healAmount = Objects.requireNonNull(this.getMainHandItem().getItem().getFoodProperties(this.getMainHandItem(), this)).getNutrition();
+				net.minecraft.world.food.FoodProperties food = this.getMainHandItem().get(net.minecraft.core.component.DataComponents.FOOD);
+				if (food != null) {
+					healAmount = food.nutrition();
 				}
 				this.heal(healAmount);
 				this.eatingTicks = 0;
@@ -469,10 +470,7 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		return RatConfig.ratsSpawnLikeMonsters;
 	}
 
-	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-		return this.sitProgress > 0.0F && this.sleepProgress <= 0.0F ? super.getStandingEyeHeight(pose, dimensions) : dimensions.height * 0.5F;
-	}
+	// PORT-STUB: 1.21 removed Entity.getStandingEyeHeight in favor of EntityAttachments-driven eye height; sit-pose eye-height tweak dropped.
 
 	@Override
 	public void remove(RemovalReason reason) {

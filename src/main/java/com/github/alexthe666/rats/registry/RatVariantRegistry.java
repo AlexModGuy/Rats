@@ -6,7 +6,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.IForgeRegistry;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -15,7 +14,8 @@ import java.util.function.Supplier;
 public class RatVariantRegistry {
 	public static final ResourceKey<Registry<RatVariant>> RAT_VARIANT_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_variant"));
 	public static final DeferredRegister<RatVariant> RAT_VARIANTS = DeferredRegister.create(RAT_VARIANT_KEY, RatsMod.MODID);
-	public static final Supplier<IForgeRegistry<RatVariant>> RAT_VARIANT_REGISTRY = RAT_VARIANTS.makeRegistry(() -> new RegistryBuilder<RatVariant>().hasTags());
+	// 1.21: IForgeRegistry removed; makeRegistry now uses Consumer<RegistryBuilder<T>> and returns Supplier<Registry<T>>.
+	public static final Supplier<Registry<RatVariant>> RAT_VARIANT_REGISTRY = RAT_VARIANTS.makeRegistry(builder -> builder.sync(true));
 
 	public static final DeferredHolder<RatVariant, RatVariant> BLACK = RAT_VARIANTS.register("black", () -> new RatVariant(new RatVariant.Properties(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/black.png"))));
 	public static final DeferredHolder<RatVariant, RatVariant> BLUE = RAT_VARIANTS.register("blue", () -> new RatVariant(new RatVariant.Properties(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/blue.png"))));

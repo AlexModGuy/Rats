@@ -140,7 +140,7 @@ public class RatsMod {
 		if (event.getPackType() == PackType.SERVER_DATA) {
 			var resourcePath = ModList.get().getModFileById(MODID).getFile().findResource("data", "minecraft", "datapacks", "ratlantis");
 			// PORT-STUB: 1.21 Pack.readMetaAndCreate signature changed. Use Pack.Metadata + Pack.ResourcesSupplier directly.
-			var location = new net.minecraft.server.packs.repository.PackLocationInfo("ratlantis",
+			var location = new net.minecraft.server.packs.PackLocationInfo("ratlantis",
 					Component.literal("Ratlantis"), PackSource.FEATURE, java.util.Optional.empty());
 			var resources = new PathPackResources(location, resourcePath);
 			var metadata = Pack.readPackMetadata(location, fixedSupplier(resources), net.minecraft.SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA));
@@ -154,11 +154,11 @@ public class RatsMod {
 	private static Pack.ResourcesSupplier fixedSupplier(PathPackResources resources) {
 		return new Pack.ResourcesSupplier() {
 			@Override
-			public net.minecraft.server.packs.PackResources openPrimary(net.minecraft.server.packs.repository.PackLocationInfo info) {
+			public net.minecraft.server.packs.PackResources openPrimary(net.minecraft.server.packs.PackLocationInfo info) {
 				return resources;
 			}
 			@Override
-			public net.minecraft.server.packs.PackResources openFull(net.minecraft.server.packs.repository.PackLocationInfo info, Pack.Metadata metadata) {
+			public net.minecraft.server.packs.PackResources openFull(net.minecraft.server.packs.PackLocationInfo info, Pack.Metadata metadata) {
 				return resources;
 			}
 		};
