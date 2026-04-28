@@ -56,13 +56,11 @@ public class RatArrow extends AbstractArrow {
 	private void spawnRat(@Nullable Entity entity, BlockPos pos) {
 		if (this.pickup == Pickup.ALLOWED) {
 			TamedRat rat = new TamedRat(RatsEntityRegistry.TAMED_RAT.get(), this.level());
-			CompoundTag ratTag = new CompoundTag();
-			if (this.stack.getTag() != null && !this.stack.getTag().getCompound("Rat").isEmpty()) {
-				ratTag = this.stack.getTag().getCompound("Rat");
-			}
+			CompoundTag stored = this.stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
+			CompoundTag ratTag = stored.contains("Rat") ? stored.getCompound("Rat") : new CompoundTag();
 			rat.readAdditionalSaveData(ratTag);
 			if (!ratTag.getString("CustomName").isEmpty()) {
-				rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName")));
+				rat.setCustomName(Component.Serializer.fromJson(ratTag.getString("CustomName"), net.minecraft.core.RegistryAccess.EMPTY));
 			}
 			if (ratTag.isEmpty()) {
 				EventHooks.onFinalizeSpawn(rat, (ServerLevelAccessor) this.level(), this.level().getCurrentDifficultyAt(rat.blockPosition()), MobSpawnType.EVENT, null, null);

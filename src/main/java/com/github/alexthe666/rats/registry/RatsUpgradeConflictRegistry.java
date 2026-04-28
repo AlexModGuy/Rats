@@ -4,7 +4,9 @@ import com.github.alexthe666.rats.server.items.upgrades.BaseRatUpgradeItem;
 import com.github.alexthe666.rats.server.items.upgrades.interfaces.CombinedUpgrade;
 import com.google.common.collect.Maps;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -48,8 +50,8 @@ public class RatsUpgradeConflictRegistry {
 			return true;
 		Item[] arr = REGISTERED_CONFLICTS.get(newItem.getItem());
 		if (newItem.getItem() instanceof CombinedUpgrade combined) {
-			CompoundTag tag = newItem.getTag();
-			if (tag != null && tag.contains("Items", 9)) {
+			CompoundTag tag = newItem.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+			if (tag.contains("Items", 9)) {
 				NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
 				ContainerHelper.loadAllItems(tag, upgradeList, net.minecraft.core.RegistryAccess.EMPTY);
 				for (ItemStack selectedUpgrade : upgradeList) {
@@ -59,8 +61,8 @@ public class RatsUpgradeConflictRegistry {
 				}
 			}
 		} else if (existingItem.getItem() instanceof CombinedUpgrade combined) {
-			CompoundTag tag = existingItem.getTag();
-			if (tag != null && tag.contains("Items", 9)) {
+			CompoundTag tag = existingItem.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+			if (tag.contains("Items", 9)) {
 				NonNullList<ItemStack> upgradeList = NonNullList.withSize(combined.getUpgradeSlots(), ItemStack.EMPTY);
 				ContainerHelper.loadAllItems(tag, upgradeList, net.minecraft.core.RegistryAccess.EMPTY);
 				for (ItemStack selectedUpgrade : upgradeList) {
