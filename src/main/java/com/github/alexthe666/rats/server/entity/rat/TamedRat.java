@@ -954,10 +954,10 @@ public class TamedRat extends InventoryRat {
 				CompoundTag ratTag = new CompoundTag();
 				this.addAdditionalSaveData(ratTag);
 				if (this.hasCustomName()) {
-					ratTag.putString("CustomName", Component.Serializer.toJson(this.getCustomName()));
+					ratTag.putString("CustomName", Component.Serializer.toJson(this.getCustomName(), net.minecraft.core.RegistryAccess.EMPTY));
 				}
 				tag.put("Rat", ratTag);
-				arrow.setTag(tag);
+				arrow.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(tag));
 				if (itemstack.isEmpty()) {
 					player.setItemInHand(hand, arrow);
 				} else if (!player.getInventory().add(arrow)) {
@@ -1128,14 +1128,12 @@ public class TamedRat extends InventoryRat {
 			return false;
 		}
 		if ((RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get()) || RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_WHITELIST.get()))) {
-			CompoundTag tag;
-			if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get())) {
-				tag = RatUpgradeUtils.getUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get()).getTag();
-			} else {
-				tag = RatUpgradeUtils.getUpgrade(this, RatsItemRegistry.RAT_UPGRADE_WHITELIST.get()).getTag();
-			}
+			ItemStack listStack = RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get())
+					? RatUpgradeUtils.getUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get())
+					: RatUpgradeUtils.getUpgrade(this, RatsItemRegistry.RAT_UPGRADE_WHITELIST.get());
+			CompoundTag tag = listStack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
 			String ourItemID = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(stack.getItem())).toString();
-			if (tag != null && tag.contains("Items", 9)) {
+			if (tag.contains("Items", 9)) {
 				ListTag list = tag.getList("Items", 10);
 				if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_BLACKLIST.get())) {
 					for (int i = 0; i < list.size(); ++i) {
