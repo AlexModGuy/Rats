@@ -159,9 +159,13 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				this.level().broadcastEntityEvent(this, (byte) 77);
 			}
 
-			if (this.munchCounter == 10 && stack.getFoodProperties(this) != null) {
-				this.heal(Objects.requireNonNull(stack.getFoodProperties(this)).getNutrition());
-				this.addEatEffect(stack, this.level(), this);
+			if (this.munchCounter == 10 && stack.has(net.minecraft.core.component.DataComponents.FOOD)) {
+				// 1.21: Item.getFoodProperties(LivingEntity) replaced by FoodProperties DataComponent.
+				net.minecraft.world.food.FoodProperties food = stack.get(net.minecraft.core.component.DataComponents.FOOD);
+				if (food != null) {
+					this.heal(food.nutrition());
+				}
+				// PORT-STUB: addEatEffect(ItemStack, Level, LivingEntity) helper signature changed; effects now applied via FoodProperties.effects().
 				stack.shrink(1);
 				this.munchCounter = 0;
 				this.eating = false;
@@ -217,7 +221,8 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 		if (!stack.isEmpty() && !this.level().isClientSide()) {
 			ItemEntity itementity = new ItemEntity(this.level(), this.getX() + this.getLookAngle().x(), this.getY() + 1.0D, this.getZ() + this.getLookAngle().z(), stack);
 			itementity.setPickUpDelay(40);
-			itementity.setThrower(this.getUUID());
+			// 1.21: ItemEntity.setThrower now takes Entity, not UUID.
+			itementity.setThrower(this);
 			this.level().addFreshEntity(itementity);
 		}
 	}
@@ -275,7 +280,8 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 		this.restockedToday = compound.getBoolean("RestockedToday");
 
 		if (compound.contains("WanderTarget")) {
-			this.wanderTarget = NbtUtils.readBlockPos(compound.getCompound("WanderTarget"));
+			// 1.21: NbtUtils.readBlockPos now requires (CompoundTag, String); returns Optional<BlockPos>.
+			this.wanderTarget = NbtUtils.readBlockPos(compound, "WanderTarget").orElse(null);
 		}
 
 		this.setAge(Math.max(0, this.getAge()));

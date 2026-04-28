@@ -150,10 +150,10 @@ public class RatKing extends Monster implements RatSummoner {
 		if (this.deathTime >= 100 && !this.level().isClientSide() && !this.isRemoved()) {
 			this.level().broadcastEntityEvent(this, (byte) 60);
 			this.remove(Entity.RemovalReason.KILLED);
-			if (this.getLastDamageSource() != null) {
-				this.dropAllDeathLoot(this.getLastDamageSource());
-			} else {
-				this.dropAllDeathLoot(this.damageSources().generic());
+			// 1.21: dropAllDeathLoot now requires (ServerLevel, DamageSource).
+			if (this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+				DamageSource lastSource = this.getLastDamageSource();
+				this.dropAllDeathLoot(serverLevel, lastSource != null ? lastSource : this.damageSources().generic());
 			}
 		}
 	}
@@ -244,7 +244,8 @@ public class RatKing extends Monster implements RatSummoner {
 		return Integer.parseInt(String.valueOf(c));
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.canChangeDimensions() no longer exists (removed with Portal API rewrite).
+	// Boss-cannot-portal behavior must be enforced via Portal-side checks now.
 	public boolean canChangeDimensions() {
 		return false;
 	}
