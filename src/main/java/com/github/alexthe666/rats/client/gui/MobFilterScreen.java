@@ -140,7 +140,7 @@ public class MobFilterScreen extends Screen {
 				List<FormattedCharSequence> tooltipParts = new ArrayList<>();
 				tooltipParts.add(Component.literal(this.hoveredEntityName.toString()).getVisualOrderText());
 				this.visibleTags.forEach(key -> {
-					if (NeoForgeRegistries.ENTITY_TYPES.getValue(this.hoveredEntityName).is(key)) {
+					if (BuiltInRegistries.ENTITY_TYPE.getValue(this.hoveredEntityName).is(key)) {
 						tooltipParts.add(Component.literal("#" + key.location()).withStyle(ChatFormatting.DARK_PURPLE).getVisualOrderText());
 					}
 
@@ -297,14 +297,14 @@ public class MobFilterScreen extends Screen {
 		this.filteredMobs.clear();
 		this.visibleTags.clear();
 		if (this.selectedMobsShown.selected) {
-			this.selectedMobs.forEach(s -> this.filteredMobs.add(Pair.of(s, NeoForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.tryParse(s)).getDescription())));
+			this.selectedMobs.forEach(s -> this.filteredMobs.add(Pair.of(s, BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocation.tryParse(s)).getDescription())));
 		} else {
 			if (this.searchBar.getValue().startsWith("#")) {
 				String tagName = this.searchBar.getValue().substring(1).trim();
 				List<TagKey<EntityType<?>>> tags = BuiltInRegistries.ENTITY_TYPE.getTagNames().filter(key -> key.location().toString().contains(tagName)).toList();
 				if (!tags.isEmpty()) {
 					tags.forEach(key -> {
-						this.filteredMobs.addAll(this.allMobs.stream().filter(pair -> NeoForgeRegistries.ENTITY_TYPES.tags().getTag(key).contains(NeoForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.tryParse(pair.getFirst())))).toList());
+						this.filteredMobs.addAll(this.allMobs.stream().filter(pair -> BuiltInRegistries.ENTITY_TYPE.tags().getTag(key).contains(BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocation.tryParse(pair.getFirst())))).toList());
 						this.visibleTags.add(key);
 					});
 				}

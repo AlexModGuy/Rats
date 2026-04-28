@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.util;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.math.Axis;
@@ -28,13 +29,13 @@ public class EntityRenderingUtil {
 	@Nullable
 	public static LivingEntity fetchEntity(@Nullable ResourceLocation entityName, @Nullable Level level) {
 		if (entityName != null && level != null && !IGNORED_ENTITIES.contains(entityName)) {
-			EntityType<?> type = NeoForgeRegistries.ENTITY_TYPES.getValue(entityName);
+			EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getValue(entityName);
 			if (type != null) {
 				Entity entity;
 				if (type == EntityType.PLAYER) {
 					entity = Minecraft.getInstance().player;
 				} else {
-					entity = ENTITY_MAP.computeIfAbsent(entityName, t -> NeoForgeRegistries.ENTITY_TYPES.getValue(t).create(level));
+					entity = ENTITY_MAP.computeIfAbsent(entityName, t -> BuiltInRegistries.ENTITY_TYPE.getValue(t).create(level));
 				}
 				if (entity instanceof LivingEntity living) {
 					return living;

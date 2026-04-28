@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.registry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.block.*;
 import com.github.alexthe666.rats.server.items.RatsBlockItem;
@@ -19,18 +20,18 @@ import java.util.function.Supplier;
 
 public class RatsBlockRegistry {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(NeoForgeRegistries.BLOCKS, RatsMod.MODID);
+	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(BuiltInRegistries.BLOCK, RatsMod.MODID);
 
 	public static final DeferredHolder<Block, Block> BLOCK_OF_CHEESE = register("block_of_cheese", () -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_YELLOW).sound(SoundType.SLIME_BLOCK).strength(0.6F, 0.0F)));
-	public static final DeferredHolder<Block, Block> MILK_CAULDRON = register("cauldron_milk", () -> new MilkCauldronBlock(Block.Properties.copy(Blocks.CAULDRON)));
-	public static final DeferredHolder<Block, Block> CHEESE_CAULDRON = register("cauldron_cheese", () -> new CheeseCauldronBlock(Block.Properties.copy(Blocks.CAULDRON), RatsBlockRegistry.BLOCK_OF_CHEESE, RatsCauldronRegistry.CHEESE));
-	public static final DeferredHolder<Block, Block> BLUE_CHEESE_CAULDRON = register("cauldron_blue_cheese", () -> new CheeseCauldronBlock(Block.Properties.copy(Blocks.CAULDRON), RatsBlockRegistry.BLOCK_OF_BLUE_CHEESE, RatsCauldronRegistry.BLUE_CHEESE));
-	public static final DeferredHolder<Block, Block> NETHER_CHEESE_CAULDRON = register("cauldron_nether_cheese", () -> new CheeseCauldronBlock(Block.Properties.copy(Blocks.CAULDRON), RatsBlockRegistry.BLOCK_OF_NETHER_CHEESE, RatsCauldronRegistry.NETHER_CHEESE));
+	public static final DeferredHolder<Block, Block> MILK_CAULDRON = register("cauldron_milk", () -> new MilkCauldronBlock(Block.Properties.ofFullCopy(Blocks.CAULDRON)));
+	public static final DeferredHolder<Block, Block> CHEESE_CAULDRON = register("cauldron_cheese", () -> new CheeseCauldronBlock(Block.Properties.ofFullCopy(Blocks.CAULDRON), RatsBlockRegistry.BLOCK_OF_CHEESE, RatsCauldronRegistry.CHEESE));
+	public static final DeferredHolder<Block, Block> BLUE_CHEESE_CAULDRON = register("cauldron_blue_cheese", () -> new CheeseCauldronBlock(Block.Properties.ofFullCopy(Blocks.CAULDRON), RatsBlockRegistry.BLOCK_OF_BLUE_CHEESE, RatsCauldronRegistry.BLUE_CHEESE));
+	public static final DeferredHolder<Block, Block> NETHER_CHEESE_CAULDRON = register("cauldron_nether_cheese", () -> new CheeseCauldronBlock(Block.Properties.ofFullCopy(Blocks.CAULDRON), RatsBlockRegistry.BLOCK_OF_NETHER_CHEESE, RatsCauldronRegistry.NETHER_CHEESE));
 	public static final DeferredHolder<Block, Block> RAT_HOLE = BLOCKS.register("rat_hole", () -> new RatHoleBlock(Block.Properties.of().sound(SoundType.WOOD).noOcclusion().dynamicShape().strength(1.3F, 0.0F)));
 	public static final DeferredHolder<Block, Block> RAT_CAGE = register("rat_cage", () -> new RatCageBlock(Block.Properties.of().sound(SoundType.METAL).noOcclusion().strength(2.0F, 0.0F)));
-	public static final DeferredHolder<Block, Block> RAT_CAGE_DECORATED = BLOCKS.register("rat_cage_decorated", () -> new RatCageDecoratedBlock(Block.Properties.copy(RAT_CAGE.get())));
-	public static final DeferredHolder<Block, Block> RAT_CAGE_BREEDING_LANTERN = BLOCKS.register("rat_cage_breeding_lantern", () -> new RatCageBreedingLanternBlock(Block.Properties.copy(RAT_CAGE.get())));
-	public static final DeferredHolder<Block, Block> RAT_CAGE_WHEEL = BLOCKS.register("rat_cage_wheel", () -> new RatCageWheelBlock(Block.Properties.copy(RAT_CAGE.get())));
+	public static final DeferredHolder<Block, Block> RAT_CAGE_DECORATED = BLOCKS.register("rat_cage_decorated", () -> new RatCageDecoratedBlock(Block.Properties.ofFullCopy(RAT_CAGE.get())));
+	public static final DeferredHolder<Block, Block> RAT_CAGE_BREEDING_LANTERN = BLOCKS.register("rat_cage_breeding_lantern", () -> new RatCageBreedingLanternBlock(Block.Properties.ofFullCopy(RAT_CAGE.get())));
+	public static final DeferredHolder<Block, Block> RAT_CAGE_WHEEL = BLOCKS.register("rat_cage_wheel", () -> new RatCageWheelBlock(Block.Properties.ofFullCopy(RAT_CAGE.get())));
 	public static final DeferredHolder<Block, Block> FISH_BARREL = register("fish_barrel", () -> new Block(BlockBehaviour.Properties.of().strength(2.0F, 10.0F).sound(SoundType.WOOD)));
 	public static final DeferredHolder<Block, Block> RAT_CRAFTING_TABLE = register("rat_crafting_table", () -> new RatCraftingTableBlock(Block.Properties.of().sound(SoundType.SLIME_BLOCK).strength(2.0F, 0.0F)));
 	public static final DeferredHolder<Block, Block> AUTO_CURDLER = register("auto_curdler", () -> new AutoCurdlerBlock(Block.Properties.of().sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion().strength(2.0F, 0.0F)));
@@ -39,10 +40,10 @@ public class RatsBlockRegistry {
 	public static final DeferredHolder<Block, Block> RAT_UPGRADE_BLOCK = register("rat_upgrade_block", () -> new RatUpgradeBlock(BlockBehaviour.Properties.of().sound(SoundType.SLIME_BLOCK).strength(0.6F, 0.0F)));
 	public static final DeferredHolder<Block, Block> DYE_SPONGE = register("dye_sponge", () -> new DyeSpongeBlock(Block.Properties.of().strength(0.6F, 0.0F).sound(SoundType.CROP)));
 	public static final DeferredHolder<Block, Block> GARBAGE_PILE = register("garbage_pile", () -> new GarbageBlock(Block.Properties.of().sound(SoundType.GRAVEL).strength(0.7F, 1.0F).randomTicks(), 1.0F));
-	public static final DeferredHolder<Block, Block> CURSED_GARBAGE = register("cursed_garbage", () -> new CursedGarbageBlock(Block.Properties.copy(GARBAGE_PILE.get())));
-	public static final DeferredHolder<Block, Block> COMPRESSED_GARBAGE = register("compressed_garbage", () -> new GarbageBlock(Block.Properties.copy(GARBAGE_PILE.get()), 2.0F));
-	public static final DeferredHolder<Block, Block> PURIFIED_GARBAGE = register("purified_garbage", () -> new PurifiedGarbageBlock(Block.Properties.copy(GARBAGE_PILE.get())));
-	public static final DeferredHolder<Block, Block> PIED_GARBAGE = register("pied_garbage", () -> new PiedGarbageBlock(Block.Properties.copy(GARBAGE_PILE.get())));
+	public static final DeferredHolder<Block, Block> CURSED_GARBAGE = register("cursed_garbage", () -> new CursedGarbageBlock(Block.Properties.ofFullCopy(GARBAGE_PILE.get())));
+	public static final DeferredHolder<Block, Block> COMPRESSED_GARBAGE = register("compressed_garbage", () -> new GarbageBlock(Block.Properties.ofFullCopy(GARBAGE_PILE.get()), 2.0F));
+	public static final DeferredHolder<Block, Block> PURIFIED_GARBAGE = register("purified_garbage", () -> new PurifiedGarbageBlock(Block.Properties.ofFullCopy(GARBAGE_PILE.get())));
+	public static final DeferredHolder<Block, Block> PIED_GARBAGE = register("pied_garbage", () -> new PiedGarbageBlock(Block.Properties.ofFullCopy(GARBAGE_PILE.get())));
 	public static final DeferredHolder<Block, Block> MARBLED_CHEESE_RAW = register("marbled_cheese_raw", () -> new Block(Block.Properties.of().requiresCorrectToolForDrops().strength(2.0F, 10.0F).sound(SoundType.STONE)));
 	public static final DeferredHolder<Block, Block> JACK_O_RATERN = register("jack_o_ratern", () -> new SetupHorizontalBlock(Block.Properties.of().sound(SoundType.WOOD).strength(1.0F, 0).lightLevel(value -> 15)));
 	public static final DeferredHolder<Block, Block> BLOCK_OF_BLUE_CHEESE = register("block_of_blue_cheese", () -> new Block(Block.Properties.of().strength(0.6F, 0.0F).sound(SoundType.SLIME_BLOCK)));

@@ -49,7 +49,7 @@ public class DemonRatUpgradeItem extends StatBoostingRatUpgradeItem implements G
 
 	@Override
 	public void afterHit(TamedRat rat, LivingEntity target) {
-		if (!target.fireImmune()) target.setSecondsOnFire(10);
+		if (!target.fireImmune()) target.igniteForSeconds(10);
 	}
 
 	@Override

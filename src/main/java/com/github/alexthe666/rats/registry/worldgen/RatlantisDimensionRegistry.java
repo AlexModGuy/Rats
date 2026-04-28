@@ -4,7 +4,7 @@ import com.github.alexthe666.rats.RatsMod;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -134,15 +134,15 @@ public class RatlantisDimensionRegistry {
 		);
 	}
 
-	public static void bootstrapNoise(BootstapContext<NoiseGeneratorSettings> context) {
+	public static void bootstrapNoise(BootstrapContext<NoiseGeneratorSettings> context) {
 		context.register(RATLANTIS_NOISE_GEN, ratlantisNoise(context.lookup(Registries.DENSITY_FUNCTION), context.lookup(Registries.NOISE)));
 	}
 
-	public static void bootstrapType(BootstapContext<DimensionType> context) {
+	public static void bootstrapType(BootstrapContext<DimensionType> context) {
 		context.register(RATLANTIS_DIM_TYPE, ratlantisType());
 	}
 
-	public static void bootstrapCarver(BootstapContext<ConfiguredWorldCarver<?>> context) {
+	public static void bootstrapCarver(BootstrapContext<ConfiguredWorldCarver<?>> context) {
 		context.register(RATLANTIS_CAVES, RatlantisFeatureRegistry.RATLANTIS_CAVES.get().configured(new CaveCarverConfiguration(
 				0.15F,
 				UniformHeight.of(VerticalAnchor.aboveBottom(8), VerticalAnchor.absolute(180)),
@@ -155,7 +155,7 @@ public class RatlantisDimensionRegistry {
 				UniformFloat.of(-1.0F, -0.4F))));
 	}
 
-	public static void bootstrapLevelStem(BootstapContext<LevelStem> context) {
+	public static void bootstrapLevelStem(BootstrapContext<LevelStem> context) {
 		HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
 		HolderGetter<DimensionType> dimTypes = context.lookup(Registries.DIMENSION_TYPE);
 		HolderGetter<NoiseGeneratorSettings> noiseGenSettings = context.lookup(Registries.NOISE_SETTINGS);

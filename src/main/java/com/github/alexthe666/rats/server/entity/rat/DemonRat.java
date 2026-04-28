@@ -85,7 +85,7 @@ public class DemonRat extends AbstractRat implements Enemy {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (this.getRandom().nextInt(3) == 0) {
-			entity.setSecondsOnFire(5);
+			entity.igniteForSeconds(5);
 		}
 		return super.doHurtTarget(entity);
 	}

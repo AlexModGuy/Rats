@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.registry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.recipes.ArcheologistRecipe;
 import com.github.alexthe666.rats.server.recipes.ChefRecipe;
@@ -15,8 +16,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RatsRecipeRegistry {
 
-	public static final DeferredRegister<RecipeType<?>> RECIPES = DeferredRegister.create(NeoForgeRegistries.RECIPE_TYPES, RatsMod.MODID);
-	public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.RECIPE_SERIALIZERS, RatsMod.MODID);
+	public static final DeferredRegister<RecipeType<?>> RECIPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, RatsMod.MODID);
+	public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, RatsMod.MODID);
 
 	public static final DeferredHolder<RecipeType<?>, RecipeType<ArcheologistRecipe>> ARCHEOLOGIST = RECIPES.register("archeologist", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "archeologist")));
 	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArcheologistRecipe>> ARCHEOLOGIST_SERIALIZER = SERIALIZERS.register("archeologist", () -> new RatsRecipeSerializer<>(ArcheologistRecipe::new));

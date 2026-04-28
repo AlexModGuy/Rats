@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.recipes;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +30,7 @@ public class RatsRecipeSerializer<T extends BaseRatRecipe> implements RecipeSeri
 
 		String s1 = GsonHelper.getAsString(object, "result");
 		int i = GsonHelper.getAsInt(object, "count");
-		ItemStack itemstack = new ItemStack(NeoForgeRegistries.ITEMS.getValue(ResourceLocation.parse(s1)), i);
+		ItemStack itemstack = new ItemStack(BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(s1)), i);
 		return this.factory.create(id, s, ingredient, itemstack);
 	}
 

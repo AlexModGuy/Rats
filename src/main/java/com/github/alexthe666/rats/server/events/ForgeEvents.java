@@ -176,7 +176,7 @@ public class ForgeEvents {
 	public static void hackySetFireFix(LivingAttackEvent event) {
 		if (!event.getEntity().fireImmune()) {
 			if (event.getSource().getEntity() instanceof TamedRat rat && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_DEMON.get())) {
-				event.getEntity().setSecondsOnFire(1);
+				event.getEntity().igniteForSeconds(1);
 			}
 		}
 	}

@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.registry.worldgen;
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -27,7 +27,7 @@ public class RatlantisPlacedFeatureRegistry {
 		return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 
-	public static void bootstrap(BootstapContext<PlacedFeature> context) {
+	public static void bootstrap(BootstrapContext<PlacedFeature> context) {
 		HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
 		context.register(RATGLOVE_FLOWERS, new PlacedFeature(features.getOrThrow(RatlantisConfiguredFeatureRegistry.RATGLOVE_FLOWERS), List.of(RarityFilter.onAverageOnceEvery(20), CountPlacement.of(5), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome())));
 		context.register(MARBLE_PILE, new PlacedFeature(features.getOrThrow(RatlantisConfiguredFeatureRegistry.MARBLE_PILE), List.of(RarityFilter.onAverageOnceEvery(25), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, BiomeFilter.biome())));

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.registry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.misc.*;
 import com.github.alexthe666.rats.server.entity.monster.*;
@@ -20,7 +21,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RatlantisEntityRegistry {
 
-	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(NeoForgeRegistries.ENTITY_TYPES, RatsMod.MODID);
+	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, RatsMod.MODID);
 
 	public static final DeferredHolder<EntityType<?>, EntityType<RatlanteanSpirit>> RATLANTEAN_SPIRIT = registerEntity("ratlantean_spirit", EntityType.Builder.of(RatlanteanSpirit::new, MobCategory.MONSTER).fireImmune().sized(1.25F, 1.25F), 0XEDBD00, 0XFFE8AF);
 	public static final DeferredHolder<EntityType<?>, EntityType<RatlanteanFlame>> RATLANTEAN_FLAME = registerEntityNoEgg("ratlantean_spirit_flame", EntityType.Builder.<RatlanteanFlame>of(RatlanteanFlame::new, MobCategory.MISC).fireImmune().sized(0.5F, 0.5F));

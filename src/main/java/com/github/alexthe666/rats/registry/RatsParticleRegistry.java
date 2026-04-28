@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.registry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -8,7 +9,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RatsParticleRegistry {
-	public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(NeoForgeRegistries.PARTICLE_TYPES, RatsMod.MODID);
+	public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, RatsMod.MODID);
 
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> BLACK_DEATH = PARTICLES.register("black_death", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> DUTCHRAT_SMOKE = PARTICLES.register("dutchrat_smoke", () -> new SimpleParticleType(true));

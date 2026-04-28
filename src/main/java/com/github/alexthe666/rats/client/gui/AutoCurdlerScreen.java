@@ -71,10 +71,10 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 				int maskTop = 16 - height;
 				float vLocalDif = vDif * maskTop / 16;
 
-				vertexBuffer.vertex(matrix4f, x, y + 16, 0).uv(uMin + uLocalDif, vMax).endVertex();
-				vertexBuffer.vertex(matrix4f, shiftedX, y + 16, 0).uv(uMax, vMax).endVertex();
-				vertexBuffer.vertex(matrix4f, shiftedX, y + maskTop, 0).uv(uMax, vMin + vLocalDif).endVertex();
-				vertexBuffer.vertex(matrix4f, x, y + maskTop, 0).uv(uMin + uLocalDif, vMin + vLocalDif).endVertex();
+				vertexBuffer.addVertex(matrix4f, x, y + 16, 0).setUv(uMin + uLocalDif, vMax);
+				vertexBuffer.addVertex(matrix4f, shiftedX, y + 16, 0).setUv(uMax, vMax);
+				vertexBuffer.addVertex(matrix4f, shiftedX, y + maskTop, 0).setUv(uMax, vMin + vLocalDif);
+				vertexBuffer.addVertex(matrix4f, x, y + maskTop, 0).setUv(uMin + uLocalDif, vMin + vLocalDif);
 			}
 		}
 		BufferUploader.drawWithShader(vertexBuffer.end());

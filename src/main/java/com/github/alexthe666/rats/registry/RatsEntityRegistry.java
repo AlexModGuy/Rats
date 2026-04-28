@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.registry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.entity.misc.PlagueDoctor;
 import com.github.alexthe666.rats.server.entity.monster.PiedPiper;
@@ -28,7 +29,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RatsEntityRegistry {
 
-	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(NeoForgeRegistries.ENTITY_TYPES, RatsMod.MODID);
+	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, RatsMod.MODID);
 
 	public static final DeferredHolder<EntityType<?>, EntityType<Rat>> RAT = registerEntity("rat", EntityType.Builder.of(Rat::new, RatsMod.RATS).canSpawnFarFromPlayer().sized(0.49F, 0.49F), 0x30333E, 0xDAABA1);
 	public static final DeferredHolder<EntityType<?>, EntityType<TamedRat>> TAMED_RAT = registerEntityNoEgg("tamed_rat", EntityType.Builder.of(TamedRat::new, RatsMod.RATS).sized(0.49F, 0.49F));

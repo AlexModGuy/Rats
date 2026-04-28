@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.registry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +12,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RatsSoundRegistry {
 
-	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(NeoForgeRegistries.SOUND_EVENTS, RatsMod.MODID);
+	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, RatsMod.MODID);
 
 	public static final DeferredHolder<SoundEvent, SoundEvent> AIR_RAID_SIREN = createSoundEvent("block.rats.air_raid.siren");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BIPLANE_DEATH = createSoundEvent("entity.rats.biplane.death");

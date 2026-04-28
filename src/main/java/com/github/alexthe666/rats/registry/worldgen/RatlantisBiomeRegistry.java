@@ -7,7 +7,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +33,7 @@ public class RatlantisBiomeRegistry {
 		return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 
-	public static void bootstrap(BootstapContext<Biome> context) {
+	public static void bootstrap(BootstrapContext<Biome> context) {
 		HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
 		HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
 

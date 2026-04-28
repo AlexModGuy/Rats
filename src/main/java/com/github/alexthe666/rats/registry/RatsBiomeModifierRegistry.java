@@ -3,7 +3,7 @@ package com.github.alexthe666.rats.registry;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.data.tags.RatsBiomeTags;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -16,7 +16,7 @@ public class RatsBiomeModifierRegistry {
 	private static final ResourceKey<BiomeModifier> ADD_PIPER_SPAWNS = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "add_piper_spawns"));
 	private static final ResourceKey<BiomeModifier> ADD_DEMON_RAT_SPAWNS = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "add_demon_rat_spawns"));
 
-	public static void bootstrap(BootstapContext<BiomeModifier> context) {
+	public static void bootstrap(BootstrapContext<BiomeModifier> context) {
 		context.register(ADD_RAT_SPAWNS,
 				ForgeBiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(
 						context.lookup(Registries.BIOME).getOrThrow(RatsBiomeTags.RAT_SPAWN_BIOMES),

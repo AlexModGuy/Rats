@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.block;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.data.tags.RatsBlockTags;
 import com.github.alexthe666.rats.registry.RatsBlockEntityRegistry;
 import com.github.alexthe666.rats.registry.RatsBlockRegistry;
@@ -108,7 +109,7 @@ public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHo
 					level.playSound(null, pos, RatsSoundRegistry.TRASH_CAN_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 					return InteractionResult.sidedSuccess(level.isClientSide());
 				} else if (state.getValue(LEVEL) < 7 && stack.getItem() instanceof BlockItem bi) {
-					if (Objects.requireNonNull(NeoForgeRegistries.BLOCKS.tags()).getTag(RatsBlockTags.TRASH_CAN_BLACKLIST).contains(bi.getBlock())) {
+					if (Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTag(RatsBlockTags.TRASH_CAN_BLACKLIST).contains(bi.getBlock())) {
 						player.displayClientMessage(Component.literal("This block can't be used here.").withStyle(ChatFormatting.RED), true);
 						return InteractionResult.CONSUME;
 					}

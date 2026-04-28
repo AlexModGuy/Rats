@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.registry.RatsToolMaterialRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -43,7 +44,7 @@ public class RatlantisToolItem {
 
 		@Override
 		public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
-			if (Objects.requireNonNull(NeoForgeRegistries.BLOCKS.tags()).getTag(BlockTags.BASE_STONE_OVERWORLD).contains(state.getBlock())) {
+			if (Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTag(BlockTags.BASE_STONE_OVERWORLD).contains(state.getBlock())) {
 				if (!level.isClientSide() && state.getDestroySpeed(level, pos) != 0.0F) {
 					stack.hurtAndBreak(0, living, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
 				}
@@ -63,7 +64,7 @@ public class RatlantisToolItem {
 
 		@Override
 		public float getDestroySpeed(ItemStack stack, BlockState state) {
-			if (Objects.requireNonNull(NeoForgeRegistries.BLOCKS.tags()).getTag(BlockTags.LEAVES).contains(state.getBlock())) {
+			if (Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTag(BlockTags.LEAVES).contains(state.getBlock())) {
 				return this.speed * 1.5F;
 			}
 			return super.getDestroySpeed(stack, state);
@@ -77,7 +78,7 @@ public class RatlantisToolItem {
 
 		@Override
 		public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
-			if (Objects.requireNonNull(NeoForgeRegistries.BLOCKS.tags()).getTag(BlockTags.LEAVES).contains(state.getBlock())) {
+			if (Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTag(BlockTags.LEAVES).contains(state.getBlock())) {
 				if (!level.isClientSide() && state.getDestroySpeed(level, pos) != 0.0F) {
 					stack.hurtAndBreak(0, living, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
 				}
@@ -95,7 +96,7 @@ public class RatlantisToolItem {
 
 		@Override
 		public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
-			if (Objects.requireNonNull(NeoForgeRegistries.BLOCKS.tags()).getTag(BlockTags.SAND).contains(state.getBlock())) {
+			if (Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTag(BlockTags.SAND).contains(state.getBlock())) {
 				if (!level.isClientSide() && state.getDestroySpeed(level, pos) != 0.0F) {
 					stack.hurtAndBreak(0, living, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
 				}

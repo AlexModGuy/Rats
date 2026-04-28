@@ -392,8 +392,8 @@ public class ForgeClientEvents {
 							float pdz = (float) (node.pos().getZ() - prev.pos().getZ());
 							buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 							Matrix4f matrix4f = stack.last().pose();
-							buffer.vertex(matrix4f, pdx, pdy, pdz).color(r, g, b, 1.0F).endVertex();
-							buffer.vertex(matrix4f, 0.0F, 0.0F, 0.0F).color(r, g, b, 1.0F).endVertex();
+							buffer.addVertex(matrix4f, pdx, pdy, pdz).setColor(r, g, b, 1.0F);
+							buffer.addVertex(matrix4f, 0.0F, 0.0F, 0.0F).setColor(r, g, b, 1.0F);
 							tessellator.end();
 							stack.popPose();
 						}

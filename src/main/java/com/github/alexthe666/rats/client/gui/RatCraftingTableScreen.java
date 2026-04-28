@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.gui;
 
+import net.neoforged.neoforge.network.PacketDistributor;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.inventory.RatCraftingTableMenu;
 import com.github.alexthe666.rats.server.message.CycleRatRecipePacket;

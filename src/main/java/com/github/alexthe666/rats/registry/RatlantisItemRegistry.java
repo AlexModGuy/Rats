@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.registry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.data.tags.RatsBannerPatternTags;
 import com.github.alexthe666.rats.server.entity.misc.PiratWoodBoat;
@@ -15,7 +16,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RatlantisItemRegistry {
 
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(NeoForgeRegistries.ITEMS, RatsMod.MODID);
+	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, RatsMod.MODID);
 
 	public static final DeferredHolder<Item, Item> RAS_BANNER_PATTERN = ITEMS.register("rat_and_sickle_banner_pattern", () -> new BannerPatternItem(RatsBannerPatternTags.RAS_BANNER_PATTERN, new Item.Properties().stacksTo(1)));
 	public static final DeferredHolder<Item, Item> RATLANTIS_RAT_SKULL = ITEMS.register("ratlantis_rat_skull", () -> new Item(new Item.Properties().rarity(RatsMod.RATLANTIS_SPECIAL).fireResistant()));
@@ -51,7 +52,7 @@ public class RatlantisItemRegistry {
 	public static final DeferredHolder<Item, Item> DUTCHRAT_WHEEL = ITEMS.register("dutchrat_wheel", () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));
 	public static final DeferredHolder<Item, Item> MILITARY_HAT = ITEMS.register("military_hat", () -> new HatItem(new Item.Properties().stacksTo(1), RatsArmorMaterialRegistry.GENERIC_HAT, 0));
 	public static final DeferredHolder<Item, Item> BIPLANE_WING = ITEMS.register("biplane_wing", () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));
-	public static final DeferredHolder<Item, Item> RATFISH = ITEMS.register("ratfish", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.35F).build())));
+	public static final DeferredHolder<Item, Item> RATFISH = ITEMS.register("ratfish", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.35F).build())));
 	public static final DeferredHolder<Item, Item> RATFISH_BUCKET = ITEMS.register("ratfish_bucket", () -> new MobBucketItem(RatlantisEntityRegistry.RATFISH, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 	public static final DeferredHolder<Item, Item> RATBOT_BARREL = ITEMS.register("ratbot_barrel", () -> new Item(new Item.Properties()));
 	public static final DeferredHolder<Item, Item> CHARGED_RATBOT_BARREL = ITEMS.register("charged_ratbot_barrel", () -> new Item(new Item.Properties()));

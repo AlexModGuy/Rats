@@ -64,7 +64,7 @@ public class RatDragonFire extends Fireball {
 	protected void onHitEntity(EntityHitResult result) {
 		Entity entity = result.getEntity();
 		if (!entity.fireImmune()) {
-			entity.setSecondsOnFire(10);
+			entity.igniteForSeconds(10);
 			boolean flag = entity.hurt(this.damageSources().fireball(this, this.getOwner()), 5.0F);
 			if (flag && this.getOwner() instanceof LivingEntity living) {
 				this.doEnchantDamageEffects(living, entity);

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.registry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.server.block.RatTrapBlock;
 import com.github.alexthe666.rats.server.block.RatlanteanAutomatonHeadBlock;
 import com.github.alexthe666.rats.server.block.entity.RatTrapBlockEntity;
@@ -109,7 +110,7 @@ public class RatsDispenserRegistry {
 			}
 		});
 
-		for (Item item : NeoForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof DyeItem).toList()) {
+		for (Item item : BuiltInRegistries.ITEM.getValues().stream().filter(item -> item instanceof DyeItem).toList()) {
 			DispenserBlock.registerBehavior(item, new OptionalDispenseItemBehavior() {
 				@Override
 				protected ItemStack execute(BlockSource source, ItemStack stack) {

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.entity.misc;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.RatConfig;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.data.tags.RatsEntityTags;
@@ -487,7 +488,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				}
 				return InteractionResult.SUCCESS;
 			}
-		} else if (!itemstack.is(Items.VILLAGER_SPAWN_EGG) && !itemstack.is(NeoForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_doctor_spawn_egg"))) &&
+		} else if (!itemstack.is(Items.VILLAGER_SPAWN_EGG) && !itemstack.is(BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "plague_doctor_spawn_egg"))) &&
 				this.isAlive() && !this.isTrading() && !this.isBaby()) {
 			if (hand == InteractionHand.MAIN_HAND) {
 				player.awardStat(Stats.TALKED_TO_VILLAGER);

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.registry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.block.entity.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -9,7 +10,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RatsBlockEntityRegistry {
 
-	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(NeoForgeRegistries.BLOCK_ENTITY_TYPES, RatsMod.MODID);
+	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, RatsMod.MODID);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RatHoleBlockEntity>> RAT_HOLE = BLOCK_ENTITIES.register("rat_hole", () -> BlockEntityType.Builder.of(RatHoleBlockEntity::new, RatsBlockRegistry.RAT_HOLE.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RatTrapBlockEntity>> RAT_TRAP = BLOCK_ENTITIES.register("rat_trap", () -> BlockEntityType.Builder.of(RatTrapBlockEntity::new, RatsBlockRegistry.RAT_TRAP.get()).build(null));

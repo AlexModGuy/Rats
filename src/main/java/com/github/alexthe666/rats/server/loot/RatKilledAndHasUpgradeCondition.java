@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.loot;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.registry.RatsLootRegistry;
 import com.github.alexthe666.rats.server.entity.mount.RatMountBase;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
@@ -39,13 +40,13 @@ public record RatKilledAndHasUpgradeCondition(Item upgrade) implements LootItemC
 
 	public static class RatSerializer implements Serializer<RatKilledAndHasUpgradeCondition> {
 		public void serialize(JsonObject object, RatKilledAndHasUpgradeCondition condition, JsonSerializationContext context) {
-			object.addProperty("upgrade", NeoForgeRegistries.ITEMS.getKey(condition.upgrade()).toString());
+			object.addProperty("upgrade", BuiltInRegistries.ITEM.getKey(condition.upgrade()).toString());
 		}
 
 		public RatKilledAndHasUpgradeCondition deserialize(JsonObject object, JsonDeserializationContext context) {
 			Item upgrade;
 			try {
-				upgrade = NeoForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "upgrade")));
+				upgrade = BuiltInRegistries.ITEM.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "upgrade")));
 				return new RatKilledAndHasUpgradeCondition(upgrade);
 			} catch (Exception e) {
 				throw new RuntimeException(e);

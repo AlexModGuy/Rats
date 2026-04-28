@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.loot;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -20,7 +21,7 @@ public class GenericAddItemLootModifier extends LootModifier {
 
 	public static final Codec<GenericAddItemLootModifier> CODEC = RecordCodecBuilder.create(inst -> LootModifier.codecStart(inst).and(
 					inst.group(
-							Codec.unboundedMap(NeoForgeRegistries.ITEMS.getCodec(), Codec.INT).fieldOf("items").forGetter(m -> m.items),
+							Codec.unboundedMap(BuiltInRegistries.ITEM.getCodec(), Codec.INT).fieldOf("items").forGetter(m -> m.items),
 							Codec.BOOL.fieldOf("replacePool").orElse(false).forGetter(m -> m.makeNewPool)))
 			.apply(inst, GenericAddItemLootModifier::new));
 

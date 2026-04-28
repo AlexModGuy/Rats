@@ -64,7 +64,7 @@ public class RatlantisBowItem extends BowItem {
 						}
 
 						if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0) {
-							arrow.setSecondsOnFire(100);
+							arrow.igniteForSeconds(100);
 						}
 
 						stack.hurtAndBreak(1, player, player.getUsedItemHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? net.minecraft.world.entity.EquipmentSlot.MAINHAND : net.minecraft.world.entity.EquipmentSlot.OFFHAND);

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.registry.*;
 import com.github.alexthe666.rats.registry.worldgen.RatlantisFeatureRegistry;
 import com.github.alexthe666.rats.server.message.RatsNetworkHandler;
@@ -244,7 +245,7 @@ public class RatsMod {
 	public static List<Pair<String, Component>> getCachedMobList(@Nullable Level level) {
 		if (level != null && MOB_CACHE.isEmpty()) {
 			List<Pair<String, Component>> unsortedCache = new ArrayList<>();
-			for (var entry : NeoForgeRegistries.ENTITY_TYPES.getEntries()) {
+			for (var entry : BuiltInRegistries.ENTITY_TYPE.getEntries()) {
 				try {
 					Entity entity = entry.getValue().create(level);
 					if (entry.getValue() == EntityType.PLAYER || entity instanceof Mob) {

@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.registry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.server.inventory.*;
 import net.minecraft.world.flag.FeatureFlags;
@@ -11,7 +12,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RatsMenuRegistry {
 
-	public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(NeoForgeRegistries.MENU_TYPES, RatsMod.MODID);
+	public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(BuiltInRegistries.MENU, RatsMod.MODID);
 
 	public static final DeferredHolder<MenuType<?>, MenuType<RatMenu>> RAT_CONTAINER = MENUS.register("rat_container", () -> new MenuType<>(RatMenu::new, FeatureFlags.REGISTRY.allFlags()));
 	public static final DeferredHolder<MenuType<?>, MenuType<RatCraftingTableMenu>> RAT_CRAFTING_TABLE_CONTAINER = MENUS.register("rat_crafting_table_container", () -> IForgeMenuType.create(RatCraftingTableMenu::new));

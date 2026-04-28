@@ -6,7 +6,7 @@ import com.github.alexthe666.rats.server.world.RatlantisRuinConfiguration;
 import com.github.alexthe666.rats.server.world.ThickBranchingTrunkPlacer;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -53,7 +53,7 @@ public class RatlantisConfiguredFeatureRegistry {
 			new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(5), 0.25F, 0.5F, 0.5F, 0.75F),
 			new TwoLayersFeatureSize(1, 0, 2)).ignoreVines().build();
 
-	public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
+	public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 		HolderGetter<StructureProcessorList> processors = context.lookup(Registries.PROCESSOR_LIST);
 		context.register(GHOST_PIRAT_TREE, new ConfiguredFeature<>(Feature.TREE, GHOST_PIRAT_TREE_CONFIG));
 		context.register(LARGE_GHOST_PIRAT_TREE, new ConfiguredFeature<>(Feature.TREE, LARGE_GHOST_PIRAT_TREE_CONFIG));

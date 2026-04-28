@@ -25,10 +25,10 @@ public class RatsIconRenderUtil {
 			RenderSystem.setShaderTexture(0, icon);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-			buffer.vertex(matrix4f, -0.5F, -0.5F, 0).uv(1.0F, 1.0F).endVertex();
-			buffer.vertex(matrix4f, -0.5F, 0.5F, 0).uv(1.0F, 0.0F).endVertex();
-			buffer.vertex(matrix4f, 0.5F, 0.5F, 0).uv(0.0F, 0.0F).endVertex();
-			buffer.vertex(matrix4f, 0.5F, -0.5F, 0).uv(0.0F, 1.0F).endVertex();
+			buffer.addVertex(matrix4f, -0.5F, -0.5F, 0).setUv(1.0F, 1.0F);
+			buffer.addVertex(matrix4f, -0.5F, 0.5F, 0).setUv(1.0F, 0.0F);
+			buffer.addVertex(matrix4f, 0.5F, 0.5F, 0).setUv(0.0F, 0.0F);
+			buffer.addVertex(matrix4f, 0.5F, -0.5F, 0).setUv(0.0F, 1.0F);
 			tesselator.end();
 			RenderSystem.disableBlend();
 			RenderSystem.depthMask(true);
@@ -68,40 +68,40 @@ public class RatsIconRenderUtil {
 		float minZ = (float) boundingBox.minZ * 0.125F;
 		buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL);
 		//north
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).uv(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).uv(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).uv(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).uv(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, -1.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).setUv(f3 + minX - maxX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(0.0F, 0.0F, -1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).setUv(f3 + maxX - minX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(0.0F, 0.0F, -1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).setUv(f3 + maxX - minX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(0.0F, 0.0F, -1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).setUv(f3 + minX - maxX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(0.0F, 0.0F, -1.0F);
 
 		//south
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).uv(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).uv(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).uv(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).uv(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).setUv(f3 + minX - maxX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(0.0F, 0.0F, 1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(0.0F, 0.0F, 1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(0.0F, 0.0F, 1.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setUv(f3 + minX - maxX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(0.0F, 0.0F, 1.0F);
 
 		//bottom
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).uv(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).uv(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).uv(f3 + maxX - minX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).uv(f3 + minX - maxX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, -1.0F, 0.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).setUv(f3 + minX - maxX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(0.0F, -1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(0.0F, -1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + maxZ - minZ).setColor(255, 255, 255, 255).setNormal(0.0F, -1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).setUv(f3 + minX - maxX, f3 + maxZ - minZ).setColor(255, 255, 255, 255).setNormal(0.0F, -1.0F, 0.0F);
 
 		//top
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).uv(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).uv(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).uv(f3 + maxX - minX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).uv(f3 + minX - maxX, f3 + maxZ - minZ).color(255, 255, 255, 255).normal(0.0F, 1.0F, 0.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setUv(f3 + minX - maxX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(0.0F, 1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(0.0F, 1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).setUv(f3 + maxX - minX, f3 + maxZ - minZ).setColor(255, 255, 255, 255).setNormal(0.0F, 1.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).setUv(f3 + minX - maxX, f3 + maxZ - minZ).setColor(255, 255, 255, 255).setNormal(0.0F, 1.0F, 0.0F);
 
 		//west
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).uv(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).uv(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).uv(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).uv(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(-1.0F, 0.0F, 0.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setUv(f3 + minX - maxX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(-1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).setUv(f3 + minX - maxX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(-1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).setUv(f3 + maxX - minX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(-1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(-1.0F, 0.0F, 0.0F);
 
 		//east
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).uv(f3 + minX - maxX, f3 + minY - maxY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).uv(f3 + minX - maxX, f3 + maxY - minY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).uv(f3 + maxX - minX, f3 + maxY - minY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
-		vertexbuffer.vertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).uv(f3 + maxX - minX, f3 + minY - maxY).color(255, 255, 255, 255).normal(1.0F, 0.0F, 0.0F).endVertex();
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).setUv(f3 + minX - maxX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).setUv(f3 + minX - maxX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + maxY - minY).setColor(255, 255, 255, 255).setNormal(1.0F, 0.0F, 0.0F);
+		vertexbuffer.addVertex(matrix4f, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).setUv(f3 + maxX - minX, f3 + minY - maxY).setColor(255, 255, 255, 255).setNormal(1.0F, 0.0F, 0.0F);
 		tessellator.end();
 	}
 }

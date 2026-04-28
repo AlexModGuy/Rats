@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.client.gui;
 
+import net.neoforged.neoforge.network.PacketDistributor;
 import com.github.alexthe666.rats.client.util.EntityRenderingUtil;
 import com.github.alexthe666.rats.registry.RatsItemRegistry;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;

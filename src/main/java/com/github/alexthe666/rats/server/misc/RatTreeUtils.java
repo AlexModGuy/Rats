@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.misc;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -100,7 +101,7 @@ public class RatTreeUtils {
 			for (int i = 0; i < 25; i++) {
 				ObjectArrayList<ItemStack> lootStacks = loot.getRandomItems(context.create(LootContextParamSets.BLOCK));
 				for (ItemStack stack : lootStacks) {
-					if (NeoForgeRegistries.ITEMS.tags().getTag(ItemTags.SAPLINGS).contains(stack.getItem()) || Block.byItem(stack.getItem()) instanceof SaplingBlock) {
+					if (BuiltInRegistries.ITEM.tags().getTag(ItemTags.SAPLINGS).contains(stack.getItem()) || Block.byItem(stack.getItem()) instanceof SaplingBlock) {
 						return Block.byItem(stack.getItem());
 					}
 				}

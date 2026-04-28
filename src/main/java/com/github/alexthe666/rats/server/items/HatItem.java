@@ -1,5 +1,6 @@
 package com.github.alexthe666.rats.server.items;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.github.alexthe666.rats.RatsMod;
 import com.github.alexthe666.rats.client.model.RatsModelLayers;
 import com.github.alexthe666.rats.client.model.hats.*;
@@ -147,7 +148,7 @@ public class HatItem extends ArmorItem {
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		String item = NeoForgeRegistries.ITEMS.getKey(this).getPath();
+		String item = BuiltInRegistries.ITEM.getKey(this).getPath();
 		if (!item.equals("air")) {
 			return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/model/hat/" + item + ".png").toString();
 		}
@@ -160,7 +161,7 @@ public class HatItem extends ArmorItem {
 		consumer.accept(new IClientItemExtensions() {
 			@Override
 			public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-				return switch (NeoForgeRegistries.ITEMS.getKey(HatItem.this).getPath()) {
+				return switch (BuiltInRegistries.ITEM.getKey(HatItem.this).getPath()) {
 					case "chef_toque" ->
 							new ChefToqueModel(Minecraft.getInstance().getEntityModels().bakeLayer(RatsModelLayers.CHEF_TOQUE));
 					case "piper_hat" ->
