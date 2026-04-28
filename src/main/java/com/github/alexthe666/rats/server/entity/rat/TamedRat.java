@@ -342,7 +342,10 @@ public class TamedRat extends InventoryRat {
 		}
 		boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
 		if (flag) {
-			this.doEnchantDamageEffects(this, entity);
+			// 1.21: doEnchantDamageEffects collapsed into EnchantmentHelper.doPostAttackEffects.
+			if (this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+				net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffects(serverLevel, entity, this.damageSources().mobAttack(this));
+			}
 			this.getMainHandItem().hurtAndBreak(1, this, EquipmentSlot.MAINHAND);
 			RatUpgradeUtils.forEachUpgrade(this, item -> item instanceof PostAttackUpgrade, (stack, slot) -> ((PostAttackUpgrade) stack.getItem()).afterHit(this, (LivingEntity) entity));
 		}
@@ -403,10 +406,12 @@ public class TamedRat extends InventoryRat {
 		this.getDepositPos().flatMap(pos -> GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).resultOrPartial(RatsMod.LOGGER::error)).ifPresent(tag1 -> tag.put("DepositPos", tag1));
 		this.getPickupPos().flatMap(pos -> GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).resultOrPartial(RatsMod.LOGGER::error)).ifPresent(tag1 -> tag.put("PickupPos", tag1));
 		tag.putInt("RandomEffectCooldown", this.randomEffectCooldown);
-		if (this.transportingFluid != null) {
-			CompoundTag fluidTag = new CompoundTag();
-			this.transportingFluid.writeToNBT(fluidTag);
-			tag.put("TransportingFluid", fluidTag);
+		if (this.transportingFluid != null && !this.transportingFluid.isEmpty()) {
+			// 1.21: FluidStack.writeToNBT removed; use the new save(HolderLookup.Provider) helper.
+			net.minecraft.nbt.Tag saved = this.transportingFluid.save(this.level().registryAccess());
+			if (saved instanceof CompoundTag fluidTag) {
+				tag.put("TransportingFluid", fluidTag);
+			}
 		}
 	}
 
@@ -444,7 +449,8 @@ public class TamedRat extends InventoryRat {
 		if (tag.contains("TransportingFluid")) {
 			CompoundTag fluidTag = tag.getCompound("TransportingFluid");
 			if (!fluidTag.isEmpty()) {
-				this.transportingFluid = FluidStack.loadFluidStackFromNBT(fluidTag);
+				// 1.21: FluidStack.loadFluidStackFromNBT removed; use parseOptional(HolderLookup.Provider, Tag).
+				this.transportingFluid = net.neoforged.neoforge.fluids.FluidStack.parseOptional(this.level().registryAccess(), fluidTag);
 			}
 		}
 	}
@@ -596,7 +602,9 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public ItemStack getPickedResult(HitResult target) {
-		return new ItemStack(DeferredSpawnEggItem.fromEntityType(RatsEntityRegistry.RAT.get()));
+		// 1.21: DeferredSpawnEggItem.fromEntityType removed; use SpawnEggItem.byId.
+		net.minecraft.world.item.SpawnEggItem egg = net.minecraft.world.item.SpawnEggItem.byId(RatsEntityRegistry.RAT.get());
+		return egg != null ? new ItemStack(egg) : ItemStack.EMPTY;
 	}
 
 	public void setFlying(boolean flying) {
@@ -717,8 +725,10 @@ public class TamedRat extends InventoryRat {
 		ItemStack handCopy = this.getMainHandItem().copy();
 		if (RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_ORE_DOUBLING.get()) && OreDoublingRatUpgradeItem.isProcessable(this.level(), handCopy)) {
 			ItemStack attemptedSmelt = handCopy.copy();
-			Container container = new SimpleContainer(attemptedSmelt);
-			SmeltingRecipe recipe = this.level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, container, this.level()).orElse(null);
+			// 1.21: getRecipeFor takes (RecipeType, RecipeInput, Level) and returns RecipeHolder<T>; SmeltingRecipe uses SingleRecipeInput.
+			net.minecraft.world.item.crafting.SingleRecipeInput input = new net.minecraft.world.item.crafting.SingleRecipeInput(attemptedSmelt);
+			net.minecraft.world.item.crafting.RecipeHolder<SmeltingRecipe> holder = this.level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, input, this.level()).orElse(null);
+			SmeltingRecipe recipe = holder == null ? null : holder.value();
 			if (recipe != null && !recipe.getResultItem(this.level().registryAccess()).isEmpty()) {
 				attemptedSmelt = recipe.getResultItem(this.level().registryAccess()).copy();
 			}
@@ -779,7 +789,12 @@ public class TamedRat extends InventoryRat {
 	}
 
 	public ItemStack getResultForRecipe(RecipeType<? extends SingleItemRecipe> recipe, ItemStack stack) {
-		Optional<? extends SingleItemRecipe> optional = this.level().getRecipeManager().getRecipeFor(recipe, new SimpleContainer(stack), this.level());
+		// 1.21: SingleItemRecipe is Recipe<SingleRecipeInput>; getRecipeFor returns Optional<RecipeHolder<? extends T>>.
+		net.minecraft.world.item.crafting.SingleRecipeInput input = new net.minecraft.world.item.crafting.SingleRecipeInput(stack);
+		@SuppressWarnings({"unchecked","rawtypes"})
+		Optional<? extends net.minecraft.world.item.crafting.RecipeHolder<? extends SingleItemRecipe>> holder =
+				this.level().getRecipeManager().getRecipeFor((RecipeType) recipe, input, this.level());
+		Optional<? extends SingleItemRecipe> optional = holder.map(net.minecraft.world.item.crafting.RecipeHolder::value);
 		if (optional.isPresent()) {
 			ItemStack itemstack = optional.get().getResultItem(this.level().registryAccess());
 			if (!itemstack.isEmpty()) {
@@ -910,7 +925,7 @@ public class TamedRat extends InventoryRat {
 					}
 				}
 				this.setToga(!this.hasToga());
-				this.playSound(SoundEvents.ARMOR_EQUIP_GENERIC, 1F, 1.5F);
+				this.playSound(SoundEvents.ARMOR_EQUIP_GENERIC.value(), 1F, 1.5F);
 				return InteractionResult.SUCCESS;
 			} else if (itemstack.is(RatsBlockRegistry.DYE_SPONGE.get().asItem()) && this.isDyed()) {
 				this.setDyed(false);
@@ -934,7 +949,7 @@ public class TamedRat extends InventoryRat {
 					return InteractionResult.PASS;
 				} else {
 					RatSackItem.packRatIntoSack(itemstack, this, RatSackItem.getRatsInSack(itemstack) + 1);
-					this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 1, 1);
+					this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER.value(), 1, 1);
 					this.discard();
 					player.swing(hand);
 					return InteractionResult.SUCCESS;
@@ -943,7 +958,7 @@ public class TamedRat extends InventoryRat {
 				com.github.alexthe666.rats.server.capability.SelectedRat.set(player, this);
 				player.swing(hand);
 				if (!this.level().isClientSide() && player instanceof ServerPlayer sp) {
-					PacketDistributor.sendToPlayer(sp, new ManageRatStaffPacket(this.getId(), BlockPos.ZERO, Direction.NORTH.ordinal(), false, false));
+					PacketDistributor.sendToPlayer(sp, new ManageRatStaffPacket(this.getId(), BlockPos.ZERO, Direction.NORTH.ordinal(), false, false, 0));
 				}
 				player.displayClientMessage(Component.translatable(RatsLangConstants.RAT_STAFF_BIND, this.getName()), true);
 				return InteractionResult.SUCCESS;
