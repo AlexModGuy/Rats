@@ -30,6 +30,13 @@ import java.util.Objects;
 
 @SuppressWarnings("deprecation")
 public class RatHoleBlock extends BaseEntityBlock {
+	public static final com.mojang.serialization.MapCodec<RatHoleBlock> CODEC = simpleCodec(RatHoleBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
 
 	public static final BooleanProperty NORTH = BooleanProperty.create("north");
 	public static final BooleanProperty EAST = BooleanProperty.create("east");

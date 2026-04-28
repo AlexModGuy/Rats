@@ -17,6 +17,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class CompressedRatBlock extends HorizontalDirectionalBlock {
+	public static final com.mojang.serialization.MapCodec<CompressedRatBlock> CODEC = simpleCodec(CompressedRatBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return CODEC;
+	}
+
 
 	public CompressedRatBlock(BlockBehaviour.Properties properties) {
 		super(properties);

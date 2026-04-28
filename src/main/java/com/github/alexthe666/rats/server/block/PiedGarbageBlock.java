@@ -9,6 +9,13 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PiedGarbageBlock extends AbstractGarbageBlock {
+	public static final com.mojang.serialization.MapCodec<PiedGarbageBlock> CODEC = simpleCodec(PiedGarbageBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends AbstractGarbageBlock> codec() {
+		return CODEC;
+	}
+
 
 	public PiedGarbageBlock(BlockBehaviour.Properties properties) {
 		super(properties, 1.0D);

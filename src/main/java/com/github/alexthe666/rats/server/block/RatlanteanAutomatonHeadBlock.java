@@ -47,6 +47,13 @@ import java.util.function.Predicate;
 
 @SuppressWarnings("deprecation")
 public class RatlanteanAutomatonHeadBlock extends BaseEntityBlock implements WearableOnHead, CustomItemRarity {
+	public static final com.mojang.serialization.MapCodec<RatlanteanAutomatonHeadBlock> CODEC = simpleCodec(RatlanteanAutomatonHeadBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(

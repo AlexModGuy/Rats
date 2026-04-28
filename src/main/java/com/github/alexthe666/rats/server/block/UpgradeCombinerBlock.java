@@ -24,6 +24,13 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
 public class UpgradeCombinerBlock extends BaseEntityBlock {
+	public static final com.mojang.serialization.MapCodec<UpgradeCombinerBlock> CODEC = simpleCodec(UpgradeCombinerBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
 	protected static final VoxelShape AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
 
 	public UpgradeCombinerBlock(BlockBehaviour.Properties properties) {

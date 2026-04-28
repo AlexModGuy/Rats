@@ -13,6 +13,13 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
 @SuppressWarnings("deprecation")
 public class RatUpgradeBlock extends DirectionalBlock {
+	public static final com.mojang.serialization.MapCodec<RatUpgradeBlock> CODEC = simpleCodec(RatUpgradeBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends DirectionalBlock> codec() {
+		return CODEC;
+	}
+
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
 
 	public RatUpgradeBlock(BlockBehaviour.Properties properties) {

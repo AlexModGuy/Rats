@@ -46,6 +46,13 @@ import java.util.Objects;
 
 @SuppressWarnings("deprecation")
 public class TrashCanBlock extends BaseEntityBlock implements WorldlyContainerHolder {
+	public static final com.mojang.serialization.MapCodec<TrashCanBlock> CODEC = simpleCodec(TrashCanBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
 
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 	public static final IntegerProperty LEVEL = IntegerProperty.create("level", 0, 7);

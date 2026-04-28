@@ -13,6 +13,13 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PurifiedGarbageBlock extends AbstractGarbageBlock {
+	public static final com.mojang.serialization.MapCodec<PurifiedGarbageBlock> CODEC = simpleCodec(PurifiedGarbageBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends AbstractGarbageBlock> codec() {
+		return CODEC;
+	}
+
 
 	public PurifiedGarbageBlock(BlockBehaviour.Properties properties) {
 		super(properties, 1.0D);

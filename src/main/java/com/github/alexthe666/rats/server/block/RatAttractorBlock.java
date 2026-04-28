@@ -31,6 +31,13 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class RatAttractorBlock extends BaseEntityBlock {
+	public static final com.mojang.serialization.MapCodec<RatAttractorBlock> CODEC = simpleCodec(RatAttractorBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty CONNECTED_UP = BooleanProperty.create("up");
 	private static final VoxelShape AABB = Block.box(4, 0, 4, 12, 8, 12);

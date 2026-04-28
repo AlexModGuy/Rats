@@ -42,6 +42,13 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class AutoCurdlerBlock extends BaseEntityBlock {
+	public static final com.mojang.serialization.MapCodec<AutoCurdlerBlock> CODEC = simpleCodec(AutoCurdlerBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
 
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 	private static final VoxelShape AABB_BASE = Block.box(1, 0, 1, 15, 8, 15);

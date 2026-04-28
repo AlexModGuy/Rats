@@ -33,6 +33,13 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
 public class RatTrapBlock extends BaseEntityBlock {
+	public static final com.mojang.serialization.MapCodec<RatTrapBlock> CODEC = simpleCodec(RatTrapBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 	public static final BooleanProperty SHUT = BooleanProperty.create("shut");
 	private static final VoxelShape NS_AABB = Block.box(4, 0, 1, 12, 2, 15);

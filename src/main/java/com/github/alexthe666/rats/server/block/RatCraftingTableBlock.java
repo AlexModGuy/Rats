@@ -24,6 +24,13 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
 public class RatCraftingTableBlock extends BaseEntityBlock {
+	public static final com.mojang.serialization.MapCodec<RatCraftingTableBlock> CODEC = simpleCodec(RatCraftingTableBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
 
 	public RatCraftingTableBlock(BlockBehaviour.Properties properties) {
 		super(properties);

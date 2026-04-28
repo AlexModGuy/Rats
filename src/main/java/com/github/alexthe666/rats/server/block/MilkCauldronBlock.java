@@ -20,6 +20,13 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class MilkCauldronBlock extends AbstractCauldronBlock implements EntityBlock {
+	public static final com.mojang.serialization.MapCodec<MilkCauldronBlock> CODEC = simpleCodec(MilkCauldronBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends AbstractCauldronBlock> codec() {
+		return CODEC;
+	}
+
 
 	public MilkCauldronBlock(BlockBehaviour.Properties properties) {
 		super(properties, RatsCauldronRegistry.MILK);

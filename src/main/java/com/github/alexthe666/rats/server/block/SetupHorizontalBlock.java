@@ -10,6 +10,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import org.jetbrains.annotations.Nullable;
 
 public class SetupHorizontalBlock extends HorizontalDirectionalBlock {
+	public static final com.mojang.serialization.MapCodec<SetupHorizontalBlock> CODEC = simpleCodec(SetupHorizontalBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return CODEC;
+	}
+
 
 	public SetupHorizontalBlock(BlockBehaviour.Properties properties) {
 		super(properties);

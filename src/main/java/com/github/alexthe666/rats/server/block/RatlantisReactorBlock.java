@@ -10,6 +10,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class RatlantisReactorBlock extends BaseEntityBlock {
+	public static final com.mojang.serialization.MapCodec<RatlantisReactorBlock> CODEC = simpleCodec(RatlantisReactorBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
 
 	public RatlantisReactorBlock(BlockBehaviour.Properties properties) {
 		super(properties);

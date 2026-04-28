@@ -27,6 +27,13 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class ChunkyCheeseTokenBlock extends BaseEntityBlock implements CustomItemRarity {
+	public static final com.mojang.serialization.MapCodec<ChunkyCheeseTokenBlock> CODEC = simpleCodec(ChunkyCheeseTokenBlock::new);
+
+	@Override
+	protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
 
 	private static final VoxelShape AABB = Block.box(4, 4, 4, 12, 12, 12);
 
