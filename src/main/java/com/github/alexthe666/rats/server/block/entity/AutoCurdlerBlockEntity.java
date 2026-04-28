@@ -28,10 +28,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -41,18 +39,25 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
 import java.util.Optional;
 import net.minecraft.core.HolderLookup;
 
 public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, MenuProvider {
 	private static final int[] SLOTS_TOP = new int[]{0};
 	private static final int[] SLOTS_BOTTOM = new int[]{1};
-	private final FluidTank tank = new FluidTank(FluidType.BUCKET_VOLUME * 5, fluidStack -> fluidStack.getFluid().isSame(NeoForgeMod.MILK.get()));
-	final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
-	private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> this.tank);
+	public final FluidTank tank = new FluidTank(FluidType.BUCKET_VOLUME * 5, fluidStack -> fluidStack.getFluid().isSame(NeoForgeMod.MILK.get()));
+	private final IItemHandler topHandler = new SidedInvWrapper(this, Direction.UP);
+	private final IItemHandler bottomHandler = new SidedInvWrapper(this, Direction.DOWN);
+
+	public IItemHandler itemHandler(@org.jetbrains.annotations.Nullable Direction side) {
+		if (this.remove) return null;
+		return side == Direction.DOWN ? this.bottomHandler : this.topHandler;
+	}
+
+	public IFluidHandler fluidHandler(@org.jetbrains.annotations.Nullable Direction side) {
+		return this.tank;
+	}
 	private NonNullList<ItemStack> curdlerStacks = NonNullList.withSize(2, ItemStack.EMPTY);
 	public int cookTime;
 	public int totalCookTime;
@@ -189,7 +194,7 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 			if (isMilk(te.getItem(0))) {
 				Optional<FluidStack> fluidStackOptional = FluidUtil.getFluidContained(te.getItem(0));
 				fluidStackOptional.ifPresent(fluidStack -> {
-					LazyOptional<IFluidHandlerItem> fluidHandlerOptional = FluidUtil.getFluidHandler(te.getItem(0));
+					Optional<IFluidHandlerItem> fluidHandlerOptional = FluidUtil.getFluidHandler(te.getItem(0));
 					fluidHandlerOptional.ifPresent(fluidHandler -> {
 						if (fluidHandler.drain(te.tank.getCapacity() - te.tank.getFluidAmount(), IFluidHandler.FluidAction.SIMULATE).getAmount() > 0) {
 							if (te.tank.fill(fluidStack.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {
@@ -306,20 +311,6 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 	@Override
 	protected Component getDefaultName() {
 		return Component.translatable(RatsLangConstants.CURDLER);
-	}
-
-	@Nonnull
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-		if (!this.remove && facing != null && capability == ForgeCapabilities.ITEM_HANDLER) {
-			if (facing == Direction.DOWN)
-				return this.handlers[1].cast();
-			else
-				return this.handlers[0].cast();
-		}
-		if (capability == ForgeCapabilities.FLUID_HANDLER)
-			return this.holder.cast();
-		return LazyOptional.empty();
 	}
 
 	@Override

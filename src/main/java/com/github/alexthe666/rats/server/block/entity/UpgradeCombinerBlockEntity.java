@@ -29,12 +29,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.HolderLookup;
 
@@ -51,7 +47,16 @@ public class UpgradeCombinerBlockEntity extends BaseContainerBlockEntity impleme
 	public int burnDuration;
 	public int cookTime;
 	public int totalCookTime;
-	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
+	private final IItemHandler topHandler = new SidedInvWrapper(this, Direction.UP);
+	private final IItemHandler bottomHandler = new SidedInvWrapper(this, Direction.DOWN);
+	private final IItemHandler sideHandler = new SidedInvWrapper(this, Direction.NORTH);
+
+	public IItemHandler itemHandler(@Nullable Direction side) {
+		if (this.remove || side == null) return null;
+		if (side == Direction.UP) return this.topHandler;
+		if (side == Direction.DOWN) return this.bottomHandler;
+		return this.sideHandler;
+	}
 	private NonNullList<ItemStack> combinerStacks = NonNullList.withSize(4, ItemStack.EMPTY);
 	public final ContainerData data = new ContainerData() {
 		@Override
@@ -355,20 +360,6 @@ public class UpgradeCombinerBlockEntity extends BaseContainerBlockEntity impleme
 	@Override
 	public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
 		return direction == Direction.DOWN && index == 1;
-	}
-
-	@NotNull
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-		if (!this.remove && facing != null && capability == ForgeCapabilities.ITEM_HANDLER) {
-			if (facing == Direction.UP)
-				return handlers[0].cast();
-			else if (facing == Direction.DOWN)
-				return handlers[1].cast();
-			else
-				return handlers[2].cast();
-		}
-		return super.getCapability(capability, facing);
 	}
 
 	@Override
