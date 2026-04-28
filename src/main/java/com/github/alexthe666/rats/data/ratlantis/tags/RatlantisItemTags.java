@@ -69,7 +69,7 @@ public class RatlantisItemTags extends ItemTagsProvider {
 		this.tag(Tags.Items.GEMS).addTag(RATLANTIS_GEMS);
 		this.tag(Tags.Items.ORES).addTag(ORES_ORATCHALCUM).addTag(ORES_GEM_OF_RATLANTIS).addTag(ORES_CHEESE);
 
-		this.tag(Tags.Items.HEADS).add(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get().asItem());
+		this.tag(net.minecraft.tags.ItemTags.SKULLS).add(RatlantisBlockRegistry.MARBLED_CHEESE_RAT_HEAD.get().asItem());
 		this.tag(Tags.Items.ARMORS_HELMETS).add(
 				RatlantisItemRegistry.RATLANTIS_HELMET.get(), RatlantisItemRegistry.AVIATOR_HAT.get(),
 				RatlantisItemRegistry.MILITARY_HAT.get(), RatlantisItemRegistry.GHOST_PIRAT_HAT.get());

@@ -61,7 +61,7 @@ public class RatsItemTags extends ItemTagsProvider {
 			this.tag(TUBES).add(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_tube_" + color.getName())));
 		}
 
-		this.tag(HIDES_RAT_WHISKERS).addTag(Tags.Items.HEADS).add(
+		this.tag(HIDES_RAT_WHISKERS).addTag(net.minecraft.tags.ItemTags.SKULLS).add(
 				Items.CARVED_PUMPKIN, Items.JACK_O_LANTERN,
 				RatsItemRegistry.BLACK_DEATH_MASK.get(), RatsItemRegistry.PLAGUE_DOCTOR_MASK.get());
 

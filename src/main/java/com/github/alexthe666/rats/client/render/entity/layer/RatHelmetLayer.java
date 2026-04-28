@@ -106,7 +106,7 @@ public class RatHelmetLayer<T extends AbstractRat, M extends AbstractRatModel<T>
 							stack.scale(0.4F, 0.4F, 0.4F);
 							stack.translate(0.0D, 0.25D, 0.0D);
 						}
-					} else if (itemstack.is(Tags.Items.HEADS) && BuiltInRegistries.ITEM.getKey(itemstack.getItem()).getNamespace().equals("minecraft")) {
+					} else if (itemstack.is(net.minecraft.tags.ItemTags.SKULLS) && BuiltInRegistries.ITEM.getKey(itemstack.getItem()).getNamespace().equals("minecraft")) {
 						stack.mulPose(Axis.YP.rotationDegrees(180));
 						stack.translate(0.0D, 0.55D, -0.0D);
 						stack.scale(2.0F, 2.0F, 2.0F);
