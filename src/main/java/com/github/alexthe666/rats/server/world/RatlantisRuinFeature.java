@@ -58,7 +58,7 @@ public class RatlantisRuinFeature extends Feature<RatlantisRuinConfiguration> {
 		if (!level.getBlockState(blockpos2.below()).isSolidRender(level, blockpos2)) return false;
 
 		structureplacesettings.clearProcessors();
-		config.processor().get().list().forEach(structureplacesettings::addProcessor);
+		config.processor().value().list().forEach(structureplacesettings::addProcessor);
 		return structuretemplate.placeInWorld(level, blockpos2, blockpos2, structureplacesettings, random, 20);
 	}
 }

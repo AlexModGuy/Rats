@@ -119,7 +119,7 @@ public class RatStriderMount extends RatMountBase {
 		if (!this.isNoAi()) {
 			BlockState blockstate = this.level().getBlockState(this.blockPosition());
 			BlockState blockstate1 = this.getBlockStateOn();
-			boolean flag = blockstate.is(BlockTags.STRIDER_WARM_BLOCKS) || blockstate1.is(BlockTags.STRIDER_WARM_BLOCKS) || this.getFluidTypeHeight(NeoForgeMod.LAVA_TYPE.get()) > 0.0D;
+			boolean flag = blockstate.is(BlockTags.STRIDER_WARM_BLOCKS) || blockstate1.is(BlockTags.STRIDER_WARM_BLOCKS) || this.getFluidTypeHeight(NeoForgeMod.LAVA_TYPE.value()) > 0.0D;
 
 			this.setSuffocating(!flag);
 		}

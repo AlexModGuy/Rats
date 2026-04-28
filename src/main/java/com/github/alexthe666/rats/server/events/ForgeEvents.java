@@ -298,10 +298,10 @@ public class ForgeEvents {
 			LootParams.Builder builder = (new LootParams.Builder((ServerLevel) level))
 					.withParameter(LootContextParams.ORIGIN, hook.position())
 					.withParameter(LootContextParams.TOOL, checkHandsForRod(player))
-					.withParameter(LootContextParams.KILLER_ENTITY, player)
+					.withParameter(LootContextParams.ATTACKING_ENTITY, player)
 					.withParameter(LootContextParams.THIS_ENTITY, hook)
 					.withLuck((float) hook.luck + player.getLuck());
-			LootTable loottable = level.getServer().getLootData().getLootTable(RatsLootRegistry.RATLANTIS_FISH);
+			LootTable loottable = level.getServer().reloadableRegistries().getLootTable(RatsLootRegistry.RATLANTIS_FISH);
 			List<ItemStack> list = loottable.getRandomItems(builder.create(LootContextParamSets.FISHING));
 			event.getDrops().addAll(list);
 		}

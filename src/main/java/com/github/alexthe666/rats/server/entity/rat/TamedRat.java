@@ -379,7 +379,7 @@ public class TamedRat extends InventoryRat {
 
 	@Override
 	public boolean canDrownInFluidType(FluidType type) {
-		return type == NeoForgeMod.WATER_TYPE.get() && (!RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_AQUATIC.get()) || !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()));
+		return type == NeoForgeMod.WATER_TYPE.value() && (!RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_AQUATIC.get()) || !RatUpgradeUtils.hasUpgrade(this, RatsItemRegistry.RAT_UPGRADE_UNDERWATER.get()));
 	}
 
 	@Override

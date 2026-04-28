@@ -51,10 +51,10 @@ public class ChristmasRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 			LootParams.Builder builder = new LootParams.Builder((ServerLevel) rat.level());
 			builder.withLuck(1.0F);
 			LootContextParamSet.Builder lootparameterset$builder = new LootContextParamSet.Builder();
-			List<ItemStack> result = rat.level().getServer().getLootData().getLootTable(RatsLootRegistry.CHRISTMAS_GIFTS).getRandomItems(builder.create(lootparameterset$builder.build()));
+			List<ItemStack> result = rat.level().getServer().reloadableRegistries().getLootTable(RatsLootRegistry.CHRISTMAS_GIFTS).getRandomItems(builder.create(lootparameterset$builder.build()));
 			if (RatsDateFetcher.isChristmasDay()) {
 				for (int i = 0; i < 5; i++) {
-					result.addAll(rat.level().getServer().getLootData().getLootTable(RatsLootRegistry.CHRISTMAS_GIFTS).getRandomItems(builder.create(lootparameterset$builder.build())));
+					result.addAll(rat.level().getServer().reloadableRegistries().getLootTable(RatsLootRegistry.CHRISTMAS_GIFTS).getRandomItems(builder.create(lootparameterset$builder.build())));
 				}
 			}
 			if (!result.isEmpty()) {

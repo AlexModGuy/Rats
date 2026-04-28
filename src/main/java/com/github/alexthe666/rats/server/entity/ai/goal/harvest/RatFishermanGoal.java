@@ -136,10 +136,10 @@ public class RatFishermanGoal extends BaseRatHarvestGoal {
 				.withParameter(LootContextParams.ORIGIN, this.rat.position())
 				.withParameter(LootContextParams.TOOL, EnchantmentHelper.enchantItem(this.rat.getRandom(), new ItemStack(Items.FISHING_ROD), 100, true))
 				.withParameter(LootContextParams.THIS_ENTITY, hook)
-				.withParameter(LootContextParams.KILLER_ENTITY, player)
+				.withParameter(LootContextParams.ATTACKING_ENTITY, player)
 				.withLuck(luck + hook.luck)
 				.create(LootContextParamSets.FISHING);
-		List<ItemStack> result = this.rat.level().getServer().getLootData().getLootTable(BuiltInLootTables.FISHING).getRandomItems(params);
+		List<ItemStack> result = this.rat.level().getServer().reloadableRegistries().getLootTable(BuiltInLootTables.FISHING).getRandomItems(params);
 		if (!result.isEmpty()) {
 			ItemFishedEvent event = new ItemFishedEvent(result, 1, hook);
 			NeoForge.EVENT_BUS.post(event);
