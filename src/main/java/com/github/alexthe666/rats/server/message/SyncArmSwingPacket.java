@@ -15,8 +15,9 @@ public record SyncArmSwingPacket(ItemStack stack) implements CustomPacketPayload
 
     public static final Type<SyncArmSwingPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "sync_arm_swing"));
 
+    // 1.21: ItemStack.STREAM_CODEC rejects empty stacks; arm-swing is sent on empty hands too, so use OPTIONAL_STREAM_CODEC.
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncArmSwingPacket> STREAM_CODEC = StreamCodec.composite(
-                ItemStack.STREAM_CODEC, SyncArmSwingPacket::stack,
+                ItemStack.OPTIONAL_STREAM_CODEC, SyncArmSwingPacket::stack,
                 SyncArmSwingPacket::new
         );
 
