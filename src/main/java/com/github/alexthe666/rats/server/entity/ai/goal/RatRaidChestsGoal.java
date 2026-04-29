@@ -96,7 +96,8 @@ public class RatRaidChestsGoal extends RatMoveToBlockGoal {
 				if (entity instanceof Container inventory) {
 					try {
 						//first lets check if the container has an ungenerated loot table. If so we don't want rats digging through those
-						if (entity instanceof RandomizableContainerBlockEntity container && container.saveWithFullMetadata().contains(RandomizableContainerBlockEntity.LOOT_TABLE_TAG))
+						// 1.21: BlockEntity.saveWithFullMetadata now requires HolderLookup.Provider.
+						if (entity instanceof RandomizableContainerBlockEntity container && container.saveWithFullMetadata(reader.registryAccess()).contains(RandomizableContainerBlockEntity.LOOT_TABLE_TAG))
 							return false;
 						if (!inventory.isEmpty() && RatUtils.doesContainFood(inventory)) {
 							return true;

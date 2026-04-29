@@ -14,8 +14,8 @@ import java.util.function.Supplier;
 public class RatVariantRegistry {
 	public static final ResourceKey<Registry<RatVariant>> RAT_VARIANT_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "rat_variant"));
 	public static final DeferredRegister<RatVariant> RAT_VARIANTS = DeferredRegister.create(RAT_VARIANT_KEY, RatsMod.MODID);
-	// 1.21: IForgeRegistry removed; makeRegistry now uses Consumer<RegistryBuilder<T>> and returns Supplier<Registry<T>>.
-	public static final Supplier<Registry<RatVariant>> RAT_VARIANT_REGISTRY = RAT_VARIANTS.makeRegistry(builder -> builder.sync(true));
+	// 1.21: IForgeRegistry removed; makeRegistry returns Registry<T> directly (not Supplier).
+	public static final Registry<RatVariant> RAT_VARIANT_REGISTRY = RAT_VARIANTS.makeRegistry(builder -> builder.sync(true));
 
 	public static final DeferredHolder<RatVariant, RatVariant> BLACK = RAT_VARIANTS.register("black", () -> new RatVariant(new RatVariant.Properties(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/black.png"))));
 	public static final DeferredHolder<RatVariant, RatVariant> BLUE = RAT_VARIANTS.register("blue", () -> new RatVariant(new RatVariant.Properties(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/entity/rat/blue.png"))));

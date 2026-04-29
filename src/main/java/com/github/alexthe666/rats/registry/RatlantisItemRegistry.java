@@ -53,7 +53,8 @@ public class RatlantisItemRegistry {
 	public static final DeferredHolder<Item, Item> MILITARY_HAT = ITEMS.register("military_hat", () -> new HatItem(new Item.Properties().stacksTo(1), RatsArmorMaterialRegistry.GENERIC_HAT, 0));
 	public static final DeferredHolder<Item, Item> BIPLANE_WING = ITEMS.register("biplane_wing", () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));
 	public static final DeferredHolder<Item, Item> RATFISH = ITEMS.register("ratfish", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.35F).build())));
-	public static final DeferredHolder<Item, Item> RATFISH_BUCKET = ITEMS.register("ratfish_bucket", () -> new MobBucketItem(RatlantisEntityRegistry.RATFISH, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+	// 1.21: MobBucketItem ctor takes (EntityType<?>, Fluid, SoundEvent, Properties) — no Suppliers; unwrap via .get() / .value().
+	public static final DeferredHolder<Item, Item> RATFISH_BUCKET = ITEMS.register("ratfish_bucket", () -> new MobBucketItem(RatlantisEntityRegistry.RATFISH.get(), Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 	public static final DeferredHolder<Item, Item> RATBOT_BARREL = ITEMS.register("ratbot_barrel", () -> new Item(new Item.Properties()));
 	public static final DeferredHolder<Item, Item> CHARGED_RATBOT_BARREL = ITEMS.register("charged_ratbot_barrel", () -> new Item(new Item.Properties()));
 	public static final DeferredHolder<Item, Item> RATTLING_GUN = ITEMS.register("rattling_gun", () -> new RattlingGunItem(new Item.Properties().stacksTo(1)));

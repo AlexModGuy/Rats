@@ -63,10 +63,10 @@ public final class RatsCapabilities {
                 RatsBlockEntityRegistry.RAT_CRAFTING_TABLE.get(),
                 (be, side) -> be.itemHandler(side));
 
-        // Rat carrying inventory (entity-attached item handler)
+        // Rat carrying inventory (entity-attached item handler) — only TamedRat has the InventoryRat-backed handler.
         event.registerEntity(
                 Capabilities.ItemHandler.ENTITY,
-                RatsEntityRegistry.RAT.get(),
+                RatsEntityRegistry.TAMED_RAT.get(),
                 (rat, ctx) -> rat.itemHandler);
     }
 }

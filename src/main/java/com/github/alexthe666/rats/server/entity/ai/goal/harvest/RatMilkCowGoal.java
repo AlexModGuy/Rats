@@ -53,7 +53,8 @@ public class RatMilkCowGoal extends BaseRatHarvestGoal {
 			if (this.rat.distanceToSqr(this.getTargetEntity()) < this.rat.getRatHarvestDistance(0.0D)) {
 				if (this.rat.transportingFluid.isEmpty()) {
 					FluidBucketWrapper milkWrapper = new FluidBucketWrapper(new ItemStack(Items.MILK_BUCKET));
-					FluidStack milkFluid = new FluidStack(milkWrapper.getFluid(), 1000);
+					// 1.21: FluidStack(FluidStack, int) replaced by copyWithAmount(int).
+					FluidStack milkFluid = milkWrapper.getFluid().copyWithAmount(1000);
 					if (milkFluid.isEmpty()) {
 						milkFluid = new FluidStack(NeoForgeMod.MILK.get(), 1000);
 					}

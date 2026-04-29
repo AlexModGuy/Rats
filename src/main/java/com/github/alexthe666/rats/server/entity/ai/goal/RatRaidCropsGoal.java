@@ -54,7 +54,8 @@ public class RatRaidCropsGoal extends RatMoveToBlockGoal {
 			double distance = this.rat.distanceToSqr(cropsPos.getX(), cropsPos.getY(), cropsPos.getZ());
 			if (distance < 3.5F) {
 				LootParams.Builder loot = new LootParams.Builder((ServerLevel) this.rat.level()).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withParameter(LootContextParams.ORIGIN, this.rat.position()).withLuck(1.0F);
-				List<ItemStack> drops = block.getBlock().getDrops(block, loot);
+				// 1.21: Block.getDrops takes (BlockState, LootParams.Builder) on the BlockState directly.
+				List<ItemStack> drops = block.getDrops(loot);
 				if (drops.isEmpty()) {
 					this.stop();
 					return;

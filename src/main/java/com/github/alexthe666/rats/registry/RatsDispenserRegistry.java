@@ -109,7 +109,8 @@ public class RatsDispenserRegistry {
 			}
 		});
 
-		for (Item item : BuiltInRegistries.ITEM.getValues().stream().filter(item -> item instanceof DyeItem).toList()) {
+		// 1.21: Registry.getValues removed; use stream().
+		for (Item item : BuiltInRegistries.ITEM.stream().filter(item -> item instanceof DyeItem).toList()) {
 			DispenserBlock.registerBehavior(item, new OptionalDispenseItemBehavior() {
 				@Override
 				protected ItemStack execute(BlockSource source, ItemStack stack) {
