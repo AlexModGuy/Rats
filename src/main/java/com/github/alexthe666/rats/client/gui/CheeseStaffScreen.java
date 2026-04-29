@@ -81,7 +81,8 @@ public class CheeseStaffScreen extends Screen {
 			List<Component> namelist = null;
 			ItemStack pick = state.getBlock().getCloneItemStack(this.rat.level(), this.pos, state);
 			try {
-				namelist = pick.getTooltipLines(Minecraft.getInstance().player, TooltipFlag.Default.NORMAL);
+				// 1.21: ItemStack.getTooltipLines now takes (Item.TooltipContext, Player, TooltipFlag).
+				namelist = pick.getTooltipLines(net.minecraft.world.item.Item.TooltipContext.of(Minecraft.getInstance().level), Minecraft.getInstance().player, TooltipFlag.Default.NORMAL);
 			} catch (Throwable ignored) {
 			}
 			if (namelist != null && !namelist.isEmpty()) {

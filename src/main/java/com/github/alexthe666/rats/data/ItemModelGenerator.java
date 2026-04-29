@@ -33,7 +33,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	@Override
 	protected void registerModels() {
 
-		for (Item i : BuiltInRegistries.ITEM.getValues()) {
+		for (Item i : BuiltInRegistries.ITEM.stream().toList()) {
 			if (i instanceof SpawnEggItem && Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(i)).getNamespace().equals(RatsMod.MODID)) {
 				this.getBuilder(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(i)).getPath())
 						.parent(this.getExistingFile(ResourceLocation.parse("item/template_spawn_egg")));

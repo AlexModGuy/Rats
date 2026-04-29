@@ -27,7 +27,7 @@ public class RatKingRenderer extends MobRenderer<RatKing, EmptyModel<RatKing>> {
 	}
 
 	@Override
-	protected void setupRotations(RatKing king, PoseStack stack, float ageInTicks, float yRot, float partialTicks) {
+	protected void setupRotations(RatKing king, PoseStack stack, float ageInTicks, float yRot, float partialTicks, float scale) {
 		if (king.hasCustomName()) {
 			String s = ChatFormatting.stripFormatting(king.getName().getString());
 			if (("Dinnerbone".equals(s) || "Grumm".equals(s))) {

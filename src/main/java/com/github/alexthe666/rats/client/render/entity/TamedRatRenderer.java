@@ -104,7 +104,8 @@ public class TamedRatRenderer extends AbstractRatRenderer<TamedRat, AbstractRatM
 	protected void renderAdditionalInfo(TamedRat entity, PoseStack stack, MultiBufferSource source, int light) {
 		double d0 = this.entityRenderDispatcher.distanceToSqr(entity);
 		if (ClientHooks.isNameplateInRenderDistance(entity, d0)) {
-			float f = entity.getNameTagOffsetY();
+			// PORT-STUB: 1.21 Entity.getNameTagOffsetY removed; nameplate offset is read from EntityAttachments.NAME_TAG / dimensions.height + custom offset.
+			float f = entity.getBbHeight() + 0.5F;
 			stack.pushPose();
 			stack.translate(0.0F, f, 0.0F);
 			stack.mulPose(this.entityRenderDispatcher.cameraOrientation());

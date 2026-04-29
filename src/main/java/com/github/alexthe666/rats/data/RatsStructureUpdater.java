@@ -56,7 +56,8 @@ public class RatsStructureUpdater implements DataProvider {
 	}
 
 	private void process(ResourceLocation loc, Resource resource, CachedOutput cache) throws IOException {
-		CompoundTag inputNBT = NbtIo.readCompressed(resource.open());
+		// 1.21: NbtIo.readCompressed(InputStream) replaced by readCompressed(InputStream, NbtAccounter).
+		CompoundTag inputNBT = NbtIo.readCompressed(resource.open(), net.minecraft.nbt.NbtAccounter.unlimitedHeap());
 		CompoundTag converted = updateNBT(inputNBT);
 		if (!converted.equals(inputNBT)) {
 			Class<? extends DataFixer> fixerClass = DataFixers.getDataFixer().getClass();

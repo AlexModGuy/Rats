@@ -102,7 +102,8 @@ public class ModClientEvents {
 				if (living == null) {
 					return 0.0F;
 				} else {
-					return living.getUseItem() != stack ? 0.0F : (float) (stack.getUseDuration() - living.getUseItemRemainingTicks()) / 10.0F;
+					// 1.21: ItemStack.getUseDuration now requires the LivingEntity context.
+					return living.getUseItem() != stack ? 0.0F : (float) (stack.getUseDuration(living) - living.getUseItemRemainingTicks()) / 10.0F;
 				}
 			});
 

@@ -72,8 +72,8 @@ public class RatsDataRegistry {
 		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
 				Component.translatable(RatsLangConstants.RATS_PACK),
 				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
-				// 1.21: PackMetadataSection now takes Optional<Map<PackType,Integer>> for the supported-pack-formats arg.
-				java.util.Optional.of(Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion))))));
+				// 1.21: PackMetadataSection now takes Optional<InclusiveRange<Integer>> for the supported-pack-formats arg.
+				java.util.Optional.empty())));
 
 		DataGenerator.PackGenerator ratlantisPack = generator.getBuiltinDatapack(event.includeServer(), "ratlantis");
 
@@ -87,7 +87,7 @@ public class RatsDataRegistry {
 		ratlantisPack.addProvider(ratOutput -> new PackMetadataGenerator(ratOutput).add(PackMetadataSection.TYPE, new PackMetadataSection(
 				Component.translatable(RatsLangConstants.RATLANTIS_PACK),
 				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
-				java.util.Optional.of(Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion))))));
+				java.util.Optional.empty())));
 	}
 
 	private static void addArmorTrims(ExistingFileHelper existingFileHelper) {

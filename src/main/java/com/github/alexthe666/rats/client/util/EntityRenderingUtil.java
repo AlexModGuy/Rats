@@ -87,7 +87,8 @@ public class EntityRenderingUtil {
 			entity.yHeadRotO = entity.getYRot();
 			graphics.pose().pushPose();
 			graphics.pose().translate(posX, posY, 50.0D);
-			graphics.pose().mulPoseMatrix((new Matrix4f()).scaling(scale, scale, -scale));
+			// 1.21: PoseStack.mulPoseMatrix removed; use scale + mulPose chain.
+			graphics.pose().scale(scale, scale, -scale);
 			graphics.pose().mulPose(quaternion);
 			if (rotating) graphics.pose().mulPose(quaternion2);
 			Lighting.setupForEntityInInventory();

@@ -212,7 +212,9 @@ public class MobFilterScreen extends Screen {
 	}
 
 	@Override
-	public boolean mouseScrolled(double x, double y, double direction) {
+	public boolean mouseScrolled(double x, double y, double directionX, double directionY) {
+		// 1.21: GuiEventListener.mouseScrolled now takes (double, double, double, double).
+		double direction = directionY;
 		if (this.filteredMobs.size() > MAX_MOB_BUTTONS) {
 			int i = this.getOffscreenRows();
 			this.scrollOffs = (float) ((double) this.scrollOffs - direction / (double) i);

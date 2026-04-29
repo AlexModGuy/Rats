@@ -22,8 +22,10 @@ public class RatfishRenderer extends MobRenderer<Ratfish, RatFishModel<Ratfish>>
 		return TEXTURE;
 	}
 
-	protected void setupRotations(Ratfish entityLiving, PoseStack stack, float ageInTicks, float yRot, float partialTicks) {
-		super.setupRotations(entityLiving, stack, ageInTicks, yRot, partialTicks);
+	@Override
+	protected void setupRotations(Ratfish entityLiving, PoseStack stack, float ageInTicks, float yRot, float partialTicks, float scale) {
+		// 1.21: setupRotations adds a final scale parameter.
+		super.setupRotations(entityLiving, stack, ageInTicks, yRot, partialTicks, scale);
 		float f = 1.0F;
 		float f1 = 1.0F;
 		if (!entityLiving.isInWater()) {

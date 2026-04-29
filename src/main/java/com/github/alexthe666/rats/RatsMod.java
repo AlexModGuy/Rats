@@ -145,7 +145,7 @@ public class RatsMod {
 			var resources = new PathPackResources(location, resourcePath);
 			var metadata = Pack.readPackMetadata(location, fixedSupplier(resources), net.minecraft.SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA));
 			if (metadata != null) {
-				var pack = new Pack(location, fixedSupplier(resources), metadata, new net.minecraft.server.packs.repository.PackSelectionConfig(RatConfig.ratlantisEnabledByDefault, Pack.Position.TOP, false));
+				var pack = new Pack(location, fixedSupplier(resources), metadata, new net.minecraft.server.packs.PackSelectionConfig(RatConfig.ratlantisEnabledByDefault, Pack.Position.TOP, false));
 				event.addRepositorySource(packConsumer -> packConsumer.accept(pack));
 			}
 		}

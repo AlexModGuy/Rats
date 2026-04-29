@@ -26,7 +26,8 @@ public class UpgradeCombinerScreen extends AbstractContainerScreen<UpgradeCombin
 
 	@Override
 	public void render(GuiGraphics stack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(stack);
+		// 1.21: AbstractContainerScreen.renderBackground now takes (GuiGraphics, mouseX, mouseY, partialTicks).
+		this.renderBackground(stack, mouseX, mouseY, partialTicks);
 		super.render(stack, mouseX, mouseY, partialTicks);
 		this.renderTooltip(stack, mouseX, mouseY);
 	}

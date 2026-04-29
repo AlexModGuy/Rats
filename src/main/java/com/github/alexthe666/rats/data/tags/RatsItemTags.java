@@ -74,7 +74,8 @@ public class RatsItemTags extends ItemTagsProvider {
 				RatsItemRegistry.SANTA_HAT.get(), RatsItemRegistry.EXTERMINATOR_HAT.get(),
 				RatsItemRegistry.PARTY_HAT.get());
 
-		this.tag(ItemTags.MUSIC_DISCS).add(RatsItemRegistry.MUSIC_DISC_MICE_ON_VENUS.get(), RatsItemRegistry.MUSIC_DISC_LIVING_MICE.get());
+		// 1.21: ItemTags.MUSIC_DISCS removed (music discs identified via DataComponents.JUKEBOX_PLAYABLE).
+		// PORT-STUB: explicit music-disc tagging dropped.
 		this.tag(ItemTags.PIGLIN_LOVED).add(RatsItemRegistry.RAT_KING_CROWN.get(), RatsItemRegistry.GOLDEN_RAT_SKULL.get(), RatsItemRegistry.HALO_HAT.get());
 		this.tag(ItemTags.WOOL).add(RatsBlockRegistry.PIED_WOOL.get().asItem());
 		this.tag(ItemTags.ARROWS).add(RatsItemRegistry.RAT_ARROW.get());

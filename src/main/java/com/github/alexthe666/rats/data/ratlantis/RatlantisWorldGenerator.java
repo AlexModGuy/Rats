@@ -45,6 +45,7 @@ public class RatlantisWorldGenerator extends DatapackBuiltinEntriesProvider {
 	}
 
 	private static HolderLookup.Provider append(HolderLookup.Provider original, RegistrySetBuilder builder) {
-		return builder.buildPatch(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY), original);
+		// PORT-STUB: 1.21 RegistrySetBuilder.buildPatch needs Cloner.Factory; default registries-only build instead.
+		return builder.build(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY));
 	}
 }
