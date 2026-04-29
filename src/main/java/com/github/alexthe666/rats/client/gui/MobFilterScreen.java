@@ -188,9 +188,8 @@ public class MobFilterScreen extends Screen {
 
 	}
 
-	@Override
+	// PORT-STUB: 1.21 EditBox.tick() removed; cursor blink animation handled internally now.
 	public void tick() {
-		this.searchBar.tick();
 	}
 
 	private int getOffscreenRows() {
@@ -199,6 +198,7 @@ public class MobFilterScreen extends Screen {
 
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragSizeX, double dragSizeY) {
+		// 1.21: AbstractContainerScreen.mouseDragged signature unchanged but the override may have shifted; treat as effectively-overrides via super-dispatch.
 		if (this.scrolling && this.filteredMobs.size() > MAX_MOB_BUTTONS) {
 			int i = this.topPos + SCROLL_Y_START;
 			int j = i + 96;

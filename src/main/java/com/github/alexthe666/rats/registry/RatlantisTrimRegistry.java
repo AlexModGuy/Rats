@@ -24,8 +24,9 @@ public class RatlantisTrimRegistry {
 	}
 
 	public static void bootstrap(BootstrapContext<TrimMaterial> context) {
-		register(context, GEM_OF_RATLANTIS, RatlantisItemRegistry.GEM_OF_RATLANTIS.getHolder().get(), Style.EMPTY.withColor(10353514), 0.77F);
-		register(context, ORATCHALCUM, RatlantisItemRegistry.ORATCHALCUM_INGOT.getHolder().get(), Style.EMPTY.withColor(11243608), 0.66F);
+		// 1.21: DeferredHolder.getHolder() removed; the DeferredHolder itself is a Holder<Item> via the deferred registry.
+		register(context, GEM_OF_RATLANTIS, net.minecraft.core.registries.BuiltInRegistries.ITEM.wrapAsHolder(RatlantisItemRegistry.GEM_OF_RATLANTIS.get()), Style.EMPTY.withColor(10353514), 0.77F);
+		register(context, ORATCHALCUM, net.minecraft.core.registries.BuiltInRegistries.ITEM.wrapAsHolder(RatlantisItemRegistry.ORATCHALCUM_INGOT.get()), Style.EMPTY.withColor(11243608), 0.66F);
 	}
 
 	private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Holder<Item> trimItem, Style color, float itemModelIndex) {

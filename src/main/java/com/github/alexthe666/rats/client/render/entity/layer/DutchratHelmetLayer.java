@@ -52,7 +52,11 @@ public class DutchratHelmetLayer<T extends Dutchrat, M extends FlyingDutchratMod
 
 	public ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, @org.jetbrains.annotations.Nullable String type) {
 		ArmorItem item = (ArmorItem) stack.getItem();
-		String texture = item.getMaterial().getName();
+		// PORT-STUB: 1.21 ArmorItem.getMaterial() returns Holder<ArmorMaterial>; ArmorMaterial.getName() removed.
+		net.minecraft.core.Holder<net.minecraft.world.item.ArmorMaterial> matHolder = item.getMaterial();
+		String texture = matHolder.unwrapKey()
+				.map(k -> k.location().getNamespace() + ":" + k.location().getPath())
+				.orElse("minecraft:iron");
 		String domain = "minecraft";
 		int idx = texture.indexOf(':');
 		if (idx != -1) {
@@ -61,7 +65,7 @@ public class DutchratHelmetLayer<T extends Dutchrat, M extends FlyingDutchratMod
 		}
 		String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (1), type == null ? "" : String.format("_%s", type));
 
-		s1 = net.neoforged.neoforge.client.ClientHooks.getArmorTexture(entity, stack, s1, slot, type);
+		// PORT-STUB: 1.21 ClientHooks.getArmorTexture signature changed; skip hook until migrated.
 		ResourceLocation resourcelocation = ARMOR_TEXTURE_RES_MAP.get(s1);
 
 		if (resourcelocation == null) {

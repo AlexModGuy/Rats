@@ -11,8 +11,9 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RatsVillagerRegistry {
 
-	public static final DeferredRegister<PoiType> POIS = DeferredRegister.create(NeoForgeRegistries.POI_TYPES, RatsMod.MODID);
-	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(NeoForgeRegistries.VILLAGER_PROFESSIONS, RatsMod.MODID);
+	// 1.21: NeoForgeRegistries.POI_TYPES / VILLAGER_PROFESSIONS removed; use vanilla BuiltInRegistries.
+	public static final DeferredRegister<PoiType> POIS = DeferredRegister.create(net.minecraft.core.registries.BuiltInRegistries.POINT_OF_INTEREST_TYPE, RatsMod.MODID);
+	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(net.minecraft.core.registries.BuiltInRegistries.VILLAGER_PROFESSION, RatsMod.MODID);
 
 	public static final DeferredHolder<PoiType, PoiType> RATLANTIS_PORTAL = POIS.register("ratlantis_portal", () -> new PoiType(ImmutableSet.copyOf(RatlantisBlockRegistry.RATLANTIS_PORTAL.get().getStateDefinition().getPossibleStates()), 1, 1));
 	public static final DeferredHolder<PoiType, PoiType> TRASH_CAN = POIS.register("trash_can", () -> new PoiType(ImmutableSet.copyOf(RatsBlockRegistry.TRASH_CAN.get().getStateDefinition().getPossibleStates()), 1, 1));

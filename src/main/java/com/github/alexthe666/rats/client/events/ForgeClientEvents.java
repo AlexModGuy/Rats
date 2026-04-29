@@ -326,7 +326,8 @@ public class ForgeClientEvents {
 				if (rat == null) return;
 				ItemStack heldItem = Minecraft.getInstance().player.getItemInHand(InteractionHand.MAIN_HAND);
 				final Tesselator tessellator = Tesselator.getInstance();
-				final BufferBuilder buffer = null; // PORT-STUB: 1.21 removed Tesselator.getBuilder(); buffer is now obtained inline via tessellator.begin(...)
+				BufferBuilder buffer = null; // PORT-STUB: 1.21 removed Tesselator.getBuilder(); buffer is now obtained inline via tessellator.begin(...)
+				final BufferBuilder lambdaBuffer = buffer; // captured for lambdas; reassignments below shadow this.
 				final PoseStack stack = event.getPoseStack();
 				float bob = 1.5F + 0.3F * (Mth.sin((event.getPartialTick().getGameTimeDeltaPartialTick(false) + Minecraft.getInstance().player.tickCount) * 0.1F) + 1F);
 				final Vec3 viewPosition = Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition();
@@ -337,17 +338,17 @@ public class ForgeClientEvents {
 					float finalBob = bob;
 					rat.getDepositPos().ifPresent(pos -> {
 						if (Minecraft.getInstance().player.level().isLoaded(pos.pos()) && pos.dimension().equals(rat.level().dimension())) {
-							RatsIconRenderUtil.renderPOIIcon(RAT_DEPOSIT_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
+							RatsIconRenderUtil.renderPOIIcon(RAT_DEPOSIT_TEXTURE, viewPosition, pos.pos(), finalBob, stack, lambdaBuffer, tessellator);
 						}
 					});
 					rat.getPickupPos().ifPresent(pos -> {
 						if (Minecraft.getInstance().player.level().isLoaded(pos.pos()) && pos.dimension().equals(rat.level().dimension())) {
-							RatsIconRenderUtil.renderPOIIcon(RAT_PICKUP_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
+							RatsIconRenderUtil.renderPOIIcon(RAT_PICKUP_TEXTURE, viewPosition, pos.pos(), finalBob, stack, lambdaBuffer, tessellator);
 						}
 					});
 					rat.getHomePoint().ifPresent(pos -> {
 						if (Minecraft.getInstance().player.level().isLoaded(pos.pos()) && pos.dimension().equals(rat.level().dimension())) {
-							RatsIconRenderUtil.renderPOIIcon(HOME_TEXTURE, viewPosition, pos.pos(), finalBob, stack, buffer, tessellator);
+							RatsIconRenderUtil.renderPOIIcon(HOME_TEXTURE, viewPosition, pos.pos(), finalBob, stack, lambdaBuffer, tessellator);
 						}
 					});
 					if (Minecraft.getInstance().hitResult != null && Minecraft.getInstance().hitResult.getType() == HitResult.Type.BLOCK) {
