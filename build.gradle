@@ -95,6 +95,12 @@ neoForge {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+// 1.21 port: src/generated/resources/pack.mcmeta is created by data generators alongside
+// src/main/resources/pack.mcmeta. Allow processResources to pick the manual one and skip the duplicate.
+tasks.named('processResources', ProcessResources).configure {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 dependencies {
     implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
     implementation "curse.maven:citadel-331936:${project.citadel_file_id}"
