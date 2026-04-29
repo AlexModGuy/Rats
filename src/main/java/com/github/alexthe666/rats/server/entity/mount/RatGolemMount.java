@@ -112,7 +112,7 @@ public class RatGolemMount extends RatMountBase {
 			}
 		}
 
-		this.playSound(SoundEvents.IRON_GOLEM_ATTACK.value(), 1.0F, 1.0F);
+		this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
 		return flag;
 	}
 

@@ -40,11 +40,11 @@ public class RatCraftingTableBlock extends BaseEntityBlock {
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		BlockEntity be = level.getBlockEntity(pos);
 		if (be instanceof RatCraftingTableBlockEntity table) {
-			table.bufferHandler.ifPresent(handler -> {
-				for (int i = 0; i < handler.getSlots(); i++) {
-					Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
-				}
-			});
+			// 1.21: bufferHandler is now a direct field on the BlockEntity.
+			var handler = table.bufferHandler;
+			for (int i = 0; i < handler.getSlots(); i++) {
+				Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
+			}
 			level.updateNeighbourForOutputSignal(pos, this);
 		}
 		super.onRemove(state, level, pos, newState, isMoving);

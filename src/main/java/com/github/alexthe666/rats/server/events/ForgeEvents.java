@@ -404,8 +404,8 @@ public class ForgeEvents {
 
 	@SubscribeEvent
 	public static void onLivingUpdate(net.neoforged.neoforge.event.tick.EntityTickEvent.Post event) {
-		if (!(event.getEntity() instanceof LivingEntity)) return;
-		if (event.getEntity().level().isClientSide() && event.getEntity().hasEffect(RatsEffectRegistry.PLAGUE)) {
+		if (!(event.getEntity() instanceof LivingEntity living)) return;
+		if (event.getEntity().level().isClientSide() && living.hasEffect(RatsEffectRegistry.PLAGUE)) {
 			RandomSource rand = event.getEntity().getRandom();
 			if (rand.nextInt(4) == 0) {
 				int entitySize = 1;

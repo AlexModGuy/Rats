@@ -16,7 +16,7 @@ public class ConfitByaldiMobEffect extends MobEffect {
 	}
 
 	@Override
-	public boolean applyEffectTick(ServerLevel level, LivingEntity living, int amplifier) {
+	public boolean applyEffectTick(LivingEntity living, int amplifier) {
 		if (living.getHealth() < living.getMaxHealth()) {
 			living.heal(1.0F);
 		}

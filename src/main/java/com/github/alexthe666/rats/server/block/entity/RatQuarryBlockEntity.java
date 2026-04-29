@@ -43,6 +43,16 @@ public class RatQuarryBlockEntity extends BaseContainerBlockEntity implements Wo
 	}
 
 	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return this.inventory;
+	}
+
+	@Override
+	protected void setItems(NonNullList<ItemStack> items) {
+		this.inventory = items;
+	}
+
+	@Override
 	public int getContainerSize() {
 		return this.inventory.size();
 	}

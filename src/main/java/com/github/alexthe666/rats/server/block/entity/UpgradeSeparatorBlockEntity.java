@@ -72,6 +72,6 @@ public class UpgradeSeparatorBlockEntity extends BlockEntity {
 	}
 
 	public AABB getRenderBoundingBox() {
-		return new AABB(this.getBlockPos(), this.getBlockPos().offset(1, 2, 1));
+		return new AABB(net.minecraft.world.phys.Vec3.atLowerCornerOf(this.getBlockPos()), net.minecraft.world.phys.Vec3.atLowerCornerOf(this.getBlockPos().offset(1, 2, 1)));
 	}
 }

@@ -154,7 +154,7 @@ public class RatHoleBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(net.minecraft.world.level.LevelReader level, BlockPos pos, BlockState state) {
 		if (level.getBlockEntity(pos) instanceof RatHoleBlockEntity hole) {
 			return new ItemStack(hole.getImitatedBlockState().getBlock());
 		}

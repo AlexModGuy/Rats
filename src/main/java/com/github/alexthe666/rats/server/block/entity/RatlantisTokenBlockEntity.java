@@ -35,7 +35,7 @@ public class RatlantisTokenBlockEntity extends BlockEntity {
 	}
 
 	public AABB getRenderBoundingBox() {
-		return new AABB(this.getBlockPos().offset(-3, -4, -3), this.getBlockPos().offset(3, 4, 3));
+		return new AABB(net.minecraft.world.phys.Vec3.atLowerCornerOf(this.getBlockPos().offset(-3, -4, -3)), net.minecraft.world.phys.Vec3.atLowerCornerOf(this.getBlockPos().offset(3, 4, 3)));
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, RatlantisTokenBlockEntity te) {
