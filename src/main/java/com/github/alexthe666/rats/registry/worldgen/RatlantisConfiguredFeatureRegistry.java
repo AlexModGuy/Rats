@@ -39,24 +39,28 @@ public class RatlantisConfiguredFeatureRegistry {
 		return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, name));
 	}
 
-	public static final TreeConfiguration GHOST_PIRAT_TREE_CONFIG = new TreeConfiguration.TreeConfigurationBuilder(
-			BlockStateProvider.simple(RatlantisBlockRegistry.PIRAT_LOG.get()),
-			new ThickBranchingTrunkPlacer(5, 1, 1, 1, 1, 2),
-			BlockStateProvider.simple(RatlantisBlockRegistry.PIRAT_LEAVES.get()),
-			new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(5), 0.25F, 0.5F, 0.5F, 0.75F),
-			new TwoLayersFeatureSize(1, 0, 2)).ignoreVines().build();
-
-	public static final TreeConfiguration LARGE_GHOST_PIRAT_TREE_CONFIG = new TreeConfiguration.TreeConfigurationBuilder(
-			BlockStateProvider.simple(RatlantisBlockRegistry.PIRAT_LOG.get()),
-			new ThickBranchingTrunkPlacer(8, 1, 1, 2, 2, 4),
-			BlockStateProvider.simple(RatlantisBlockRegistry.PIRAT_LEAVES.get()),
-			new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(5), 0.25F, 0.5F, 0.5F, 0.75F),
-			new TwoLayersFeatureSize(1, 0, 2)).ignoreVines().build();
+	// PORT-NOTE: 1.21 forbids touching DeferredHolder.get() at class-load time. PiratTreeGrower.INSTANCE
+	// references LARGE_GHOST_PIRAT_TREE during BLOCK registration (via SaplingBlock ctor), which forces
+	// this class's <clinit> mid-block-registration. Constructing TreeConfiguration as static fields
+	// would try to .get() PIRAT_LOG / PIRAT_LEAVES before they're bound. Build the configs inside
+	// bootstrap() instead — that runs at data-gen / world-load time, well after registries are bound.
 
 	public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 		HolderGetter<StructureProcessorList> processors = context.lookup(Registries.PROCESSOR_LIST);
-		context.register(GHOST_PIRAT_TREE, new ConfiguredFeature<>(Feature.TREE, GHOST_PIRAT_TREE_CONFIG));
-		context.register(LARGE_GHOST_PIRAT_TREE, new ConfiguredFeature<>(Feature.TREE, LARGE_GHOST_PIRAT_TREE_CONFIG));
+		TreeConfiguration ghostPiratTreeConfig = new TreeConfiguration.TreeConfigurationBuilder(
+				BlockStateProvider.simple(RatlantisBlockRegistry.PIRAT_LOG.get()),
+				new ThickBranchingTrunkPlacer(5, 1, 1, 1, 1, 2),
+				BlockStateProvider.simple(RatlantisBlockRegistry.PIRAT_LEAVES.get()),
+				new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(5), 0.25F, 0.5F, 0.5F, 0.75F),
+				new TwoLayersFeatureSize(1, 0, 2)).ignoreVines().build();
+		TreeConfiguration largeGhostPiratTreeConfig = new TreeConfiguration.TreeConfigurationBuilder(
+				BlockStateProvider.simple(RatlantisBlockRegistry.PIRAT_LOG.get()),
+				new ThickBranchingTrunkPlacer(8, 1, 1, 2, 2, 4),
+				BlockStateProvider.simple(RatlantisBlockRegistry.PIRAT_LEAVES.get()),
+				new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(5), 0.25F, 0.5F, 0.5F, 0.75F),
+				new TwoLayersFeatureSize(1, 0, 2)).ignoreVines().build();
+		context.register(GHOST_PIRAT_TREE, new ConfiguredFeature<>(Feature.TREE, ghostPiratTreeConfig));
+		context.register(LARGE_GHOST_PIRAT_TREE, new ConfiguredFeature<>(Feature.TREE, largeGhostPiratTreeConfig));
 		context.register(RATGLOVE_FLOWERS, new ConfiguredFeature<>(Feature.FLOWER, new RandomPatchConfiguration(64, 7, 3, PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(RatlantisBlockRegistry.RATGLOVE_FLOWER.get())), BlockPredicate.ONLY_IN_AIR_PREDICATE))));
 		context.register(MARBLE_PILE, new ConfiguredFeature<>(RatlantisFeatureRegistry.MARBLE_PILE.get(), NoneFeatureConfiguration.INSTANCE));
 		context.register(SMALL_RUINS, new ConfiguredFeature<>(RatlantisFeatureRegistry.RATLANTIS_RUIN.get(), new RatlantisRuinConfiguration(Map.of(ruinLocation("cheese_statuette"), 0.35F, ruinLocation("marble_giant_cheese"), 0.1F, ruinLocation("marble_hut"), 0.35F, ruinLocation("marble_pillar_collection"), 0.2F, ruinLocation("marble_pillar_leaning"), 0.25F, ruinLocation("marble_rat_head"), 0.15F, ruinLocation("marble_rat_lincoln"), 0.12F, ruinLocation("marble_small_aquaduct"), 0.3F, ruinLocation("marble_thin_tower"), 0.4F, ruinLocation("marble_tower"), 0.25F), ruinLocation("marble_pillar"), processors.getOrThrow(RatlantisStructureRegistry.RUIN_RUINS))));
