@@ -32,11 +32,11 @@ public record ClearRatRecipePacket(long blockPos) implements CustomPacketPayload
         				if (player != null) {
         					BlockPos pos = BlockPos.of(packet.blockPos());
         					if (player.level().getBlockEntity(pos) instanceof RatCraftingTableBlockEntity table) {
-        						table.matrixHandler.ifPresent(handler -> {
-        							for (int slot = 0; slot < handler.getSlots(); slot++) {
-        								handler.setStackInSlot(slot, ItemStack.EMPTY);
-        							}
-        						});
+        						// 1.21: matrixHandler is a direct field now.
+        						var handler = table.matrixHandler;
+        						for (int slot = 0; slot < handler.getSlots(); slot++) {
+        							handler.setStackInSlot(slot, ItemStack.EMPTY);
+        						}
         						table.setChanged();
         					}
         				}

@@ -50,12 +50,13 @@ public class EnchanterRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 					// PORT-STUB: 1.21 EnchantmentTableBlock.BOOKSHELF_OFFSETS / isValidBookShelf moved to internal logic; bookshelf-power scan disabled.
 					// EnchantmentHelper.enchantItem now requires (RegistryAccess, RandomSource, ItemStack, int, Stream<Holder<Enchantment>>) — defer to RegistryAccess-aware variant.
 					if (rat.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+						// 1.21: enchantItem(RandomSource, ItemStack, int, RegistryAccess, Optional<HolderSet<Enchantment>>).
 						burntItem = EnchantmentHelper.enchantItem(
-								serverLevel.registryAccess(),
 								rat.getRandom(),
 								burntItem,
 								(int) (2.0F + rat.getRandom().nextInt(2)),
-								serverLevel.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).holders().map(net.minecraft.core.Holder.Reference::cast));
+								serverLevel.registryAccess(),
+								java.util.Optional.empty());
 					}
 				}
 				if (heldItem.isEmpty()) {

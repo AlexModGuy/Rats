@@ -129,7 +129,8 @@ public class PlagueDoctorSpawner implements CustomSpawner {
 			int k = pos.getZ() + level.getRandom().nextInt(distance * 2) - distance;
 			int l = level.getHeight(Heightmap.Types.WORLD_SURFACE, j, k);
 			BlockPos blockpos1 = new BlockPos(j, l, k);
-			if (NaturalSpawner.isSpawnPositionOk(SpawnPlacementTypes.ON_GROUND, level, blockpos1, EntityType.WANDERING_TRADER)) {
+			// PORT-STUB: 1.21 NaturalSpawner.isSpawnPositionOk renamed; use SpawnPlacements.checkSpawnRules instead.
+			if (net.minecraft.world.entity.SpawnPlacements.checkSpawnRules(EntityType.WANDERING_TRADER, level, MobSpawnType.NATURAL, blockpos1, level.getRandom())) {
 				blockpos = blockpos1;
 				break;
 			}

@@ -19,11 +19,12 @@ public class BaseRatUpgradeItem extends LoreTagItem {
 		this.rarity = rarity;
 	}
 
+	// PORT-STUB: 1.21 Item.getRarity(ItemStack) removed; rarity now read from DataComponents.RARITY.
 	public Rarity getRarity(ItemStack stack) {
 		if (this.rarity != 0 && this.rarity != 4) {
 			return Rarity.values()[this.rarity];
 		}
-		return super.getRarity(stack);
+		return Rarity.COMMON;
 	}
 
 	public boolean isFoil(ItemStack stack) {

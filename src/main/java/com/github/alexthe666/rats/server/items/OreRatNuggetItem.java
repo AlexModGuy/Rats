@@ -58,8 +58,10 @@ public class OreRatNuggetItem extends Item {
 	}
 
 	public static ItemStack getIngot(Level level, ItemStack stack) {
-		Container container = new SimpleContainer(stack);
-		SmeltingRecipe recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, container, level).orElse(null);
+		// 1.21: getRecipeFor takes (RecipeType, RecipeInput, Level) and returns Optional<RecipeHolder<T>>; SmeltingRecipe → SingleRecipeInput.
+		net.minecraft.world.item.crafting.SingleRecipeInput input = new net.minecraft.world.item.crafting.SingleRecipeInput(stack);
+		net.minecraft.world.item.crafting.RecipeHolder<SmeltingRecipe> holder = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, input, level).orElse(null);
+		SmeltingRecipe recipe = holder == null ? null : holder.value();
 		if (recipe != null && !recipe.getResultItem(level.registryAccess()).isEmpty()) {
 			return recipe.getResultItem(level.registryAccess()).copy();
 		}

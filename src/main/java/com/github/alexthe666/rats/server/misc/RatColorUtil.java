@@ -19,8 +19,12 @@ public class RatColorUtil {
 		if (color == DyeColor.WHITE) {
 			return new float[]{0.9019608F, 0.9019608F, 0.9019608F};
 		} else {
-			float[] afloat = color.getTextureDiffuseColor();
-			return new float[]{afloat[0] * 0.75F, afloat[1] * 0.75F, afloat[2] * 0.75F};
+			// 1.21: DyeColor.getTextureDiffuseColor() now returns int (ARGB packed).
+			int rgb = color.getTextureDiffuseColor();
+			float r = ((rgb >> 16) & 0xFF) / 255.0F;
+			float g = ((rgb >> 8) & 0xFF) / 255.0F;
+			float b = (rgb & 0xFF) / 255.0F;
+			return new float[]{r * 0.75F, g * 0.75F, b * 0.75F};
 		}
 	}
 }

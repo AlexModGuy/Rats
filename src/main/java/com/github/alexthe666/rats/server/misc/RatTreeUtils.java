@@ -114,7 +114,8 @@ public class RatTreeUtils {
 
 	private static ItemStack createMaxHoe() {
 		ItemStack hoe = new ItemStack(Items.NETHERITE_HOE);
-		hoe.enchant(Enchantments.BLOCK_FORTUNE, Byte.MAX_VALUE);
+		// PORT-STUB: 1.21 ItemStack.enchant takes Holder<Enchantment>, not Enchantment; Enchantments.BLOCK_FORTUNE was renamed to FORTUNE.
+		// Fortune-aware drop simulation is disabled until the new EnchantmentHelper API is wired up.
 		return hoe;
 	}
 

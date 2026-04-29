@@ -34,12 +34,11 @@ public class PartyHatItem extends Item {
 		}
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Item.getEquipmentSlot / canEquip removed; equipment slot is now driven by DataComponents.EQUIPPABLE.
 	public @Nullable EquipmentSlot getEquipmentSlot(ItemStack stack) {
 		return EquipmentSlot.HEAD;
 	}
 
-	@Override
 	public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
 		return slot == EquipmentSlot.HEAD;
 	}

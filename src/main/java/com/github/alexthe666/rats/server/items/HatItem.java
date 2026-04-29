@@ -146,13 +146,12 @@ public class HatItem extends ArmorItem {
 		return 0.0F;
 	}
 
-	@Override
+	// PORT-STUB: 1.21 ArmorItem.getArmorTexture removed.
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		String item = BuiltInRegistries.ITEM.getKey(this).getPath();
 		if (!item.equals("air")) {
 			return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/model/hat/" + item + ".png").toString();
 		}
-		//hehe
 		return "textures/particle/flea_0.png";
 	}
 

@@ -28,7 +28,7 @@ public class RatlantisArmorItem extends ArmorItem {
 		super(material, type, properties.durability(RatsArmorMaterialRegistry.durabilityFor(material, type)));
 	}
 
-	@Override
+	// PORT-STUB: 1.21 ArmorItem.getArmorTexture removed; armor textures now come from ArmorMaterial layers via DataComponents.
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return "rats:textures/model/armor/" + (slot == EquipmentSlot.LEGS ? "ratlantis_armor_1" : "ratlantis_armor_0") + ".png";
 	}
