@@ -88,9 +88,10 @@ public class AutoCurdlerBlock extends BaseEntityBlock {
 			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 		}
 		if (AutoCurdlerBlockEntity.isMilk(stack) && level.getBlockEntity(pos) instanceof AutoCurdlerBlockEntity te) {
-			if (!level.isClientSide() && FluidUtil.getFluidHandler(stack).resolve().isPresent()) {
+			// 1.21: FluidUtil.getFluidHandler returns Optional<IFluidHandlerItem> directly (no LazyOptional/.resolve()).
+			IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(stack).orElse(null);
+			if (!level.isClientSide() && fluidHandler != null) {
 				FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
-				IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(stack).resolve().get();
 				FluidStack drain = fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
 				if (drain.getAmount() > 0 || stack.is(Items.MILK_BUCKET)) {
 					if (te.getTank().fill(fluidStack.copy(), IFluidHandler.FluidAction.SIMULATE) != 0) {

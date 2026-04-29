@@ -70,7 +70,7 @@ public class PiedPiper extends Raider implements RatSummoner {
 	}
 
 	@Override
-	public void applyRaidBuffs(int wave, boolean alwaysFalseIdk) {
+	public void applyRaidBuffs(net.minecraft.server.level.ServerLevel level, int wave, boolean alwaysFalseIdk) {
 
 	}
 

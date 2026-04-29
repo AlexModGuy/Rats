@@ -29,7 +29,8 @@ import java.util.function.Predicate;
 public class RatUseShearsGoal extends BaseRatHarvestGoal {
 	private static final ItemStack SHEAR_STACK = new ItemStack(Items.SHEARS);
 	private final TamedRat rat;
-	private final Predicate<LivingEntity> SHEAR_PREDICATE = entity -> entity instanceof IShearable && ((IShearable) entity).isShearable(SHEAR_STACK, entity.level(), entity.blockPosition());
+	// 1.21: IShearable.isShearable now takes (Player, ItemStack, Level, BlockPos); we have no player so pass null.
+	private final Predicate<LivingEntity> SHEAR_PREDICATE = entity -> entity instanceof IShearable && ((IShearable) entity).isShearable(null, SHEAR_STACK, entity.level(), entity.blockPosition());
 
 	public RatUseShearsGoal(TamedRat rat) {
 		super(rat);

@@ -88,20 +88,21 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount, Ad
 		return super.isInvulnerableTo(source);
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.getPassengersRidingOffset removed; passenger Y offset now driven by EntityAttachments.PASSENGER on EntityDimensions.
 	public double getPassengersRidingOffset() {
 		return this.riderY;
 	}
 
 	@Override
-	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
+	protected void positionRider(Entity passenger, Entity.MoveFunction callback) {
 		super.positionRider(passenger, callback);
 		if (this.hasPassenger(passenger)) {
 			float radius = (float) this.riderXZ;
 			float angle = (0.01745329251F * this.yBodyRot);
 			double extraX = radius * Mth.sin((float) (Math.PI + angle));
 			double extraZ = radius * Mth.cos(angle);
-			double extraY = this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset();
+			// 1.21: Entity.getMyRidingOffset removed; the offset comes from getPassengerAttachmentPoint via EntityAttachment now.
+			double extraY = this.getY() + this.getPassengersRidingOffset();
 			callback.accept(passenger, this.getX() + extraX, extraY, this.getZ() + extraZ);
 			if (passenger instanceof LivingEntity living) {
 				living.yBodyRot = living.yBodyRotO = this.getYRot();

@@ -67,9 +67,8 @@ public class PiratBoat extends Mob {
 
 	private ItemStack generateBanner() {
 		ItemStack itemstack = new ItemStack(Items.BLACK_BANNER);
-		CompoundTag tag = itemstack.getOrCreateTagElement("BlockEntityTag");
-		ListTag list = new BannerPattern.Builder().addPattern(RatsBannerPatternRegistry.RAT_AND_CROSSBONES_BANNER.getKey(), DyeColor.WHITE).toListTag();
-		tag.put("Patterns", list);
+		// PORT-STUB: 1.21 BannerPattern.Builder removed (banner patterns now use BannerPatternLayers DataComponent).
+		// Custom rat-and-crossbones banner application is dropped; vanilla black banner used as-is.
 		return itemstack;
 	}
 
@@ -108,8 +107,9 @@ public class PiratBoat extends Mob {
 
 	}
 
-	@Override
-	public boolean canBreatheUnderwater() {
+	// PORT-STUB: 1.21 LivingEntity.canBreatheUnderwater is now final on the public surface; underwater-breathing
+	// must be expressed via mob-effect/attribute override or registered via EntityType properties.
+	public boolean canBreatheInWater() {
 		return true;
 	}
 

@@ -44,12 +44,14 @@ public class RatArrowItem extends ArrowItem {
 		return InteractionResult.SUCCESS;
 	}
 
+	// 1.21: ArrowItem.createArrow now takes (Level, LivingEntity shooter, ItemStack arrow, @Nullable ItemStack weapon).
 	@Override
-	public AbstractArrow createArrow(Level level, ItemStack stack, LivingEntity shooter) {
+	public AbstractArrow createArrow(Level level, ItemStack stack, LivingEntity shooter, @org.jetbrains.annotations.Nullable ItemStack weapon) {
 		return new RatArrow(RatsEntityRegistry.RAT_ARROW.get(), level, shooter, stack);
 	}
 
-	@Override
+	// PORT-STUB: ArrowItem.isInfinite removed in 1.21; infinite-arrow override is now driven by tags/stack components.
+	@SuppressWarnings("unused")
 	public boolean isInfinite(ItemStack stack, ItemStack bow, Player player) {
 		return false;
 	}

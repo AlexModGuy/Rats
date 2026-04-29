@@ -30,7 +30,8 @@ public class RatlantisPackEvents {
 		if (event.getPlayer() != null) {
 			boolean enabled = event.getPlayer().serverLevel().getServer().getWorldData().getDataConfiguration().dataPacks().getEnabled().contains("ratlantis");
 			RatsMod.RATLANTIS_DATAPACK_ENABLED = enabled;
-			RatsNetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(event::getPlayer), new ChangeRatlantisStatusPacket(enabled));
+			// PORT-STUB: 1.21 NeoForge networking removed Channel#send + PacketDistributor.PLAYER.with(...); use PacketDistributor.sendToPlayer.
+			PacketDistributor.sendToPlayer(event.getPlayer(), new ChangeRatlantisStatusPacket(enabled));
 			RatsMod.LOGGER.debug("Ratlantis datapack flag has been set to {} for {} ({})", enabled, event.getPlayer().getDisplayName().getString(), event.getPlayer().getStringUUID());
 		} else {
 			event.getPlayerList().getPlayers().forEach(player -> {

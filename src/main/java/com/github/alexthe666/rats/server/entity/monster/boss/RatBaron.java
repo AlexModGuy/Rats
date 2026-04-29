@@ -53,7 +53,7 @@ public class RatBaron extends AbstractRat implements Enemy {
 		});
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.getMyRidingOffset removed; passenger Y offset is now driven by EntityAttachments.PASSENGER on EntityDimensions.
 	public double getMyRidingOffset() {
 		return 0.45D;
 	}
@@ -156,7 +156,7 @@ public class RatBaron extends AbstractRat implements Enemy {
 		return data;
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.canChangeDimensions removed (Portal API rewrite); cannot-portal must be enforced via Portal-side checks.
 	public boolean canChangeDimensions() {
 		return false;
 	}

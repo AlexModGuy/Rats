@@ -23,7 +23,8 @@ import java.util.function.Function;
 
 public class ThickBranchingTrunkPlacer extends TrunkPlacer {
 
-	public static final Codec<ThickBranchingTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
+	// 1.21: TrunkPlacerType wants MapCodec<T>, not Codec<T>; switch to RecordCodecBuilder.mapCodec.
+	public static final com.mojang.serialization.MapCodec<ThickBranchingTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(instance ->
 			trunkPlacerParts(instance).and(instance.group(
 					Codec.INT.fieldOf("trunk_width").forGetter(o -> o.trunkWidth),
 					Codec.INT.fieldOf("base_radius").forGetter(o -> o.baseRadius),

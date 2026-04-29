@@ -325,9 +325,9 @@ public class ForgeClientEvents {
 				TamedRat rat = SelectedRat.get(Minecraft.getInstance().player);
 				if (rat == null) return;
 				ItemStack heldItem = Minecraft.getInstance().player.getItemInHand(InteractionHand.MAIN_HAND);
-				Tesselator tessellator = Tesselator.getInstance();
-				BufferBuilder buffer = null; // PORT-STUB: 1.21 removed Tesselator.getBuilder(); buffer is now obtained inline via tessellator.begin(...)
-				PoseStack stack = event.getPoseStack();
+				final Tesselator tessellator = Tesselator.getInstance();
+				final BufferBuilder buffer = null; // PORT-STUB: 1.21 removed Tesselator.getBuilder(); buffer is now obtained inline via tessellator.begin(...)
+				final PoseStack stack = event.getPoseStack();
 				float bob = 1.5F + 0.3F * (Mth.sin((event.getPartialTick().getGameTimeDeltaPartialTick(false) + Minecraft.getInstance().player.tickCount) * 0.1F) + 1F);
 				final Vec3 viewPosition = Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition();
 				double px = viewPosition.x;

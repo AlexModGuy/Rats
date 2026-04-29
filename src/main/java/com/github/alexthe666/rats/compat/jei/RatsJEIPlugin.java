@@ -46,7 +46,8 @@ public class RatsJEIPlugin implements IModPlugin {
 	@Override
 	public void registerRecipes(IRecipeRegistration registry) {
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
-		registry.addRecipes(RatsRecipeTypes.CHEF, manager.getAllRecipesFor(RatsRecipeRegistry.CHEF.get()));
+		// 1.21: getAllRecipesFor returns List<RecipeHolder<T>>; unwrap via .value().
+		registry.addRecipes(RatsRecipeTypes.CHEF, manager.getAllRecipesFor(RatsRecipeRegistry.CHEF.get()).stream().map(net.minecraft.world.item.crafting.RecipeHolder::value).toList());
 		this.addDescription(registry, new ItemStack(RatsItemRegistry.CHEESE.get()));
 		this.addDescription(registry, new ItemStack(RatsItemRegistry.CHEESE_STICK.get()));
 		this.addDescription(registry, new ItemStack(RatsItemRegistry.RAT_FLUTE.get()));
@@ -58,7 +59,7 @@ public class RatsJEIPlugin implements IModPlugin {
 		this.addDescription(registry, new ItemStack(RatsBlockRegistry.RAT_CAGE.get()));
 		this.addDescription(registry, new ItemStack(RatsBlockRegistry.RAT_CRAFTING_TABLE.get()));
 		if (RatsMod.RATLANTIS_DATAPACK_ENABLED) {
-			registry.addRecipes(RatsRecipeTypes.ARCHEOLOGIST, manager.getAllRecipesFor(RatsRecipeRegistry.ARCHEOLOGIST.get()));
+			registry.addRecipes(RatsRecipeTypes.ARCHEOLOGIST, manager.getAllRecipesFor(RatsRecipeRegistry.ARCHEOLOGIST.get()).stream().map(net.minecraft.world.item.crafting.RecipeHolder::value).toList());
 			this.addDescription(registry, new ItemStack(RatlantisItemRegistry.RAT_UPGRADE_ARCHEOLOGIST.get()));
 		} else {
 			if (!RatsMod.RATLANTIS_ITEMS.isEmpty()) {
@@ -95,7 +96,8 @@ public class RatsJEIPlugin implements IModPlugin {
 
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistration registration) {
-		registration.useNbtForSubtypes(RatsItemRegistry.RAT_NUGGET_ORE.get());
+		// PORT-STUB: 1.21 ISubtypeRegistration.useNbtForSubtypes removed; subtypes now use DataComponents-based interpreter.
+		// JEI ore-nugget variant detection disabled until migrated to ISubtypeRegistration.registerSubtypeInterpreter(ItemLike, ISubtypeInterpreter).
 	}
 
 	@Override

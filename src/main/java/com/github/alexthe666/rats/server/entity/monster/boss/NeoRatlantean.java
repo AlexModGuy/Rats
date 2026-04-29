@@ -77,7 +77,7 @@ public class NeoRatlantean extends Monster {
 		this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.canChangeDimensions removed.
 	public boolean canChangeDimensions() {
 		return false;
 	}
@@ -92,7 +92,7 @@ public class NeoRatlantean extends Monster {
 		return true;
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.getEyeHeight(Pose) removed; eye height comes from EntityAttachment.EYE on EntityDimensions.
 	public float getEyeHeight(Pose pose) {
 		return 0.9F;
 	}

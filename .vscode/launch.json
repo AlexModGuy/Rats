@@ -1,0 +1,93 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Client",
+      "presentation": {
+        "group": "Mod Development - RatsUpdated",
+        "order": 0
+      },
+      "projectName": "RatsUpdated",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@C:\\RatsUpdated\\build\\moddev\\clientRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@C:\\RatsUpdated\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003drats%%C:\\RatsUpdated\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Data",
+      "presentation": {
+        "group": "Mod Development - RatsUpdated",
+        "order": 1
+      },
+      "projectName": "RatsUpdated",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@C:\\RatsUpdated\\build\\moddev\\dataRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@C:\\RatsUpdated\\build\\moddev\\dataRunVmArgs.txt",
+        "-Dfml.modFolders\u003drats%%C:\\RatsUpdated\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "GameTestServer",
+      "presentation": {
+        "group": "Mod Development - RatsUpdated",
+        "order": 2
+      },
+      "projectName": "RatsUpdated",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@C:\\RatsUpdated\\build\\moddev\\gameTestServerRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@C:\\RatsUpdated\\build\\moddev\\gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003drats%%C:\\RatsUpdated\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Server",
+      "presentation": {
+        "group": "Mod Development - RatsUpdated",
+        "order": 3
+      },
+      "projectName": "RatsUpdated",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@C:\\RatsUpdated\\build\\moddev\\serverRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@C:\\RatsUpdated\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003drats%%C:\\RatsUpdated\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    }
+  ]
+}

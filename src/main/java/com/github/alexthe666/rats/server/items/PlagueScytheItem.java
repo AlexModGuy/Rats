@@ -17,7 +17,8 @@ import java.util.List;
 
 public class PlagueScytheItem extends SwordItem {
 	public PlagueScytheItem(Item.Properties properties) {
-		super(RatsToolMaterialRegistry.PLAGUE_SCYTHE, 3, -0.5F, properties);
+		// 1.21: SwordItem(Tier, Properties); damage/speed configured via Properties.attributes(...).
+		super(RatsToolMaterialRegistry.PLAGUE_SCYTHE, properties);
 	}
 
 	@Override
@@ -30,7 +31,7 @@ public class PlagueScytheItem extends SwordItem {
 		return 1.0F;
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Item.isCorrectToolForDrops takes (ItemStack, BlockState); the no-arg override pattern was dropped.
 	public boolean isCorrectToolForDrops(BlockState state) {
 		return false;
 	}

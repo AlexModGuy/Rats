@@ -15,7 +15,8 @@ import java.util.List;
 
 public class CopyInputStateRuleProcessor extends StructureProcessor {
 
-	public static final Codec<CopyInputStateRuleProcessor> CODEC = ProcessorRule.CODEC.listOf().fieldOf("rules").xmap(CopyInputStateRuleProcessor::new, config -> config.rules).codec();
+	// 1.21: StructureProcessorType wants MapCodec<T>, not Codec<T>.
+	public static final com.mojang.serialization.MapCodec<CopyInputStateRuleProcessor> CODEC = ProcessorRule.CODEC.listOf().fieldOf("rules").xmap(CopyInputStateRuleProcessor::new, config -> config.rules);
 
 	private final ImmutableList<ProcessorRule> rules;
 
