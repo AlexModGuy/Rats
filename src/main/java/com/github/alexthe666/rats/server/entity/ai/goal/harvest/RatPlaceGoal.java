@@ -53,7 +53,8 @@ public class RatPlaceGoal extends BaseRatHarvestGoal {
 				BlockState block = this.rat.level().getBlockState(this.getTargetBlock());
 				BlockPos moveToPos = this.getTargetBlock();
 				this.rat.getNavigation().moveTo(moveToPos.getX() + 0.5D, moveToPos.getY(), moveToPos.getZ() + 0.5D, 1.25D);
-				if (block.getBlock().canSurvive(block, this.rat.level(), this.getTargetBlock()) && this.rat.level().isEmptyBlock(this.getTargetBlock().above()) && this.rat.level().getBlockState(this.getTargetBlock()).canBeReplaced()) {
+				// 1.21: Block.canSurvive is protected; use BlockState.canSurvive directly.
+				if (block.canSurvive(this.rat.level(), this.getTargetBlock()) && this.rat.level().isEmptyBlock(this.getTargetBlock().above()) && this.rat.level().getBlockState(this.getTargetBlock()).canBeReplaced()) {
 					double distance = this.rat.getRatDistanceCenterSq(this.getTargetBlock().getX(), this.getTargetBlock().getY(), this.getTargetBlock().getZ());
 					if (distance < this.rat.getRatHarvestDistance(0.0D)) {
 						ItemStack seedStack = this.rat.getItemInHand(InteractionHand.MAIN_HAND).copy();

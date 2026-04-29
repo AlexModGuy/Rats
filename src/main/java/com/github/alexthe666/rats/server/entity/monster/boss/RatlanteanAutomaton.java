@@ -130,7 +130,7 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		}
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.canChangeDimensions removed.
 	public boolean canChangeDimensions() {
 		return false;
 	}

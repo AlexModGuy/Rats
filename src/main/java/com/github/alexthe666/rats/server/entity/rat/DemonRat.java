@@ -118,7 +118,7 @@ public class DemonRat extends AbstractRat implements Enemy {
 		return true;
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.getMyRidingOffset removed; passenger Y offset now driven by EntityAttachments.
 	public double getMyRidingOffset() {
 		return 0.25D;
 	}

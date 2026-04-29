@@ -322,7 +322,7 @@ public class RatBaronPlane extends Mob implements Plane, AdjustsRatTail {
 		return RatsSoundRegistry.BIPLANE_DEATH.get();
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.canChangeDimensions removed.
 	public boolean canChangeDimensions() {
 		return false;
 	}

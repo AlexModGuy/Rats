@@ -130,7 +130,7 @@ public class Dutchrat extends Monster implements IAnimatedEntity {
 		return this.getEntityData().get(BELL_SPAWN_TICKS);
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.canChangeDimensions removed (Portal API rewrite).
 	public boolean canChangeDimensions() {
 		return false;
 	}

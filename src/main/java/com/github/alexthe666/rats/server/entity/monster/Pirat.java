@@ -93,7 +93,7 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 		}
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.getMyRidingOffset removed.
 	public double getMyRidingOffset() {
 		return 0.3D;
 	}

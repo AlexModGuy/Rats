@@ -39,7 +39,9 @@ public class RatTubeMoveControl extends RatMoveControl {
 			PathNavigation pathnavigate = this.rat.getNavigation();
 
 			NodeEvaluator nodeprocessor = pathnavigate.getNodeEvaluator();
-			if (nodeprocessor.getBlockPathType(this.rat.level(), Mth.floor(this.rat.getX() + (double) f7), Mth.floor(this.rat.getY()), Mth.floor(this.rat.getZ() + (double) f8)) != PathType.WALKABLE) {
+			// 1.21: NodeEvaluator.getBlockPathType removed; use getPathType(PathfindingContext, x, y, z) instead.
+			net.minecraft.world.level.pathfinder.PathfindingContext ctx = new net.minecraft.world.level.pathfinder.PathfindingContext(this.rat.level(), this.rat);
+			if (nodeprocessor.getPathType(ctx, Mth.floor(this.rat.getX() + (double) f7), Mth.floor(this.rat.getY()), Mth.floor(this.rat.getZ() + (double) f8)) != PathType.WALKABLE) {
 				this.strafeForwards = 1.0F;
 				this.strafeRight = 0.0F;
 				f1 = f;

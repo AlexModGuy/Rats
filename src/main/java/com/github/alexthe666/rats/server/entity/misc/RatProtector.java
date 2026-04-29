@@ -22,7 +22,8 @@ public class RatProtector extends AbstractRat {
 	}
 
 	@Override
-	public int getExperienceReward() {
+	protected int getBaseExperienceReward() {
+		// 1.21: getExperienceReward is final; use getBaseExperienceReward.
 		return 0;
 	}
 

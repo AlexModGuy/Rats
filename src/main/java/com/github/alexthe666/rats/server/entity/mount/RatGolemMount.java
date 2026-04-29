@@ -102,13 +102,17 @@ public class RatGolemMount extends RatMountBase {
 	public boolean doHurtTarget(Entity entity) {
 		this.attackTimer = 10;
 		this.level().broadcastEntityEvent(this, (byte) 4);
-		boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) (7 + this.getRandom().nextInt(15)));
+		net.minecraft.world.damagesource.DamageSource source = this.damageSources().mobAttack(this);
+		boolean flag = entity.hurt(source, (float) (7 + this.getRandom().nextInt(15)));
 		if (flag) {
 			entity.setDeltaMovement(entity.getDeltaMovement().add(0.0D, 0.4F, 0.0D));
-			this.doEnchantDamageEffects(this, entity);
+			// 1.21: doEnchantDamageEffects → EnchantmentHelper.doPostAttackEffects(ServerLevel, Entity, DamageSource).
+			if (this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+				net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffects(serverLevel, entity, source);
+			}
 		}
 
-		this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+		this.playSound(SoundEvents.IRON_GOLEM_ATTACK.value(), 1.0F, 1.0F);
 		return flag;
 	}
 

@@ -92,8 +92,9 @@ public class NeoRatlantean extends Monster {
 		return true;
 	}
 
-	// PORT-STUB: 1.21 Entity.getEyeHeight(Pose) removed; eye height comes from EntityAttachment.EYE on EntityDimensions.
-	public float getEyeHeight(Pose pose) {
+	// PORT-STUB: 1.21 Entity.getEyeHeight(Pose) is final; eye height comes from EntityAttachment.EYE on EntityDimensions.
+	@SuppressWarnings("unused")
+	private float legacyEyeHeight(Pose pose) {
 		return 0.9F;
 	}
 

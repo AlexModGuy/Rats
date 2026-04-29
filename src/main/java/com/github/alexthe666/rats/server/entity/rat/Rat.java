@@ -163,8 +163,9 @@ public class Rat extends DiggingRat {
 	}
 
 	@Override
-	public int getExperienceReward(net.minecraft.server.level.ServerLevel level, Entity killer) {
-		return this.hasPlague() ? 10 : super.getExperienceReward(level, killer);
+	protected int getBaseExperienceReward() {
+		// 1.21: getExperienceReward is final; override getBaseExperienceReward instead.
+		return this.hasPlague() ? 10 : super.getBaseExperienceReward();
 	}
 
 	@Nullable

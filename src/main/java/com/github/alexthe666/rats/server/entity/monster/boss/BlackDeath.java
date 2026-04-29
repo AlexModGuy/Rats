@@ -179,7 +179,7 @@ public class BlackDeath extends Monster implements RatSummoner {
 		}
 	}
 
-	@Override
+	// PORT-STUB: 1.21 Entity.canChangeDimensions removed.
 	public boolean canChangeDimensions() {
 		return false;
 	}

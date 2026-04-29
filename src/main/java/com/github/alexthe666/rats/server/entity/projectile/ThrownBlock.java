@@ -142,7 +142,8 @@ public class ThrownBlock extends Entity {
 					BlockEntity tileentity = this.level().getBlockEntity(blockpos1);
 
 					if (tileentity != null) {
-						CompoundTag CompoundTag = tileentity.saveWithoutMetadata();
+						// 1.21: BlockEntity.saveWithoutMetadata now requires HolderLookup.Provider.
+						CompoundTag CompoundTag = tileentity.saveWithoutMetadata(this.level().registryAccess());
 
 						for (String s : this.tileEntityData.getAllKeys()) {
 							Tag nbtbase = this.tileEntityData.get(s);

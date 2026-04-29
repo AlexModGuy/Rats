@@ -45,4 +45,9 @@ public class WaterSurfaceNodeEvaluator extends NodeEvaluator {
 	public PathType getPathType(PathfindingContext context, int x, int y, int z) {
 		return PathType.WATER;
 	}
+
+	@Override
+	public PathType getPathTypeOfMob(PathfindingContext context, int x, int y, int z, Mob mob) {
+		return PathType.WATER;
+	}
 }

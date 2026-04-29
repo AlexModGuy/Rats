@@ -13,10 +13,14 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 public class RatNodeEvaluator extends WalkNodeEvaluator {
 
+	// PORT-STUB: 1.21 evaluateBlockPathType removed; node-type filtering is now done by overriding getPathTypeOfMob (PathfindingContext-based).
 	@Override
-	protected PathType evaluateBlockPathType(BlockGetter getter, BlockPos pos, PathType types) {
+	public PathType getPathTypeOfMob(net.minecraft.world.level.pathfinder.PathfindingContext context, int x, int y, int z, net.minecraft.world.entity.Mob mob) {
+		PathType types = super.getPathTypeOfMob(context, x, y, z, mob);
+		BlockPos pos = new BlockPos(x, y, z);
+		BlockGetter getter = context.level();
 		Block block = getter.getBlockState(pos).getBlock();
-		if (this.mob instanceof TamedRat rat) {
+		if (mob instanceof TamedRat rat) {
 			if (block instanceof RatHoleBlock || block instanceof RatTrapBlock || block instanceof RatCageBlock || RatUtils.isOpenRatTube(getter, pos)) {
 				types = PathType.WALKABLE;
 			}
@@ -26,19 +30,9 @@ public class RatNodeEvaluator extends WalkNodeEvaluator {
 			if (block instanceof SlabBlock) {
 				types = PathType.WALKABLE;
 			}
-
-			if (types == PathType.DOOR_WOOD_CLOSED && this.canOpenDoors() && this.canPassDoors()) {
-				types = PathType.WALKABLE_DOOR;
-			}
-
-			if (types == PathType.DOOR_OPEN && !this.canPassDoors()) {
-				types = PathType.BLOCKED;
-			}
-
 			if (types == PathType.RAIL && !(block instanceof BaseRailBlock) && !(getter.getBlockState(pos.below()).getBlock() instanceof BaseRailBlock)) {
 				types = PathType.UNPASSABLE_RAIL;
 			}
-
 			if (rat.isInCage()) {
 				if (block instanceof RatCageBlock || block instanceof RatTubeBlock) {
 					types = PathType.WALKABLE;
