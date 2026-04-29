@@ -358,7 +358,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				}
 				level.addFreshEntity(death);
 				for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(death.blockPosition()).inflate(16.0D))) {
-					RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.trigger(player);
+					RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.get().trigger(player);
 				}
 				this.discard();
 			}
@@ -486,7 +486,7 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 					this.spawnAtLocation(this.getMainHandItem());
 				}
 				this.level().addFreshEntity(death);
-				RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.trigger((ServerPlayer) player);
+				RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.get().trigger((ServerPlayer) player);
 				this.level().playSound(null, this.blockPosition(), RatsSoundRegistry.BLACK_DEATH_SUMMON.get(), SoundSource.HOSTILE, 1.5F, 1.0F);
 				this.discard();
 				if (!player.isCreative()) {

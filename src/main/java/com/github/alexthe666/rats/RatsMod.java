@@ -117,6 +117,7 @@ public class RatsMod {
 		RatsRecipeRegistry.RECIPES.register(bus);
 		RatsRecipeRegistry.SERIALIZERS.register(bus);
 		RatsSoundRegistry.SOUNDS.register(bus);
+		RatsAdvancementsRegistry.TRIGGERS.register(bus);
 		RatsCreativeTabRegistry.TABS.register(bus);
 
 		RatlantisBlockRegistry.BLOCKS.register(bus);

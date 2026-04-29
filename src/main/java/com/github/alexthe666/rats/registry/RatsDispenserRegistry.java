@@ -186,7 +186,7 @@ public class RatsDispenserRegistry {
 						death.setCustomName(doctor.getCustomName());
 					}
 					for (ServerPlayer player : source.level().getEntitiesOfClass(ServerPlayer.class, new AABB(blockpos).inflate(16.0F))) {
-						RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.trigger(player);
+						RatsAdvancementsRegistry.BLACK_DEATH_SUMMONED.get().trigger(player);
 					}
 				}
 				return super.execute(source, stack);
