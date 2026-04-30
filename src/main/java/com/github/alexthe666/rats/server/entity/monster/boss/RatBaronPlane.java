@@ -322,8 +322,8 @@ public class RatBaronPlane extends Mob implements Plane, AdjustsRatTail {
 		return RatsSoundRegistry.BIPLANE_DEATH.get();
 	}
 
-	// PORT-STUB: 1.21 Entity.canChangeDimensions removed.
-	public boolean canChangeDimensions() {
+	@Override
+	public boolean canChangeDimensions(net.minecraft.world.level.Level from, net.minecraft.world.level.Level to) {
 		return false;
 	}
 

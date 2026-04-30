@@ -53,10 +53,8 @@ public class RatBaron extends AbstractRat implements Enemy {
 		});
 	}
 
-	// PORT-STUB: 1.21 Entity.getMyRidingOffset removed; passenger Y offset is now driven by EntityAttachments.PASSENGER on EntityDimensions.
-	public double getMyRidingOffset() {
-		return 0.45D;
-	}
+	// 1.21: passenger Y offset is sourced from the carrier's EntityAttachments.PASSENGER. The
+	// RatBaronPlane already handles its own passenger positioning, so no override is needed.
 
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
@@ -156,8 +154,8 @@ public class RatBaron extends AbstractRat implements Enemy {
 		return data;
 	}
 
-	// PORT-STUB: 1.21 Entity.canChangeDimensions removed (Portal API rewrite); cannot-portal must be enforced via Portal-side checks.
-	public boolean canChangeDimensions() {
+	@Override
+	public boolean canChangeDimensions(net.minecraft.world.level.Level from, net.minecraft.world.level.Level to) {
 		return false;
 	}
 

@@ -244,9 +244,8 @@ public class RatKing extends Monster implements RatSummoner {
 		return Integer.parseInt(String.valueOf(c));
 	}
 
-	// PORT-STUB: 1.21 Entity.canChangeDimensions() no longer exists (removed with Portal API rewrite).
-	// Boss-cannot-portal behavior must be enforced via Portal-side checks now.
-	public boolean canChangeDimensions() {
+	@Override
+	public boolean canChangeDimensions(net.minecraft.world.level.Level from, net.minecraft.world.level.Level to) {
 		return false;
 	}
 

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "tag": "c:cheese"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    "ICI",
+    " II"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_whistle"
+  },
+  "show_notification": true
+}

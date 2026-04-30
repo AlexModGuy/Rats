@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "c:storage_blocks/coal"
+    },
+    "D": {
+      "tag": "c:gems/diamond"
+    },
+    "I": {
+      "tag": "c:storage_blocks/iron"
+    },
+    "N": {
+      "item": "rats:rat_nugget"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "NDN",
+    "CUC",
+    "NIN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_ore_doubling"
+  },
+  "show_notification": true
+}

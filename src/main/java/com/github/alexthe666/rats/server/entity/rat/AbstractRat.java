@@ -470,8 +470,6 @@ public abstract class AbstractRat extends TamableAnimal implements IAnimatedEnti
 		return RatConfig.ratsSpawnLikeMonsters;
 	}
 
-	// PORT-STUB: 1.21 removed Entity.getStandingEyeHeight in favor of EntityAttachments-driven eye height; sit-pose eye-height tweak dropped.
-
 	@Override
 	public void remove(RemovalReason reason) {
 		if (reason.shouldDestroy()) {

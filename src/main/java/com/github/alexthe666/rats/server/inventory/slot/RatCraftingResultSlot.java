@@ -2,13 +2,17 @@ package com.github.alexthe666.rats.server.inventory.slot;
 
 import com.github.alexthe666.rats.server.block.entity.RatCraftingTableBlockEntity;
 import com.google.common.collect.Lists;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
+
+import java.util.List;
 
 public class RatCraftingResultSlot extends SlotItemHandler {
 
@@ -72,12 +76,14 @@ public class RatCraftingResultSlot extends SlotItemHandler {
 	protected void checkTakeAchievements(ItemStack stack) {
 		if (this.amountCrafted > 0) {
 			stack.onCraftedBy(this.player.level(), this.player, this.amountCrafted);
-			// 1.21: matrixWrapper is direct (not Optional); EventHooks.firePlayerCraftingEvent still accepts (player, stack, container).
 			EventHooks.firePlayerCraftingEvent(this.player, stack, this.table.matrixWrapper);
 		}
 		this.amountCrafted = 0;
 
-		// PORT-STUB: 1.21 awardRecipes takes Collection<RecipeHolder<?>>, but our recipeUsed is the bare Recipe<?>; recipe-book unlock disabled.
+		RecipeHolder<CraftingRecipe> usedHolder = this.table.getRecipeUsed();
+		if (usedHolder != null && this.player instanceof ServerPlayer sp) {
+			sp.awardRecipes(List.of(usedHolder));
+		}
 	}
 
 	@Override

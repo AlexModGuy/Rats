@@ -1,0 +1,10 @@
+{
+  "type": "rats:chef",
+  "ingredient": {
+    "item": "rats:cheese"
+  },
+  "result": {
+    "count": 1,
+    "id": "rats:string_cheese"
+  }
+}

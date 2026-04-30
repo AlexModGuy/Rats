@@ -31,19 +31,21 @@ public record OpenRatScreenPacket(int containerId, int entityId) implements Cust
     }
 
     public static void handle(OpenRatScreenPacket packet, IPayloadContext context) {
-        			context.enqueueWork(new Runnable() {
-        				@Override
-        				public void run() {
-        					Entity entity = Minecraft.getInstance().level.getEntity(packet.entityId());
-        					if (entity instanceof TamedRat rat) {
-        						LocalPlayer localplayer = Minecraft.getInstance().player;
-        						SimpleContainer container = new SimpleContainer(6);
-        						RatMenu menu = new RatMenu(packet.containerId(), container, localplayer.getInventory());
-        						localplayer.containerMenu = menu;
-        						Minecraft.getInstance().setScreen(new RatScreen(menu, localplayer.getInventory(), rat));
-        					}
-        				}
-        			});
-			
+        context.enqueueWork(() -> {
+            Entity entity = Minecraft.getInstance().level.getEntity(packet.entityId());
+            if (!(entity instanceof TamedRat rat)) return;
+            LocalPlayer localplayer = Minecraft.getInstance().player;
+            // Reuse the menu vanilla just opened via ServerPlayer.openMenu — its SimpleContainer was already
+            // populated by ClientboundContainerSetContentPacket. Building a fresh RatMenu+SimpleContainer here
+            // would throw away those synced slot contents, leaving the screen blank until the next broadcast.
+            RatMenu menu;
+            if (localplayer.containerMenu instanceof RatMenu existing && existing.containerId == packet.containerId()) {
+                menu = existing;
+            } else {
+                menu = new RatMenu(packet.containerId(), new SimpleContainer(6), localplayer.getInventory());
+                localplayer.containerMenu = menu;
+            }
+            Minecraft.getInstance().setScreen(new RatScreen(menu, localplayer.getInventory(), rat));
+        });
     }
 }

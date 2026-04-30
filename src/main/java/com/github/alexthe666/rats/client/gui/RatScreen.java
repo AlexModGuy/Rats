@@ -87,7 +87,8 @@ public class RatScreen extends AbstractContainerScreen<RatMenu> {
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-		this.renderBackground(graphics, mouseX, mouseY, partialTicks);
+		// 1.21: AbstractContainerScreen.renderBackground() now calls renderBg() itself,
+		// so calling this.renderBackground(...) from here recurses infinitely.
 		int k = (this.width - this.imageWidth) / 2;
 		int l = (this.height - this.imageHeight) / 2;
 		graphics.blit(TEXTURE_BACKDROP, k - 8, l, 0, 0, this.imageWidth, this.imageHeight);

@@ -275,14 +275,16 @@ public class ModClientEvents {
 	public static void onItemColors(RegisterColorHandlersEvent.Item event) {
 		event.register((stack, tint) -> FoliageColor.get(0.5D, 1.0D), RatlantisBlockRegistry.MARBLED_CHEESE_GRASS.get().asItem());
 
+		// 1.21: Item color handlers now respect the alpha byte; DyeColor.getFireworkColor() returns 0x00RRGGBB,
+		// which would render the tinted layer fully transparent. OR in opaque alpha to keep them visible.
 		for (DeferredHolder<Item, Item> item : RatsItemRegistry.RAT_TUBES) {
-			event.register((stack, tint) -> ((RatTubeItem) item.get()).color.getFireworkColor(), item.get());
+			event.register((stack, tint) -> 0xFF000000 | ((RatTubeItem) item.get()).color.getFireworkColor(), item.get());
 		}
 		for (DeferredHolder<Item, Item> item : RatsItemRegistry.RAT_IGLOOS) {
-			event.register((stack, tint) -> ((RatIglooItem) item.get()).color.getFireworkColor(), item.get());
+			event.register((stack, tint) -> 0xFF000000 | ((RatIglooItem) item.get()).color.getFireworkColor(), item.get());
 		}
 		for (DeferredHolder<Item, Item> item : RatsItemRegistry.RAT_HAMMOCKS) {
-			event.register((stack, tint) -> ((RatHammockItem) item.get()).color.getFireworkColor(), item.get());
+			event.register((stack, tint) -> 0xFF000000 | ((RatHammockItem) item.get()).color.getFireworkColor(), item.get());
 		}
 		event.register((stack, tint) -> {
 			if (tint == 1) {

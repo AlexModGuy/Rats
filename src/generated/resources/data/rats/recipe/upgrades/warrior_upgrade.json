@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "rats:rat_upgrade_armor"
+    },
+    "B": {
+      "tag": "c:storage_blocks/diamond"
+    },
+    "D": {
+      "tag": "c:gems/diamond"
+    },
+    "F": {
+      "item": "rats:rat_upgrade_strength"
+    },
+    "H": {
+      "item": "rats:rat_upgrade_health"
+    },
+    "S": {
+      "item": "minecraft:diamond_sword"
+    }
+  },
+  "pattern": [
+    "DSD",
+    "HFA",
+    "DBD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_warrior"
+  },
+  "show_notification": true
+}

@@ -179,8 +179,9 @@ public class BlackDeath extends Monster implements RatSummoner {
 		}
 	}
 
-	// PORT-STUB: 1.21 Entity.canChangeDimensions removed.
-	public boolean canChangeDimensions() {
+	// 1.21: signature is now canChangeDimensions(Level from, Level to). Bosses are pinned to their summon dim.
+	@Override
+	public boolean canChangeDimensions(net.minecraft.world.level.Level from, net.minecraft.world.level.Level to) {
 		return false;
 	}
 

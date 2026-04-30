@@ -1,0 +1,38 @@
+{
+  "parent": "ratlantis:ratglove_petals",
+  "criteria": {
+    "get_gem": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:gem_of_ratlantis"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.ratlantis.gem_of_ratlantis.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "rats:gem_of_ratlantis"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ratlantis.gem_of_ratlantis.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_gem"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

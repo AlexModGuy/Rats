@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "tag": "c:ingots/ratlantis_gem"
+    },
+    "M": {
+      "tag": "rats:marbled_cheese"
+    }
+  },
+  "pattern": [
+    "GMG",
+    "M M",
+    "GMG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_basic_ratlantean"
+  },
+  "show_notification": true
+}

@@ -18,8 +18,10 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 
 import java.util.Optional;
 
-// PORT-STUB: 1.21 RecipeBookComponent / RecipeUpdateListener now require RecipeBookMenu<I,R> generics that we can't satisfy
-// (RatCraftingTableMenu dropped that base). Recipe-book button + sidebar removed; cycle-result + cooking display preserved.
+// 1.21: RecipeBookComponent / RecipeUpdateListener require the menu to be a RecipeBookMenu<I,R>,
+// which RatCraftingTableMenu intentionally is not (see comment there). The recipe-book sidebar is
+// therefore not present on this screen; cycle-result buttons and the cooking-progress display
+// remain so the rat-driven crafting flow still has full UI affordance.
 public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingTableMenu> {
 	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/gui/container/rat_crafting_table.png");
 	private final Inventory playerInventory;
@@ -79,7 +81,6 @@ public class RatCraftingTableScreen extends AbstractContainerScreen<RatCraftingT
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-		this.renderBackground(graphics, mouseX, mouseY, partialTicks);
 		graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 		int l = this.table.getCookProgressionScaled();
 		graphics.blit(TEXTURE, this.leftPos + 96, this.topPos + 39, 0, 211, l, 16);

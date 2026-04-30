@@ -1,0 +1,38 @@
+{
+  "parent": "rats:tame_rat",
+  "criteria": {
+    "get_stick": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:cheese_stick"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.rats.cheese_stick.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "rats:cheese_stick"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.rats.cheese_stick.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_stick"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

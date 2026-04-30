@@ -44,8 +44,13 @@ public class ChefRecipeCategory implements IRecipeCategory<ChefRecipe> {
 	}
 
 	@Override
-	public IDrawable getBackground() {
-		return this.background;
+	public int getWidth() {
+		return 170;
+	}
+
+	@Override
+	public int getHeight() {
+		return 79;
 	}
 
 	@Override
@@ -61,6 +66,7 @@ public class ChefRecipeCategory implements IRecipeCategory<ChefRecipe> {
 
 	@Override
 	public void draw(ChefRecipe recipe, IRecipeSlotsView view, GuiGraphics graphics, double mouseX, double mouseY) {
+		this.background.draw(graphics);
 		this.arrow.draw(graphics, 71, 49);
 	}
 }

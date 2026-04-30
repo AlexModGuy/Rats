@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "minecraft:arrows"
+    },
+    "B": {
+      "item": "minecraft:bow"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "ABA",
+    "AUA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_bow"
+  },
+  "show_notification": true
+}

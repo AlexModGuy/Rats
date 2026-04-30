@@ -89,8 +89,18 @@ public class RatTubeItem extends Item {
 	}
 
 	private BlockState stateWithTag(BlockPos pos, Level level, ItemStack stack, BlockState state) {
-		// PORT-STUB: 1.21 replaced BlockStateTag NBT with DataComponents.BLOCK_STATE (BlockItemStateProperties).
-		// Until migrated, the tube places with the default block state regardless of stack-encoded properties.
+		// 1.21: BlockStateTag NBT was replaced with DataComponents.BLOCK_STATE (BlockItemStateProperties).
+		// If a stack carries that component (only applies when this item was duplicated by /give-style commands),
+		// fold those property values into the state we're about to place; otherwise keep the placement default.
+		net.minecraft.world.item.component.BlockItemStateProperties props = stack.get(net.minecraft.core.component.DataComponents.BLOCK_STATE);
+		if (props == null || props.isEmpty()) return state;
+		StateDefinition<Block, BlockState> def = state.getBlock().getStateDefinition();
+		for (java.util.Map.Entry<String, String> entry : props.properties().entrySet()) {
+			Property<?> property = def.getProperty(entry.getKey());
+			if (property != null) {
+				state = remapProperties(state, property, entry.getValue());
+			}
+		}
 		return state;
 	}
 
@@ -107,7 +117,23 @@ public class RatTubeItem extends Item {
 	}
 
 	public void setBlockEntityTag(Level level, @Nullable Player player, BlockPos pos, ItemStack stack) {
-		// PORT-STUB: 1.21 replaced BlockEntityTag NBT with DataComponents.BLOCK_ENTITY_DATA + applyComponentsFromItemStack.
-		// Until migrated, no extra NBT carries from item to placed block entity.
+		// 1.21: BlockEntityTag NBT was replaced with DataComponents.BLOCK_ENTITY_DATA. We seed the placed
+		// tube's color from the item's dye color baked into RatTubeItem; carry over any custom BE data the
+		// stack might have (e.g. when picked up with middle-click in creative).
+		BlockEntity be = level.getBlockEntity(pos);
+		if (be instanceof com.github.alexthe666.rats.server.block.entity.RatTubeBlockEntity tube) {
+			tube.setColor(this.color.getId());
+			net.minecraft.world.item.component.CustomData customData = stack.getOrDefault(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA, net.minecraft.world.item.component.CustomData.EMPTY);
+			if (!customData.isEmpty()) {
+				CompoundTag tag = customData.copyTag();
+				tag.remove("x"); tag.remove("y"); tag.remove("z"); tag.remove("id");
+				if (!tag.isEmpty()) {
+					CompoundTag full = be.saveWithoutMetadata(level.registryAccess());
+					full.merge(tag);
+					be.loadWithComponents(full, level.registryAccess());
+				}
+			}
+			be.setChanged();
+		}
 	}
 }

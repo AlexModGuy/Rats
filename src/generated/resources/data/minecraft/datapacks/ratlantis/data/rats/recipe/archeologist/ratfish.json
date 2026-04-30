@@ -1,0 +1,10 @@
+{
+  "type": "rats:archeologist",
+  "ingredient": {
+    "item": "minecraft:tropical_fish"
+  },
+  "result": {
+    "count": 1,
+    "id": "rats:ratfish"
+  }
+}

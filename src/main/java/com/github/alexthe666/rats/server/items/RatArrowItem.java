@@ -8,7 +8,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
@@ -50,9 +49,7 @@ public class RatArrowItem extends ArrowItem {
 		return new RatArrow(RatsEntityRegistry.RAT_ARROW.get(), level, shooter, stack);
 	}
 
-	// PORT-STUB: ArrowItem.isInfinite removed in 1.21; infinite-arrow override is now driven by tags/stack components.
-	@SuppressWarnings("unused")
-	public boolean isInfinite(ItemStack stack, ItemStack bow, Player player) {
-		return false;
-	}
+	// 1.21: ArrowItem.isInfinite was removed. The Infinity-bow/ammo interaction is now driven by
+	// EnchantmentEffectComponents.AMMO_USE + the ammo tag list. Rat arrows aren't in the infinite-arrow tag,
+	// so they are correctly consumed even when fired from an Infinity-enchanted bow — no override needed.
 }

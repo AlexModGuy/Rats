@@ -14,10 +14,10 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-// PORT-STUB: 1.21 reworked Enchantments to be ResourceKey<Enchantment> + EnchantmentHelper.getItemEnchantmentLevel(Holder<Enchantment>, ItemStack);
-// the legacy EnchantmentHelper.getTagEnchantmentLevel(Enchantment, ItemStack) is gone, ArrowItem.createArrow signature changed to take a shooter weapon stack,
-// and AbstractArrow.setKnockback was renamed. This bow's enchantment-aware launching (Power/Punch/Flame/Infinity) is replaced by a simplified shoot
-// that fires a plain RatlantisArrow with no enchant scaling until the calls are migrated to the new EnchantmentHelper API.
+// 1.21: Power/Punch/Flame enchant scaling is now driven by the enchantment-effect-component system on hit;
+// instead of manually copying levels from the bow to the arrow at fire time, we just thread the bow stack through
+// as AbstractArrow.firedFromWeapon (5th ctor arg). Vanilla's EnchantmentHelper.modifyDamage/modifyKnockback/etc.
+// then read effects off that weapon when the arrow hits, applying the right damage/knockback/fire automatically.
 public class RatlantisBowItem extends BowItem {
 
 	public RatlantisBowItem(Item.Properties properties) {
@@ -43,7 +43,8 @@ public class RatlantisBowItem extends BowItem {
 				float f = getPowerForTime(i);
 				if (!((double) f < 0.1D)) {
 					if (!level.isClientSide) {
-						AbstractArrow arrow = new RatlantisArrow(level, player);
+						// Pass the bow as the firedFromWeapon so vanilla applies Power/Punch/Flame enchant effects on hit.
+						AbstractArrow arrow = new RatlantisArrow(level, player, stack.copy());
 						arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, f * 3.0F, 1.0F);
 						if (f == 1.0F) {
 							arrow.setCritArrow(true);

@@ -1,0 +1,38 @@
+{
+  "parent": "rats:rat_upgrade_crafting",
+  "criteria": {
+    "get_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_crafting_table"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.rats.rat_crafting_table.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "id": "rats:rat_crafting_table"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.rats.rat_crafting_table.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_table"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

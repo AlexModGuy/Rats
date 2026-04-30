@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "rats:golden_rat_skull"
+    },
+    {
+      "item": "rats:arcane_technology"
+    },
+    {
+      "item": "rats:psionic_rat_brain"
+    },
+    {
+      "item": "rats:dutchrat_wheel"
+    },
+    {
+      "item": "rats:biplane_wing"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:ratlantis_rat_skull"
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "type": "rats:archeologist",
-  "count": 1,
-  "ingredient": {
-    "item": "minecraft:leather_chestplate"
-  },
-  "result": "rats:rat_toga"
-}

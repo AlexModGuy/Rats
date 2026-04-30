@@ -7,7 +7,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.function.Consumer;
 
-// PORT-STUB: see RatsAdvancementGenerator. The Ratlantis advancements were
+// Datagen note (1.21): see RatsAdvancementGenerator. The Ratlantis advancements were
 // generated for the 1.20.1 builder API; pre-generated JSON in
 // src/generated/resources/data/rats/advancements/ratlantis/ is the runtime source
 // of truth. Will be re-implemented in a focused datagen pass.

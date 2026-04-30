@@ -103,8 +103,10 @@ public class UpgradeCombinerBlockEntity extends BaseContainerBlockEntity impleme
 		}
 	}
 
-	// PORT-STUB: 1.21 BlockEntity.getRenderBoundingBox no longer overridable on BaseContainerBlockEntity (moved to client BER).
-	@SuppressWarnings("unused")
+	// 1.21: getRenderBoundingBox() lives on IBlockEntityExtension (NeoForge interface mixed onto
+	// BlockEntity at runtime). It isn't a Java-level override on BaseContainerBlockEntity, so no
+	// @Override here — NeoForge's interface dispatch picks this up. Expanding the box keeps the
+	// floating upgrade items above the combiner from frustum-culling at sharp camera angles.
 	public AABB getRenderBoundingBox() {
 		return new AABB(net.minecraft.world.phys.Vec3.atLowerCornerOf(this.getBlockPos()), net.minecraft.world.phys.Vec3.atLowerCornerOf(this.getBlockPos().offset(1, 2, 1)));
 	}

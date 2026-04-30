@@ -2,7 +2,6 @@ package com.github.alexthe666.rats.client.render.entity.layer;
 
 import com.github.alexthe666.rats.client.model.entity.FlyingDutchratModel;
 import com.github.alexthe666.rats.server.entity.monster.boss.Dutchrat;
-import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
@@ -17,14 +16,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.ClientHooks;
 
-import java.util.Map;
+import java.util.List;
 
 public class DutchratHelmetLayer<T extends Dutchrat, M extends FlyingDutchratModel<T>> extends RenderLayer<T, M> {
 	private final HumanoidModel<?> backup;
-	private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.newHashMap();
 
 	public DutchratHelmetLayer(RenderLayerParent<T, M> parent, HumanoidModel<?> armorModel) {
 		super(parent);
@@ -42,7 +41,7 @@ public class DutchratHelmetLayer<T extends Dutchrat, M extends FlyingDutchratMod
 			ItemStack itemstack = rat.getItemBySlot(EquipmentSlot.HEAD);
 			if (itemstack.getItem() instanceof ArmorItem) {
 				Model model = ClientHooks.getArmorModel(rat, itemstack, EquipmentSlot.HEAD, this.backup);
-				ResourceLocation tex = getArmorResource(rat, itemstack, EquipmentSlot.HEAD, null);
+				ResourceLocation tex = getArmorResource(rat, itemstack, EquipmentSlot.HEAD);
 				VertexConsumer consumer = ItemRenderer.getFoilBuffer(buffer, RenderType.entityCutoutNoCull(tex), false, false);
 				model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 			}
@@ -50,30 +49,17 @@ public class DutchratHelmetLayer<T extends Dutchrat, M extends FlyingDutchratMod
 		}
 	}
 
-	public ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, @org.jetbrains.annotations.Nullable String type) {
+	// 1.21: route through ClientHooks.getArmorTexture so per-stack IItemExtension.getArmorTexture overrides
+	// (e.g. HatItem returning rats:textures/model/hat/<id>.png) are honored. Falls back to the ArmorMaterial
+	// layer's default texture path when no override is registered.
+	public ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot) {
 		ArmorItem item = (ArmorItem) stack.getItem();
-		// PORT-STUB: 1.21 ArmorItem.getMaterial() returns Holder<ArmorMaterial>; ArmorMaterial.getName() removed.
-		net.minecraft.core.Holder<net.minecraft.world.item.ArmorMaterial> matHolder = item.getMaterial();
-		String texture = matHolder.unwrapKey()
-				.map(k -> k.location().getNamespace() + ":" + k.location().getPath())
-				.orElse("minecraft:iron");
-		String domain = "minecraft";
-		int idx = texture.indexOf(':');
-		if (idx != -1) {
-			domain = texture.substring(0, idx);
-			texture = texture.substring(idx + 1);
-		}
-		String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (1), type == null ? "" : String.format("_%s", type));
-
-		// PORT-STUB: 1.21 ClientHooks.getArmorTexture signature changed; skip hook until migrated.
-		ResourceLocation resourcelocation = ARMOR_TEXTURE_RES_MAP.get(s1);
-
-		if (resourcelocation == null) {
-			resourcelocation = ResourceLocation.parse(s1);
-			ARMOR_TEXTURE_RES_MAP.put(s1, resourcelocation);
-		}
-
-		return resourcelocation;
+		ArmorMaterial material = item.getMaterial().value();
+		List<ArmorMaterial.Layer> layers = material.layers();
+		ArmorMaterial.Layer layer = layers.isEmpty()
+				? new ArmorMaterial.Layer(ResourceLocation.withDefaultNamespace("iron"))
+				: layers.get(0);
+		return ClientHooks.getArmorTexture(entity, stack, layer, false, slot);
 	}
 
 }

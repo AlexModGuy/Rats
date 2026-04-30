@@ -7,7 +7,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.function.BiConsumer;
 
-// PORT-STUB: see RatsChestLootTables.
+// Datagen note (1.21): see RatsChestLootTables.
 public class RatsGameplayLootTables implements LootTableSubProvider {
 
     public RatsGameplayLootTables(HolderLookup.Provider registries) {

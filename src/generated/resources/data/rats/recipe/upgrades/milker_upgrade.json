@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:beef"
+    },
+    "L": {
+      "tag": "c:leather"
+    },
+    "M": {
+      "item": "minecraft:milk_bucket"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_bucket"
+    }
+  },
+  "pattern": [
+    "LBL",
+    "BUB",
+    "LML"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_milker"
+  },
+  "show_notification": true
+}

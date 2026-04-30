@@ -3,11 +3,14 @@ package com.github.alexthe666.rats.server.entity.ai.goal;
 import com.github.alexthe666.rats.server.entity.RatMount;
 import com.github.alexthe666.rats.server.entity.rat.TamedRat;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 import java.util.EnumSet;
 
@@ -17,7 +20,6 @@ public class RatFollowOwnerGoal extends FollowOwnerGoal {
 	private int timeToRecalcPath;
 
 	public RatFollowOwnerGoal(TamedRat rat, double speedModifier, float startDist, float stopDist) {
-		// 1.21: FollowOwnerGoal(TamableAnimal, double, float, float).
 		super(rat, speedModifier, startDist, stopDist);
 		this.rat = rat;
 		this.speedModifier = speedModifier;
@@ -26,12 +28,11 @@ public class RatFollowOwnerGoal extends FollowOwnerGoal {
 
 	@Override
 	public boolean canUse() {
+		// 1.21: FollowOwnerGoal.unableToMove() was inlined; we replicate the equivalent gating here.
+		if (this.rat.isOrderedToSit() || this.rat.isLeashed() || this.rat.getVehicle() instanceof Player) {
+			return false;
+		}
 		return this.rat.canMove() && this.rat.isFollowing() && super.canUse();
-	}
-
-	// PORT-STUB: 1.21 FollowOwnerGoal.unableToMove() removed; sit/leash/ride checks must be done in canUse().
-	public boolean unableToMove() {
-		return this.rat.isOrderedToSit() || this.rat.getVehicle() instanceof Player || this.rat.isLeashed();
 	}
 
 	@Override
@@ -43,31 +44,49 @@ public class RatFollowOwnerGoal extends FollowOwnerGoal {
 
 	@Override
 	public void tick() {
-		// PORT-STUB: 1.21 owner field removed; teleportToOwner is now private. Delegate movement loop to the parent class.
+		// If the rat is riding a custom mount (RatMount) and the owner is far away, hop the whole
+		// mount to the owner instead of letting vanilla teleport just the passenger off the saddle.
+		if (--this.timeToRecalcPath <= 0) {
+			this.timeToRecalcPath = this.adjustedTickDelay(10);
+			LivingEntity owner = this.rat.getOwner();
+			if (owner != null && this.rat.distanceToSqr(owner) > 144.0D && this.rat.getVehicle() instanceof RatMount mount && mount.shouldTeleportWhenFarAway()) {
+				if (this.maybeTeleportMount(owner)) {
+					return;
+				}
+			}
+		}
 		super.tick();
 	}
 
-	private boolean maybeTeleportMount() {
-		if (this.rat.getVehicle() instanceof RatMount mount && mount.shouldTeleportWhenFarAway()) {
-			BlockPos blockpos = this.owner.blockPosition();
-
-			for (int i = 0; i < 10; ++i) {
-				int j = this.randomIntInclusive(-3, 3);
-				int k = this.randomIntInclusive(-1, 1);
-				int l = this.randomIntInclusive(-3, 3);
-				boolean flag = this.attemptTeleportEntity(this.rat.getVehicle(), blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
-				if (flag) {
-					return true;
-				}
+	private boolean maybeTeleportMount(LivingEntity owner) {
+		BlockPos anchor = owner.blockPosition();
+		for (int i = 0; i < 10; i++) {
+			int dx = this.randomIntInclusive(-3, 3);
+			int dy = this.randomIntInclusive(-1, 1);
+			int dz = this.randomIntInclusive(-3, 3);
+			if (this.attemptTeleportEntity(this.rat.getVehicle(), anchor.getX() + dx, anchor.getY() + dy, anchor.getZ() + dz)) {
+				return true;
 			}
 		}
 		return false;
 	}
 
-	@SuppressWarnings("unused")
 	private boolean attemptTeleportEntity(Entity mount, int x, int y, int z) {
-		// PORT-STUB: 1.21 FollowOwnerGoal.canTeleportTo / owner are private; mount-teleport detour is disabled.
-		return false;
+		BlockPos pos = new BlockPos(x, y, z);
+		if (!this.canTeleportTo(pos)) return false;
+		mount.moveTo(x + 0.5D, y, z + 0.5D, mount.getYRot(), mount.getXRot());
+		this.rat.getNavigation().stop();
+		return true;
+	}
+
+	private boolean canTeleportTo(BlockPos pos) {
+		PathType type = WalkNodeEvaluator.getPathTypeStatic(this.rat, pos);
+		if (type != PathType.WALKABLE) return false;
+		BlockPos below = pos.below();
+		net.minecraft.world.level.block.state.BlockState belowState = this.rat.level().getBlockState(below);
+		if (!belowState.isFaceSturdy(this.rat.level(), below, net.minecraft.core.Direction.UP)) return false;
+		if (belowState.is(BlockTags.LEAVES)) return false;
+		return this.rat.level().noCollision(this.rat, this.rat.getBoundingBox().move(pos.subtract(this.rat.blockPosition())));
 	}
 
 	private int randomIntInclusive(int min, int max) {

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": {
+      "tag": "c:storage_blocks/cheese"
+    },
+    "L": {
+      "item": "minecraft:lantern"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "RLR",
+    "RCR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_attractor"
+  },
+  "show_notification": true
+}

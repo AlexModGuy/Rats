@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "rats:ratbot_barrel"
+    },
+    "C": {
+      "item": "rats:charged_ratbot_barrel"
+    },
+    "H": {
+      "item": "rats:marbled_cheese_rat_head"
+    },
+    "I": {
+      "tag": "c:storage_blocks/iron"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_ratlantean"
+    }
+  },
+  "pattern": [
+    "IHI",
+    "BUB",
+    "ICI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_ratinator"
+  },
+  "show_notification": true
+}

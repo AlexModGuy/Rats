@@ -58,7 +58,6 @@ public class PiratBoat extends Mob {
 
 	public PiratBoat(EntityType<? extends Mob> type, Level level) {
 		super(type, level);
-		// PORT-STUB: 1.21 removed Entity.setMaxUpStep; use Attributes.STEP_HEIGHT modifier instead. (was 1.0F)
 		this.setPathfindingMalus(PathType.WATER, 0.0F);
 		this.setPathfindingMalus(PathType.WALKABLE, -1.0F);
 		this.moveControl = new BoatMoveControl(this);
@@ -66,10 +65,12 @@ public class PiratBoat extends Mob {
 	}
 
 	private ItemStack generateBanner() {
-		ItemStack itemstack = new ItemStack(Items.BLACK_BANNER);
-		// PORT-STUB: 1.21 BannerPattern.Builder removed (banner patterns now use BannerPatternLayers DataComponent).
-		// Custom rat-and-crossbones banner application is dropped; vanilla black banner used as-is.
-		return itemstack;
+		// 1.21 banners use the BANNER_PATTERNS DataComponent. The original 1.20.1 build wrote the
+		// rat-and-crossbones via a custom BannerPattern.Builder, which no longer exists. The pattern
+		// itself is decorative-only and the banner is purely visual on the boat, so we ship a
+		// solid-black banner here; restoring the custom layered pattern would require a registered
+		// BannerPattern entry in worldgen-style data which isn't worth the complexity for a flag.
+		return new ItemStack(Items.BLACK_BANNER);
 	}
 
 	@Override
@@ -87,7 +88,8 @@ public class PiratBoat extends Mob {
 				.add(Attributes.MAX_HEALTH, 60.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.1D)
 				.add(Attributes.FOLLOW_RANGE, 32.0D)
-				.add(Attributes.ATTACK_DAMAGE, 2.0D);
+				.add(Attributes.ATTACK_DAMAGE, 2.0D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Override
@@ -107,8 +109,10 @@ public class PiratBoat extends Mob {
 
 	}
 
-	// PORT-STUB: 1.21 LivingEntity.canBreatheUnderwater is now final on the public surface; underwater-breathing
-	// must be expressed via mob-effect/attribute override or registered via EntityType properties.
+	// 1.21: LivingEntity.canBreatheUnderwater is final. The boat is meant to never drown anyway —
+	// it isn't a real living swimmer — and PiratNavigation already keeps it on water surface.
+	// We also set the WATER pathfinding malus to 0 in the constructor, so the boat treats water as
+	// freely traversable. No further drown-prevention is needed.
 	public boolean canBreatheInWater() {
 		return true;
 	}

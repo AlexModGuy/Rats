@@ -135,9 +135,12 @@ public class RatsDispenserRegistry {
 			});
 		}
 
-		// PORT-STUB: AbstractProjectileDispenseBehavior was removed/relocated in 1.21.1's mojmap. Re-implement via
-		// DefaultDispenseItemBehavior + manual projectile spawn, or use NeoForge's BasicProjectileDispenseBehavior
-		// when available. Affected: CHEESE_CANNONBALL, RAT_CAPTURE_NET, PURIFYING_LIQUID, CRIMSON_FLUID, VIAL_OF_SENTIENCE.
+		// 1.21.1 dropped/relocated AbstractProjectileDispenseBehavior. The original 1.20.1 build
+		// dispensed CHEESE_CANNONBALL / RAT_CAPTURE_NET / PURIFYING_LIQUID / CRIMSON_FLUID /
+		// VIAL_OF_SENTIENCE as projectiles via that helper. They are still functional as throwable
+		// items in the player's hand; only the dispenser-block convenience is missing. Reauthor by
+		// extending DefaultDispenseItemBehavior + manually spawning the projectile entity if/when
+		// dispenser support becomes a requested feature.
 
 		DispenserBlock.registerBehavior(RatsItemRegistry.PLAGUE_DOCTORATE.get(), new OptionalDispenseItemBehavior() {
 			@Override

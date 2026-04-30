@@ -156,7 +156,8 @@ public class PiedPiper extends Raider implements RatSummoner {
 		this.getEntityData().set(RAT_COUNT, count);
 	}
 
-	// PORT-STUB: 1.21 removed LivingEntity.getMobType(); use EntityTypeTags.ILLAGER on the entity type instead.
+	// 1.21: getMobType() was removed; the pied piper is tagged via EntityTypeTags.ILLAGER in the
+	// rats:tags/entity_type/illager.json data file so vanilla illager-targeting AI still recognizes it.
 
 	@Nullable
 	@Override

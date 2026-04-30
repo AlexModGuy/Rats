@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "c:cheese"
+    },
+    "S": {
+      "tag": "c:string"
+    },
+    "W": {
+      "item": "minecraft:magenta_wool"
+    }
+  },
+  "pattern": [
+    "SCS",
+    "WWW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_hammock_magenta"
+  },
+  "show_notification": true
+}

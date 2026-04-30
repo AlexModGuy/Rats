@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "tag": "c:storage_blocks/emerald"
+    },
+    "G": {
+      "tag": "c:glass"
+    },
+    "I": {
+      "tag": "c:storage_blocks/iron"
+    },
+    "P": {
+      "item": "minecraft:carved_pumpkin"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_mount"
+    }
+  },
+  "pattern": [
+    "PGP",
+    "IUI",
+    "IEI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_golem_mount"
+  },
+  "show_notification": true
+}

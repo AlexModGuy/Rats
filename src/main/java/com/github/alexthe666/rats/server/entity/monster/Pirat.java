@@ -93,10 +93,8 @@ public class Pirat extends AbstractRat implements RangedAttackMob, Enemy {
 		}
 	}
 
-	// PORT-STUB: 1.21 Entity.getMyRidingOffset removed.
-	public double getMyRidingOffset() {
-		return 0.3D;
-	}
+	// 1.21: passenger position comes from PiratBoat.positionRider (which uses riderY/riderXZ),
+	// so we no longer need to override getMyRidingOffset here.
 
 	@Override
 	public boolean isHoldingItemInHands() {

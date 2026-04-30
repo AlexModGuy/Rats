@@ -24,11 +24,11 @@ public class RatsBlockTags extends BlockTagsProvider {
 	public static final TagKey<Block> UNRAIDABLE_CONTAINERS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "unraidable_containers"));
 	public static final TagKey<Block> DIGGABLE_BLOCKS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "diggable_blocks"));
 
-	public static final TagKey<Block> STORAGE_BLOCKS_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/cheese"));
-	public static final TagKey<Block> STORAGE_BLOCKS_BLUE_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/blue_cheese"));
-	public static final TagKey<Block> STORAGE_BLOCKS_NETHER_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/nether_cheese"));
+	public static final TagKey<Block> STORAGE_BLOCKS_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/cheese"));
+	public static final TagKey<Block> STORAGE_BLOCKS_BLUE_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/blue_cheese"));
+	public static final TagKey<Block> STORAGE_BLOCKS_NETHER_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/nether_cheese"));
 
-	public static final TagKey<Block> CRAFTING_TABLES = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "crafting_tables"));
+	public static final TagKey<Block> CRAFTING_TABLES = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "crafting_tables"));
 
 	public RatsBlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
 		super(output, provider, RatsMod.MODID, helper);

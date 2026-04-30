@@ -143,9 +143,18 @@ public class RatsItemRegistry {
 	public static final DeferredHolder<Item, Item> PLAGUE_DOCTOR_MASK = ITEMS.register("plague_doctor_mask", () -> new HatItem(new Item.Properties().stacksTo(1), RatsArmorMaterialRegistry.PLAGUE_MASK, 1));
 	public static final DeferredHolder<Item, Item> BLACK_DEATH_MASK = ITEMS.register("black_death_mask", () -> new HatItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.RARE), RatsArmorMaterialRegistry.PLAGUE_MASK, 1));
 	public static final DeferredHolder<Item, Item> EXTERMINATOR_HAT = ITEMS.register("exterminator_hat", () -> new HatItem(new Item.Properties().stacksTo(1), RatsArmorMaterialRegistry.GENERIC_HAT, 0));
-	// PORT-STUB: 1.21 removed RecordItem; music discs now use the JUKEBOX_PLAYABLE data component referencing a JukeboxSong registered via datapack. Discs ship as plain Items until JukeboxSong entries are generated.
-	public static final DeferredHolder<Item, Item> MUSIC_DISC_MICE_ON_VENUS = ITEMS.register("music_disc_mice_on_venus", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
-	public static final DeferredHolder<Item, Item> MUSIC_DISC_LIVING_MICE = ITEMS.register("music_disc_living_mice", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+	// 1.21: music discs are plain Items carrying DataComponents.JUKEBOX_PLAYABLE referencing a JukeboxSong
+	// registered via datapack JSON at data/rats/jukebox_song/{name}.json. The ResourceKey is resolved against
+	// Registries.JUKEBOX_SONG at runtime; the JukeboxPlayable record stores it in an EitherHolder so the song
+	// holder is bound lazily once the registry is loaded.
+	public static final net.minecraft.resources.ResourceKey<net.minecraft.world.item.JukeboxSong> SONG_MICE_ON_VENUS =
+			net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.JUKEBOX_SONG,
+					net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "mice_on_venus"));
+	public static final net.minecraft.resources.ResourceKey<net.minecraft.world.item.JukeboxSong> SONG_LIVING_MICE =
+			net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.JUKEBOX_SONG,
+					net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "living_mice"));
+	public static final DeferredHolder<Item, Item> MUSIC_DISC_MICE_ON_VENUS = ITEMS.register("music_disc_mice_on_venus", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(SONG_MICE_ON_VENUS)));
+	public static final DeferredHolder<Item, Item> MUSIC_DISC_LIVING_MICE = ITEMS.register("music_disc_living_mice", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(SONG_LIVING_MICE)));
 
 
 	public static final DeferredHolder<Item, Item> RAT_UPGRADE_BASIC = ITEMS.register("rat_upgrade_basic", () -> new BaseRatUpgradeItem(new Item.Properties()));

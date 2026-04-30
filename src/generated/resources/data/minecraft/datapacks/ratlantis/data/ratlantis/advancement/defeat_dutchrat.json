@@ -1,0 +1,40 @@
+{
+  "parent": "ratlantis:ghost_pirat",
+  "criteria": {
+    "kill_dutchrat": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:dutchrat"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ratlantis.dutchrat_wheel.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "id": "rats:dutchrat_wheel"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ratlantis.dutchrat_wheel.title"
+    }
+  },
+  "requirements": [
+    [
+      "kill_dutchrat"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

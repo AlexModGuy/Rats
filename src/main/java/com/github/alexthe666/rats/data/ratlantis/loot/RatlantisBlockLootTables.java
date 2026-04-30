@@ -6,7 +6,7 @@ import net.minecraft.world.flag.FeatureFlags;
 
 import java.util.Set;
 
-// PORT-STUB: same situation as RatsEntityLootTables.
+// Datagen note (1.21): same situation as RatsEntityLootTables.
 public class RatlantisBlockLootTables extends BlockLootSubProvider {
 
     protected RatlantisBlockLootTables(HolderLookup.Provider registries) {

@@ -53,7 +53,7 @@ public class BlockModelGenerator extends BlockStateProvider {
 				.texture("top", ResourceLocation.parse("block/cauldron_top")));
 		this.simpleBlock(RatsBlockRegistry.MILK_CAULDRON.get(), this.models().withExistingParent("cauldron_milk", ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "block/template_cauldron_with_transforms"))
 				.texture("bottom", ResourceLocation.parse("block/cauldron_bottom"))
-				.texture("content", ResourceLocation.fromNamespaceAndPath("forge", "block/milk_still"))
+				.texture("content", ResourceLocation.fromNamespaceAndPath("neoforge", "block/milk_still"))
 				.texture("inside", ResourceLocation.parse("block/cauldron_inner"))
 				.texture("particle", ResourceLocation.parse("block/cauldron_side"))
 				.texture("side", ResourceLocation.parse("block/cauldron_side"))

@@ -1,8 +1,0 @@
-{
-  "type": "rats:chef",
-  "count": 4,
-  "ingredient": {
-    "item": "rats:cheese"
-  },
-  "result": "rats:string_cheese"
-}

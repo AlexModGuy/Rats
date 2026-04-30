@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "tag": "c:gems/emerald"
+    },
+    "P": {
+      "item": "rats:ratglove_petals"
+    }
+  },
+  "pattern": [
+    " E ",
+    "EPE",
+    " E "
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:gem_of_ratlantis"
+  },
+  "show_notification": true
+}

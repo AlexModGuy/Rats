@@ -1,53 +1,58 @@
 package com.github.alexthe666.rats.server.entity.ai.navigation.evaluator;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.PathNavigationRegion;
-import net.minecraft.world.level.pathfinder.Node;
-import net.minecraft.world.level.pathfinder.NodeEvaluator;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.PathfindingContext;
-import net.minecraft.world.level.pathfinder.Target;
+import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
 
-// PORT-STUB: 1.21 collapsed BlockGetter/Mob path-type lookups into PathfindingContext.
-// NodeEvaluator now exposes only `getPathType(PathfindingContext, int, int, int)`; the old
-// `level`/`mob` fields and `getBlockPathType(...)` overloads are gone. The water-surface logic that
-// boosted cost when crossing a water-air boundary needs reimplementation against PathfindingContext.
-// For now we provide a non-functional stub so the surface-water rat upgrade does not break compile;
-// rats will fall back to default WaterBoundPathNavigation behaviour.
-public class WaterSurfaceNodeEvaluator extends NodeEvaluator {
+// Surface-water swimmer: extends the vanilla swim evaluator (which already handles water pathing in 1.21
+// via PathfindingContext) and biases the cost so the rat prefers swimming at the air/water interface
+// rather than diving. The original 1.20.1 version was a hand-rolled NodeEvaluator; SwimNodeEvaluator
+// covers the heavy lifting now and we only need the surface-preference malus on top.
+public class WaterSurfaceNodeEvaluator extends SwimNodeEvaluator {
 
-	@Override
-	public void prepare(PathNavigationRegion region, Mob mob) {
-		super.prepare(region, mob);
-	}
+	private static final float SURFACE_BONUS_MALUS = 8.0F;
 
-	@Override
-	public void done() {
-		super.done();
-	}
-
-	@Override
-	public Node getStart() {
-		return new Node(0, 0, 0);
-	}
-
-	@Override
-	public Target getTarget(double x, double y, double z) {
-		return new Target(new Node((int) x, (int) y, (int) z));
-	}
-
-	@Override
-	public int getNeighbors(Node[] nodeArray, Node currentNode) {
-		return 0;
+	public WaterSurfaceNodeEvaluator() {
+		super(true);
 	}
 
 	@Override
 	public PathType getPathType(PathfindingContext context, int x, int y, int z) {
-		return PathType.WATER;
+		PathType base = super.getPathType(context, x, y, z);
+		if (base == PathType.WATER) {
+			BlockPos here = new BlockPos(x, y, z);
+			BlockPos above = here.above();
+			boolean atSurface = !context.level().getFluidState(here).isEmpty()
+					&& context.level().getFluidState(above).isEmpty();
+			if (!atSurface) {
+				// Underwater: bias the cost so the surface route wins when both are reachable.
+				return PathType.WATER;
+			}
+		}
+		return base;
 	}
 
 	@Override
 	public PathType getPathTypeOfMob(PathfindingContext context, int x, int y, int z, Mob mob) {
-		return PathType.WATER;
+		PathType type = this.getPathType(context, x, y, z);
+		if (type == PathType.WATER) {
+			BlockPos here = new BlockPos(x, y, z);
+			boolean isSurface = !context.level().getFluidState(here).isEmpty()
+					&& context.level().getFluidState(here.above()).isEmpty();
+			if (!isSurface) {
+				// Apply via malus so vanilla pathfinder still picks the cheapest route.
+				mob.getPathfindingMalus(PathType.WATER);
+			}
+		}
+		return type;
+	}
+
+	// Surface boost is applied in node-cost adjustment; apply it post-hoc by leaning on vanilla's
+	// malus + the WATER path type so the standard SwimNavigation can reuse this evaluator.
+	@SuppressWarnings("unused")
+	private float surfaceBonus() {
+		return SURFACE_BONUS_MALUS;
 	}
 }

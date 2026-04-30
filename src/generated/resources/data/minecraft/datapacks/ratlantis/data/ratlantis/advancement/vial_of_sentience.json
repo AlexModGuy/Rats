@@ -1,0 +1,38 @@
+{
+  "parent": "ratlantis:feral_ratlantean",
+  "criteria": {
+    "get_vial": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:vial_of_sentience"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.ratlantis.vial_of_sentience.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "id": "rats:vial_of_sentience"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ratlantis.vial_of_sentience.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_vial"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

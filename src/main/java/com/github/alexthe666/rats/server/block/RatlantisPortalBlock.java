@@ -18,16 +18,18 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Portal;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class RatlantisPortalBlock extends BaseEntityBlock implements CustomItemRarity {
+public class RatlantisPortalBlock extends BaseEntityBlock implements CustomItemRarity, Portal {
 	public static final com.mojang.serialization.MapCodec<RatlantisPortalBlock> CODEC = simpleCodec(RatlantisPortalBlock::new);
 
 	@Override
@@ -52,9 +54,42 @@ public class RatlantisPortalBlock extends BaseEntityBlock implements CustomItemR
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		// PORT-STUB: 1.21 reworked the dimension-teleport API. Entity.portalEntrancePos was removed,
-		// ITeleporter is gone, and Entity.changeDimension now requires a DimensionTransition.
-		// Custom Ratlantis-portal teleportation must be reimplemented against the new Portal interface.
+		// Direct teleport on contact (server-side only). We bypass vanilla's PortalProcessor timer because
+		// the Ratlantis portal is a single 1x2 frame; the cooldown set after changeDimension prevents the
+		// destination block from bouncing the entity straight back.
+		if (!(level instanceof ServerLevel sourceLevel)) return;
+		if (entity.isOnPortalCooldown() || entity.isPassenger() || entity.isVehicle() || !entity.canUsePortal(false)) return;
+
+		DimensionTransition transition = this.getPortalDestination(sourceLevel, entity, pos);
+		if (transition == null) return;
+
+		entity.setPortalCooldown();
+		entity.changeDimension(transition);
+	}
+
+	@Override
+	public int getPortalTransitionTime(ServerLevel level, Entity entity) {
+		return 0;
+	}
+
+	@Override
+	@Nullable
+	public DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
+		ResourceKey<Level> targetKey = level.dimension().equals(RatlantisDimensionRegistry.DIMENSION_KEY)
+				? Level.OVERWORLD
+				: RatlantisDimensionRegistry.DIMENSION_KEY;
+		MinecraftServer server = level.getServer();
+		ServerLevel targetLevel = server == null ? null : server.getLevel(targetKey);
+		if (targetLevel == null) return null;
+		if (!entity.canChangeDimensions(level, targetLevel)) return null;
+
+		RatlantisTeleporter teleporter = new RatlantisTeleporter(targetLevel);
+		java.util.Optional<net.minecraft.BlockUtil.FoundRectangle> portalRect = teleporter.getOrMakePortal(entity.blockPosition());
+		BlockPos destPos = portalRect.map(rect -> rect.minCorner).orElseGet(() -> targetLevel.getSharedSpawnPos());
+		// Land one block above the bottom-portal position so the player doesn't suffocate inside the frame.
+		Vec3 dest = new Vec3(destPos.getX() + 0.5D, destPos.getY() + 1.0D, destPos.getZ() + 0.5D);
+		return new DimensionTransition(targetLevel, dest, Vec3.ZERO, entity.getYRot(), entity.getXRot(),
+				DimensionTransition.PLAY_PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET));
 	}
 
 	@Override

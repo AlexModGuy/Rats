@@ -1,0 +1,38 @@
+{
+  "parent": "rats:garbage_pile",
+  "criteria": {
+    "filth": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:filth_corruption"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.rats.ball_of_filth.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "id": "rats:filth_corruption"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.rats.ball_of_filth.title"
+    }
+  },
+  "requirements": [
+    [
+      "filth"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

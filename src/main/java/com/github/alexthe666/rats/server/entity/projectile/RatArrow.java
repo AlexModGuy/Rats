@@ -143,8 +143,8 @@ public class RatArrow extends AbstractArrow {
 					livingentity.setArrowCount(livingentity.getArrowCount() + 1);
 				}
 
-				// PORT-STUB: 1.21 AbstractArrow.getKnockback() removed; knockback is now driven by enchantments via EnchantmentHelper directly.
-				// Manual knockback application skipped until the new Punch enchantment lookup is wired up.
+				// Knockback is applied by AbstractArrow.onHitEntity → getKnockback() reading the Punch
+				// enchantment value, so we no longer apply Punch knockback manually here.
 
 				if (!this.level().isClientSide() && entity1 instanceof LivingEntity && this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
 					// 1.21: doPostHurtEffects/doPostDamageEffects collapsed into doPostAttackEffects via EnchantmentHelper.

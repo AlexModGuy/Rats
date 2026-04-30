@@ -47,14 +47,21 @@ public class EnchanterRatUpgradeItem extends BaseRatUpgradeItem implements TickR
 			if (rat.cookingProgress == 1000) {
 				heldItem.shrink(1);
 				if (!disenchant) {
-					// PORT-STUB: 1.21 EnchantmentTableBlock.BOOKSHELF_OFFSETS / isValidBookShelf moved to internal logic; bookshelf-power scan disabled.
-					// EnchantmentHelper.enchantItem now requires (RegistryAccess, RandomSource, ItemStack, int, Stream<Holder<Enchantment>>) — defer to RegistryAccess-aware variant.
 					if (rat.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-						// 1.21: enchantItem(RandomSource, ItemStack, int, RegistryAccess, Optional<HolderSet<Enchantment>>).
+						// Match a vanilla enchanting table: scan the rat's surroundings for valid bookshelves
+						// (vanilla offsets, capped at 15 → level 30). Use the rat's blockPos as the table position.
+						BlockPos pos = rat.blockPosition();
+						int bookshelves = 0;
+						for (BlockPos offset : net.minecraft.world.level.block.EnchantingTableBlock.BOOKSHELF_OFFSETS) {
+							if (net.minecraft.world.level.block.EnchantingTableBlock.isValidBookShelf(serverLevel, pos, offset)) {
+								bookshelves++;
+							}
+						}
+						int level = Math.max(1, rat.getRandom().nextInt(8) + 1 + (bookshelves >> 1) + rat.getRandom().nextInt(bookshelves + 1));
 						burntItem = EnchantmentHelper.enchantItem(
 								rat.getRandom(),
 								burntItem,
-								(int) (2.0F + rat.getRandom().nextInt(2)),
+								level,
 								serverLevel.registryAccess(),
 								java.util.Optional.empty());
 					}

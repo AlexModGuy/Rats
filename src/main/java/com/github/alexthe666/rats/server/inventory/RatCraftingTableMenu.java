@@ -14,11 +14,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Objects;
 
-// PORT-STUB: 1.21 RecipeBookMenu became RecipeBookMenu<I extends RecipeInput, R extends Recipe<I>>;
-// the rat crafting table doesn't expose a RecipeInput so we extend AbstractContainerMenu directly
-// and lose recipe-book button integration until properly migrated.
+// 1.21: vanilla RecipeBookMenu was generified to RecipeBookMenu<I extends RecipeInput, R extends Recipe<I>>.
+// The rat crafting table doesn't surface a RecipeInput (it ticks recipes server-side off its own matrix
+// handler), so we extend AbstractContainerMenu directly. The trade-off is that the player's vanilla
+// recipe-book sidebar is not wired; transfers happen via JEI's ghost-matrix path instead.
 public class RatCraftingTableMenu extends AbstractContainerMenu {
 
 	private final RatCraftingTableBlockEntity table;
@@ -56,7 +56,19 @@ public class RatCraftingTableMenu extends AbstractContainerMenu {
 	}
 
 	public RatCraftingTableMenu(int i, Inventory playerInventory, FriendlyByteBuf buf) {
-		this(i, playerInventory, (RatCraftingTableBlockEntity) Objects.requireNonNull(Minecraft.getInstance().level != null ? Minecraft.getInstance().level.getBlockEntity(buf.readBlockPos()) : null), new SimpleContainerData(2));
+		this(i, playerInventory, resolveBlockEntity(buf.readBlockPos()), new SimpleContainerData(2));
+	}
+
+	// Client-side menu factory: the chunk holding the rat crafting table may have unloaded between
+	// the server emitting the open-screen packet and the client constructing the menu. Returning a
+	// throwaway placeholder BE keeps the menu construction from NPE-crashing the client; the next
+	// stillValid() check will close the menu cleanly.
+	private static RatCraftingTableBlockEntity resolveBlockEntity(net.minecraft.core.BlockPos pos) {
+		net.minecraft.client.multiplayer.ClientLevel level = Minecraft.getInstance().level;
+		if (level != null && level.getBlockEntity(pos) instanceof RatCraftingTableBlockEntity table) {
+			return table;
+		}
+		return new RatCraftingTableBlockEntity(pos, com.github.alexthe666.rats.registry.RatsBlockRegistry.RAT_CRAFTING_TABLE.get().defaultBlockState());
 	}
 
 	public boolean stillValid(Player player) {

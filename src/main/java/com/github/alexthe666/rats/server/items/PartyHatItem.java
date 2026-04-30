@@ -3,8 +3,8 @@ package com.github.alexthe666.rats.server.items;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -34,12 +34,15 @@ public class PartyHatItem extends Item {
 		}
 	}
 
-	// PORT-STUB: 1.21 Item.getEquipmentSlot / canEquip removed; equipment slot is now driven by DataComponents.EQUIPPABLE.
+	// 1.21: NeoForge IItemExtension.getEquipmentSlot(ItemStack) lets non-ArmorItem items declare a slot for
+	// auto-equip-on-shift-click. Mob.getEquipmentSlotForItem reads this, so PartyHat goes to the head slot.
+	@Override
 	public @Nullable EquipmentSlot getEquipmentSlot(ItemStack stack) {
 		return EquipmentSlot.HEAD;
 	}
 
-	public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
+	@Override
+	public boolean canEquip(ItemStack stack, EquipmentSlot slot, LivingEntity entity) {
 		return slot == EquipmentSlot.HEAD;
 	}
 }

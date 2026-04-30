@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "rats:oratchalcum_ingot"
+    },
+    "T": {
+      "item": "minecraft:netherite_pickaxe"
+    }
+  },
+  "pattern": [
+    " I ",
+    "ITI",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:ratlantis_pickaxe"
+  },
+  "show_notification": true
+}

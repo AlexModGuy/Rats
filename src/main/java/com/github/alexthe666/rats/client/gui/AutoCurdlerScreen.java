@@ -89,7 +89,6 @@ public class AutoCurdlerScreen extends AbstractContainerScreen<AutoCurdlerMenu> 
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int x, int y) {
-		this.renderBackground(graphics, x, y, partialTicks);
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
 

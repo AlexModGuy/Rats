@@ -1,0 +1,38 @@
+{
+  "parent": "ratlantis:defeat_rat_baron",
+  "criteria": {
+    "get_upgrade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_upgrade_biplane_mount"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.ratlantis.rat_upgrade_mount_biplane.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "id": "rats:rat_upgrade_biplane_mount"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ratlantis.rat_upgrade_mount_biplane.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_upgrade"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

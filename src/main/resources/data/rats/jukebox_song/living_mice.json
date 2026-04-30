@@ -1,0 +1,8 @@
+{
+  "comparator_output": 13,
+  "description": {
+    "translate": "item.rats.music_disc_living_mice.desc"
+  },
+  "length_in_seconds": 188,
+  "sound_event": "rats:music_disc.rats.living_mice"
+}

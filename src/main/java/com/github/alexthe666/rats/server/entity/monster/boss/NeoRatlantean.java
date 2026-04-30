@@ -77,8 +77,8 @@ public class NeoRatlantean extends Monster {
 		this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 	}
 
-	// PORT-STUB: 1.21 Entity.canChangeDimensions removed.
-	public boolean canChangeDimensions() {
+	@Override
+	public boolean canChangeDimensions(net.minecraft.world.level.Level from, net.minecraft.world.level.Level to) {
 		return false;
 	}
 
@@ -92,11 +92,9 @@ public class NeoRatlantean extends Monster {
 		return true;
 	}
 
-	// PORT-STUB: 1.21 Entity.getEyeHeight(Pose) is final; eye height comes from EntityAttachment.EYE on EntityDimensions.
-	@SuppressWarnings("unused")
-	private float legacyEyeHeight(Pose pose) {
-		return 0.9F;
-	}
+	// 1.21: Entity.getEyeHeight(Pose) is final. Eye height now comes from EntityAttachment.EYE on
+	// EntityDimensions; if you want to tweak the NeoRatlantean's eye height, set EntityAttachments
+	// at EntityType registration time rather than overriding here.
 
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {

@@ -1,0 +1,34 @@
+{
+  "parent": "rats:root",
+  "criteria": {
+    "catch_plague": {
+      "conditions": {
+        "effects": {
+          "rats:plague": {}
+        }
+      },
+      "trigger": "minecraft:effects_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.rats.plague.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "rats:plague_essence"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.rats.plague.title"
+    }
+  },
+  "requirements": [
+    [
+      "catch_plague"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

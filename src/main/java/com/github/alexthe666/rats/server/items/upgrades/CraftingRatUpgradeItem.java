@@ -61,7 +61,7 @@ public class CraftingRatUpgradeItem extends BaseRatUpgradeItem implements HoldsI
 					rat.crafting = true;
 					rat.level().broadcastEntityEvent(rat, (byte) 85);
 					if (table.getRecipeUsed() != null) {
-						ItemStack stack = table.getRecipeUsed().getResultItem(rat.level().registryAccess());
+						ItemStack stack = table.getRecipeUsed().value().getResultItem(rat.level().registryAccess());
 						if (stack.isEmpty()) {
 							((ServerLevel) rat.level()).sendParticles(ParticleTypes.SMOKE, rat.getX() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), rat.getY() + (double) (rat.getRandom().nextFloat() * rat.getBbHeight()), rat.getZ() + (double) (rat.getRandom().nextFloat() * rat.getBbWidth() * 2.0F) - (double) rat.getBbWidth(), 1, d0, d1, d2, 0);
 						} else {

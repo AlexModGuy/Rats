@@ -118,10 +118,9 @@ public class DemonRat extends AbstractRat implements Enemy {
 		return true;
 	}
 
-	// PORT-STUB: 1.21 Entity.getMyRidingOffset removed; passenger Y offset now driven by EntityAttachments.
-	public double getMyRidingOffset() {
-		return 0.25D;
-	}
+	// 1.21: passenger Y offset is driven by the carrier's EntityAttachments.PASSENGER. Vanilla
+	// Strider already exposes a usable mount point so a demon rat sits in the saddle naturally;
+	// no per-entity override is needed here.
 
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {

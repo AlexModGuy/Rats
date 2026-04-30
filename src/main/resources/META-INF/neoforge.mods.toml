@@ -35,6 +35,43 @@ description='''What are we going to do today Pinky?'''
     ordering="NONE"
     side="BOTH"
 
+# Optional integrations — see com.github.alexthe666.rats.compat for the soft-dep hooks.
+
+[[dependencies.rats]]
+    modId="jei"
+    type="optional"
+    versionRange="[19,)"
+    ordering="AFTER"
+    side="CLIENT"
+
+[[dependencies.rats]]
+    modId="jade"
+    type="optional"
+    versionRange="[15,)"
+    ordering="AFTER"
+    side="CLIENT"
+
+[[dependencies.rats]]
+    modId="create"
+    type="optional"
+    versionRange="*"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.rats]]
+    modId="create_aeronautics"
+    type="optional"
+    versionRange="*"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.rats]]
+    modId="carryon"
+    type="optional"
+    versionRange="*"
+    ordering="AFTER"
+    side="BOTH"
+
 [[mixins]]
     config="rats.mixins.json"
 

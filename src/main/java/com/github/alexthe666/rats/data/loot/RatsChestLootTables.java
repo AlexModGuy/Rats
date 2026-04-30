@@ -7,7 +7,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.function.BiConsumer;
 
-// PORT-STUB: 1.20.5+ rewrote LootTableSubProvider#generate signature to take
+// Datagen note (1.21): 1.20.5+ rewrote LootTableSubProvider#generate signature to take
 // HolderLookup.Provider and BiConsumer<ResourceKey<LootTable>, LootTable.Builder>.
 public class RatsChestLootTables implements LootTableSubProvider {
 

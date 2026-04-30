@@ -6,7 +6,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 
 import java.util.concurrent.CompletableFuture;
 
-// PORT-STUB: see RatsUpgradeRecipes.
+// Datagen note (1.21): see RatsUpgradeRecipes.
 public class RatsRecipes extends RatsUpgradeRecipes {
 
     public RatsRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

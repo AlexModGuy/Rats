@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:honey_bottle"
+    },
+    "C": {
+      "item": "minecraft:honeycomb_block"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_flight"
+    }
+  },
+  "pattern": [
+    "BCB",
+    "CUC",
+    "BCB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_bee"
+  },
+  "show_notification": true
+}

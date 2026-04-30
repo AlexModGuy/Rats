@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "G": {
+      "tag": "c:glass"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "GBG",
+    "GUG",
+    "GGG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_bucket"
+  },
+  "show_notification": true
+}

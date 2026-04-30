@@ -34,7 +34,6 @@ public class RatBeastMount extends RatMountBase implements IAnimatedEntity {
 
 	public RatBeastMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		// PORT-STUB: 1.21 removed Entity.setMaxUpStep; use Attributes.STEP_HEIGHT modifier instead. (was 1.0F)
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -43,7 +42,8 @@ public class RatBeastMount extends RatMountBase implements IAnimatedEntity {
 				.add(Attributes.MOVEMENT_SPEED, 0.4D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.FOLLOW_RANGE, 16.0D)
-				.add(Attributes.ARMOR, 5.0D);
+				.add(Attributes.ARMOR, 5.0D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 

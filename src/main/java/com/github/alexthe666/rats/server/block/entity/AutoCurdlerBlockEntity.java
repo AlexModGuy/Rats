@@ -289,7 +289,8 @@ public class AutoCurdlerBlockEntity extends BaseContainerBlockEntity implements 
 	}
 
 	private boolean isMilkFluid(FluidStack fluid) {
-		return fluid.getTranslationKey().contains("milk") || fluid.getTranslationKey().contains("Milk");
+		String id = fluid.getDescriptionId();
+		return id.contains("milk") || id.contains("Milk");
 	}
 
 	@Override

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:nuggets/iron"
+    },
+    "P": {
+      "tag": "c:plastics"
+    },
+    "W": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "pattern": [
+    "P",
+    "W",
+    "I"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_water_bottle"
+  },
+  "show_notification": true
+}

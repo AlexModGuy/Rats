@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "c:storage_blocks/iron"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "S": {
+      "item": "minecraft:shield"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "ISI",
+    "IUI",
+    "IBI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_armor"
+  },
+  "show_notification": true
+}

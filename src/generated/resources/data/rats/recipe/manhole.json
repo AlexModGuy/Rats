@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "item": "minecraft:iron_bars"
+    },
+    "T": {
+      "item": "minecraft:iron_trapdoor"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "TTT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:manhole"
+  },
+  "show_notification": true
+}

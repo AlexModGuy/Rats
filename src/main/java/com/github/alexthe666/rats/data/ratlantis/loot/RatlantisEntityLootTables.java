@@ -4,7 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 
-// PORT-STUB: see RatsEntityLootTables.
+// Datagen note (1.21): see RatsEntityLootTables.
 public class RatlantisEntityLootTables extends EntityLootSubProvider {
 
     protected RatlantisEntityLootTables(HolderLookup.Provider registries) {

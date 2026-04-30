@@ -88,7 +88,9 @@ public abstract class RatMountBase extends PathfinderMob implements RatMount, Ad
 		return super.isInvulnerableTo(source);
 	}
 
-	// PORT-STUB: 1.21 Entity.getPassengersRidingOffset removed; passenger Y offset now driven by EntityAttachments.PASSENGER on EntityDimensions.
+	// 1.21: Entity.getPassengersRidingOffset was removed in favour of EntityAttachments.PASSENGER
+	// on EntityDimensions, but our positionRider override below still calls this getter to apply
+	// the per-mount riderY offset. Kept as a plain method since vanilla no longer dispatches to it.
 	public double getPassengersRidingOffset() {
 		return this.riderY;
 	}

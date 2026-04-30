@@ -7,7 +7,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 
 import java.util.concurrent.CompletableFuture;
 
-// PORT-STUB: 1.20.5+ rewrote RecipeProvider to take CompletableFuture<HolderLookup
+// Datagen note (1.21): 1.20.5+ rewrote RecipeProvider to take CompletableFuture<HolderLookup
 // .Provider> and changed buildRecipes(Consumer<FinishedRecipe>) to
 // buildRecipes(RecipeOutput). Pre-generated recipe JSON in
 // src/generated/resources/data/rats/recipes/ is the runtime source of truth.

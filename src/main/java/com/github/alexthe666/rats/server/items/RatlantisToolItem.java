@@ -33,8 +33,8 @@ public class RatlantisToolItem {
 	public static class Pickaxe extends PickaxeItem {
 
 		public Pickaxe(Item.Properties properties) {
-			// PORT-STUB: 1.21 PickaxeItem(Tier, Properties); damage/speed now must be configured via Properties.attributes(...).
-			super(RatsToolMaterialRegistry.RATLANTIS, properties);
+			super(RatsToolMaterialRegistry.RATLANTIS, properties.attributes(
+					PickaxeItem.createAttributes(RatsToolMaterialRegistry.RATLANTIS, 1.0F, -2.8F)));
 		}
 
 		@Override
@@ -60,15 +60,17 @@ public class RatlantisToolItem {
 
 	public static class Axe extends AxeItem {
 		public Axe(Item.Properties properties) {
-			// PORT-STUB: 1.21 AxeItem(Tier, Properties); damage/speed now must be configured via Properties.attributes(...).
-			super(RatsToolMaterialRegistry.RATLANTIS, properties);
+			super(RatsToolMaterialRegistry.RATLANTIS, properties.attributes(
+					AxeItem.createAttributes(RatsToolMaterialRegistry.RATLANTIS, 5.0F, -3.0F)));
 		}
 
 		@Override
 		public float getDestroySpeed(ItemStack stack, BlockState state) {
 			if (state.is(BlockTags.LEAVES)) {
-				// PORT-STUB: AxeItem.speed field removed; bonus leaf-mining speed disabled until Tier.getSpeed() rewire.
-				return super.getDestroySpeed(stack, state) * 1.5F;
+				// 1.21: AxeItem.speed field removed. Use the tier's mining speed directly so leaves get
+				// the same fast-mine bonus they had in 1.20.1, regardless of whether vanilla considers
+				// the axe preferred for leaves.
+				return RatsToolMaterialRegistry.RATLANTIS.getSpeed() * 1.5F;
 			}
 			return super.getDestroySpeed(stack, state);
 		}
@@ -94,8 +96,8 @@ public class RatlantisToolItem {
 
 	public static class Shovel extends ShovelItem {
 		public Shovel(Item.Properties properties) {
-			// PORT-STUB: 1.21 ShovelItem(Tier, Properties).
-			super(RatsToolMaterialRegistry.RATLANTIS, properties);
+			super(RatsToolMaterialRegistry.RATLANTIS, properties.attributes(
+					ShovelItem.createAttributes(RatsToolMaterialRegistry.RATLANTIS, 1.5F, -3.0F)));
 		}
 
 		@Override
@@ -119,8 +121,8 @@ public class RatlantisToolItem {
 
 	public static class Hoe extends HoeItem {
 		public Hoe(Item.Properties properties) {
-			// PORT-STUB: 1.21 HoeItem(Tier, Properties).
-			super(RatsToolMaterialRegistry.RATLANTIS, properties);
+			super(RatsToolMaterialRegistry.RATLANTIS, properties.attributes(
+					HoeItem.createAttributes(RatsToolMaterialRegistry.RATLANTIS, -3.0F, 0.0F)));
 		}
 
 		@Override

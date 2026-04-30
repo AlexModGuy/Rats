@@ -1,0 +1,38 @@
+{
+  "parent": "rats:milk_cauldron",
+  "criteria": {
+    "get_cheese": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:cheese"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.rats.cheese.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "rats:cheese"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.rats.cheese.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_cheese"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

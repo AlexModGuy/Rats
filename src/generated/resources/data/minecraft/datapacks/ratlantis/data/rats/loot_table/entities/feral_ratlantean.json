@@ -1,0 +1,78 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:enchanted_count_increase","enchantment": "minecraft:looting"
+            }
+          ],
+          "name": "rats:feral_rat_claw"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rats:rat_toga"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:enchanted_count_increase","enchantment": "minecraft:looting"
+            }
+          ],
+          "name": "rats:rat_pelt"
+        }
+      ],
+      "rolls": 2.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+              "condition": "minecraft:random_chance_with_enchanted_bonus",
+              "enchanted_chance": {
+                "type": "minecraft:linear",
+                "base": 0.05,
+                "per_level_above_first": 0.05
+              },
+              "enchantment": "minecraft:looting",
+              "unenchanted_chance": 0.05
+            }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "rats:marbled_cheese_rat_head"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "rats:entities/feral_ratlantean"
+}

@@ -28,9 +28,13 @@ public class RatlantisArmorItem extends ArmorItem {
 		super(material, type, properties.durability(RatsArmorMaterialRegistry.durabilityFor(material, type)));
 	}
 
-	// PORT-STUB: 1.21 ArmorItem.getArmorTexture removed; armor textures now come from ArmorMaterial layers via DataComponents.
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		return "rats:textures/model/armor/" + (slot == EquipmentSlot.LEGS ? "ratlantis_armor_1" : "ratlantis_armor_0") + ".png";
+	// 1.21: per-stack override for the armor texture path; NeoForge calls this from HumanoidArmorLayer
+	// before falling back to ArmorMaterial.Layer.texture(). Returns rats:textures/model/armor/ratlantis_armor_{0,1}.png
+	// (singular `model` — matches the existing asset layout from 1.20.1).
+	@Override
+	public net.minecraft.resources.ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+		return net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(
+			"rats", "textures/model/armor/" + (slot == EquipmentSlot.LEGS ? "ratlantis_armor_1" : "ratlantis_armor_0") + ".png");
 	}
 
 	@Override

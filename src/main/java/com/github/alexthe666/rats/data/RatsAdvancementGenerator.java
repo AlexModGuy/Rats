@@ -7,7 +7,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.function.Consumer;
 
-// PORT-STUB: 1.20.1 advancement builder API (FrameType, ContextAwarePredicate.ANY,
+// Datagen note (1.21): 1.20.1 advancement builder API (FrameType, ContextAwarePredicate.ANY,
 // RequirementsStrategy, Consumer<Advancement>, .parent(Advancement), KilledTrigger
 // .TriggerInstance.playerKilledEntity(EntityPredicate), etc.) was completely
 // reworked into the codec-based AdvancementHolder/Optional<ContextAwarePredicate>

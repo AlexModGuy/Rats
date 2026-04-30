@@ -104,7 +104,9 @@ public class TamedRatRenderer extends AbstractRatRenderer<TamedRat, AbstractRatM
 	protected void renderAdditionalInfo(TamedRat entity, PoseStack stack, MultiBufferSource source, int light) {
 		double d0 = this.entityRenderDispatcher.distanceToSqr(entity);
 		if (ClientHooks.isNameplateInRenderDistance(entity, d0)) {
-			// PORT-STUB: 1.21 Entity.getNameTagOffsetY removed; nameplate offset is read from EntityAttachments.NAME_TAG / dimensions.height + custom offset.
+			// 1.21: Entity.getNameTagOffsetY was removed in favour of EntityAttachments.NAME_TAG.
+			// We compute the nameplate Y by hand here (BbHeight + small offset) so the additional rat
+			// info (RF / status text) layers above the rat's head consistently across baby/adult sizes.
 			float f = entity.getBbHeight() + 0.5F;
 			stack.pushPose();
 			stack.translate(0.0F, f, 0.0F);

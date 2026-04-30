@@ -19,10 +19,11 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import java.util.Comparator;
 import java.util.Optional;
 
-// PORT-STUB: NeoForge 21.1 removed ITeleporter and reworked the portal API. Custom dimension teleportation
-// must now be reimplemented via Entity.changeDimension(DimensionTransition) and the Portal interface
-// on the block side. This class retains the portal-shape helpers used by RatlantisPortalBlock but no
-// longer participates in the teleportation contract.
+// 1.21: Forge's ITeleporter is gone — the portal contract now lives on the block side via the
+// Portal interface + Entity.changeDimension(DimensionTransition). This class is kept only as a
+// helper that finds an existing portal frame (POI lookup) or builds a fresh portal frame around a
+// destination position. RatlantisPortalBlock still calls getOrMakePortal(...) to anchor a transition
+// target on arrival; the actual entity teleport happens in the block's entityInside / Portal hook.
 public class RatlantisTeleporter {
 
 	protected final ServerLevel level;
@@ -84,7 +85,7 @@ public class RatlantisTeleporter {
 		}
 	}
 
-	protected Optional<BlockUtil.FoundRectangle> getOrMakePortal(BlockPos pos) {
+	public Optional<BlockUtil.FoundRectangle> getOrMakePortal(BlockPos pos) {
 		Optional<BlockUtil.FoundRectangle> existingPortal = this.getExistingPortal(pos);
 		if (existingPortal.isPresent()) {
 			return existingPortal;

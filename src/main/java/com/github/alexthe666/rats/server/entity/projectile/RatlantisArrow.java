@@ -16,8 +16,14 @@ public class RatlantisArrow extends AbstractArrow {
 	}
 
 	public RatlantisArrow(Level level, LivingEntity shooter) {
-		// 1.21: AbstractArrow ctor takes (type, shooter, level, pickup, weapon).
-		super(RatlantisEntityRegistry.RATLANTIS_ARROW.get(), shooter, level, new ItemStack(Items.ARROW), null);
+		this(level, shooter, null);
+	}
+
+	public RatlantisArrow(Level level, LivingEntity shooter, ItemStack weapon) {
+		// 1.21: AbstractArrow ctor takes (type, shooter, level, pickup, weapon). Threading the source bow
+		// through as `weapon` is what lets vanilla apply Power/Punch/Flame enchant effects on hit (via
+		// EnchantmentHelper.modifyDamage / modifyKnockback / etc.).
+		super(RatlantisEntityRegistry.RATLANTIS_ARROW.get(), shooter, level, new ItemStack(Items.ARROW), weapon);
 		this.setBaseDamage(4.0D);
 	}
 

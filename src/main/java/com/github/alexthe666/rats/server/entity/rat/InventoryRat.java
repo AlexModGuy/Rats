@@ -204,11 +204,18 @@ public abstract class InventoryRat extends DiggingRat implements ContainerListen
 			if (sp.containerMenu != sp.inventoryMenu) {
 				sp.closeContainer();
 			}
-			// PORT-STUB: 1.21 makes ServerPlayer.containerCounter / nextContainerCounter / initMenu private; use openMenu(MenuProvider).
 			java.util.OptionalInt menuId = sp.openMenu(new net.minecraft.world.SimpleMenuProvider(
 					(id, inv, p) -> new RatMenu(id, this.getInventory(), inv),
 					net.minecraft.network.chat.Component.empty()));
-			menuId.ifPresent(id -> PacketDistributor.sendToPlayer(sp, new OpenRatScreenPacket(id, this.getId())));
+			menuId.ifPresent(id -> {
+				PacketDistributor.sendToPlayer(sp, new OpenRatScreenPacket(id, this.getId()));
+				// RAT_CONTAINER has no MenuScreens factory registered (RatScreen needs the rat entity ref, which the
+				// stock factory signature can't carry). That means vanilla's ClientboundOpenScreenPacket is a no-op on
+				// the client and the immediate ContainerSetContent gets dropped (containerMenu.containerId mismatch).
+				// We send OpenRatScreenPacket to build the menu+screen ourselves; force a full-state re-broadcast here
+				// so the slot contents arrive AFTER the custom packet has installed the new RatMenu.
+				sp.containerMenu.broadcastFullState();
+			});
 			this.inventoryOpen = true;
 		}
 	}

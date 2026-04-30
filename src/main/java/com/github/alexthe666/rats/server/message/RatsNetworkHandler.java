@@ -33,6 +33,7 @@ public final class RatsNetworkHandler {
         reg.playToServer(RatCommandPacket.TYPE, RatCommandPacket.STREAM_CODEC, RatCommandPacket::handle);
         reg.playToServer(RatUpgradeVisibilityPacket.TYPE, RatUpgradeVisibilityPacket.STREAM_CODEC, RatUpgradeVisibilityPacket::handle);
         reg.playToServer(SetDancingRatPacket.TYPE, SetDancingRatPacket.STREAM_CODEC, SetDancingRatPacket::handle);
+        reg.playToServer(SetGhostMatrixPacket.TYPE, SetGhostMatrixPacket.STREAM_CODEC, SetGhostMatrixPacket::handle);
         reg.playToServer(SyncArmSwingPacket.TYPE, SyncArmSwingPacket.STREAM_CODEC, SyncArmSwingPacket::handle);
         reg.playToServer(SyncRatStaffPacket.TYPE, SyncRatStaffPacket.STREAM_CODEC, SyncRatStaffPacket::handle);
         reg.playToServer(SyncRatTagPacket.TYPE, SyncRatTagPacket.STREAM_CODEC, SyncRatTagPacket::handle);

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "item": "minecraft:barrel"
+    },
+    "F": {
+      "tag": "minecraft:fishes"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "FBF",
+    "FFF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:fish_barrel"
+  },
+  "show_notification": true
+}

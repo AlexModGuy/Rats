@@ -15,16 +15,18 @@ public class BaseRatUpgradeItem extends LoreTagItem {
 	}
 
 	public BaseRatUpgradeItem(Item.Properties properties, int rarity, int textLength) {
-		super(properties, textLength);
+		super(applyRarity(properties, rarity), textLength);
 		this.rarity = rarity;
 	}
 
-	// PORT-STUB: 1.21 Item.getRarity(ItemStack) removed; rarity now read from DataComponents.RARITY.
-	public Rarity getRarity(ItemStack stack) {
-		if (this.rarity != 0 && this.rarity != 4) {
-			return Rarity.values()[this.rarity];
+	// 1.21: Item.getRarity(stack) gone; rarity is baked in via Properties at construction so the
+	// RARITY data component rides on every stack. Index 4 maps to EPIC in vanilla; 1-3 are uncommon/rare/epic
+	// in our scheme so we mirror the previous switch.
+	private static Item.Properties applyRarity(Item.Properties properties, int rarity) {
+		if (rarity != 0 && rarity != 4 && rarity < Rarity.values().length) {
+			properties = properties.rarity(Rarity.values()[rarity]);
 		}
-		return Rarity.COMMON;
+		return properties;
 	}
 
 	public boolean isFoil(ItemStack stack) {

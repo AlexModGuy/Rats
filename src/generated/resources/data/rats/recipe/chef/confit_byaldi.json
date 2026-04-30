@@ -1,0 +1,10 @@
+{
+  "type": "rats:chef",
+  "ingredient": {
+    "item": "rats:assorted_vegetables"
+  },
+  "result": {
+    "count": 1,
+    "id": "rats:confit_byaldi"
+  }
+}

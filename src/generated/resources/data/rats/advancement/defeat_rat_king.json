@@ -1,0 +1,40 @@
+{
+  "parent": "rats:ball_of_filth",
+  "criteria": {
+    "kill_king": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rats:rat_king"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.rats.rat_king.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "id": "rats:tangled_rat_tails"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.rats.rat_king.title"
+    }
+  },
+  "requirements": [
+    [
+      "kill_king"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

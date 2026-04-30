@@ -97,7 +97,7 @@ public class RatTreeUtils {
 	public static Block getSaplingFromLeaves(ServerLevel level, Block leaves) {
 		try {
 			LootTable loot = level.getServer().reloadableRegistries().getLootTable(leaves.getLootTable());
-			LootParams.Builder context = new LootParams.Builder(level).withParameter(LootContextParams.TOOL, createMaxHoe()).withParameter(LootContextParams.BLOCK_STATE, leaves.defaultBlockState()).withParameter(LootContextParams.ORIGIN, Vec3.ZERO).withLuck(Float.MAX_VALUE);
+			LootParams.Builder context = new LootParams.Builder(level).withParameter(LootContextParams.TOOL, createMaxHoe(level)).withParameter(LootContextParams.BLOCK_STATE, leaves.defaultBlockState()).withParameter(LootContextParams.ORIGIN, Vec3.ZERO).withLuck(Float.MAX_VALUE);
 			for (int i = 0; i < 25; i++) {
 				ObjectArrayList<ItemStack> lootStacks = loot.getRandomItems(context.create(LootContextParamSets.BLOCK));
 				for (ItemStack stack : lootStacks) {
@@ -107,15 +107,25 @@ public class RatTreeUtils {
 				}
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			// Swallowing here is intentional: a transient datapack reload, a third-party leaf
+			// block with a broken loot table, or a missing tool-context predicate must not bring
+			// down the server tick. Just give up on this leaf and let the gathering AI try
+			// another one next tick.
+			com.github.alexthe666.rats.RatsMod.LOGGER.warn(
+				"Couldn't sample sapling from {} loot table: {}",
+				net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(leaves), e.toString());
 		}
 		return null;
 	}
 
-	private static ItemStack createMaxHoe() {
+	private static ItemStack createMaxHoe(ServerLevel level) {
 		ItemStack hoe = new ItemStack(Items.NETHERITE_HOE);
-		// PORT-STUB: 1.21 ItemStack.enchant takes Holder<Enchantment>, not Enchantment; Enchantments.BLOCK_FORTUNE was renamed to FORTUNE.
-		// Fortune-aware drop simulation is disabled until the new EnchantmentHelper API is wired up.
+		// 1.21: enchantments are data-driven; fetch Fortune by ResourceKey from the dynamic registry
+		// and apply via ItemStack.enchant(Holder<Enchantment>, level). Old BLOCK_FORTUNE was renamed to FORTUNE.
+		net.minecraft.core.HolderLookup.RegistryLookup<net.minecraft.world.item.enchantment.Enchantment> enchantments =
+				level.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT);
+		enchantments.get(net.minecraft.world.item.enchantment.Enchantments.FORTUNE)
+				.ifPresent(holder -> hoe.enchant(holder, 5));
 		return hoe;
 	}
 

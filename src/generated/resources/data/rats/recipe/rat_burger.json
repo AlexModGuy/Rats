@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:bread"
+    },
+    "R": {
+      "item": "rats:cooked_rat"
+    }
+  },
+  "pattern": [
+    "B",
+    "R",
+    "B"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_burger"
+  },
+  "show_notification": true
+}

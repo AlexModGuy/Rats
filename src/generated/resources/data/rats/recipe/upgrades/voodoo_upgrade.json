@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "item": "rats:top_hat"
+    },
+    "P": {
+      "item": "rats:plague_essence"
+    },
+    "S": {
+      "item": "rats:rat_skull"
+    },
+    "T": {
+      "item": "minecraft:totem_of_undying"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_health"
+    }
+  },
+  "pattern": [
+    "PHP",
+    "TUT",
+    "PSP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_voodoo"
+  },
+  "show_notification": true
+}

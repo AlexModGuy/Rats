@@ -188,7 +188,8 @@ public class MobFilterScreen extends Screen {
 
 	}
 
-	// PORT-STUB: 1.21 EditBox.tick() removed; cursor blink animation handled internally now.
+	// 1.21: EditBox.tick() was removed (cursor blink runs internally off Util.getMillis now). The
+	// no-op override here is kept solely so external callers that still invoke screen.tick() compile.
 	public void tick() {
 	}
 

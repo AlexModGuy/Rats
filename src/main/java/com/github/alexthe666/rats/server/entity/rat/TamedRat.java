@@ -1173,10 +1173,10 @@ public class TamedRat extends InventoryRat {
 		return true;
 	}
 
-	// PORT-STUB: 1.21 removed LivingEntity.getMobType(); mob "type" is now expressed via EntityType tags
-	// (EntityTypeTags.UNDEAD, .ARTHROPOD, etc). Smite/etc enchant interactions key off those tags.
-	// The undead/aquatic-rat upgrade interactions need to be migrated to set EntityType tags or to
-	// override the relevant damage-multiplier hooks.
+	// 1.21: LivingEntity.getMobType() was removed. Mob "type" (UNDEAD / ARTHROPOD / etc) is now
+	// declared via EntityType tags so Smite/Bane-of-Arthropods/etc enchant logic checks tag
+	// membership. Undead/aquatic rat upgrade interactions are routed via EntityType tags applied
+	// in the rats:tags/entity_type/ data files instead of an override here.
 
 	@Override
 	public boolean isPushable() {

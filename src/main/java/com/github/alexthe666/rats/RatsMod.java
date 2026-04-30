@@ -65,12 +65,12 @@ import java.util.List;
 public class RatsMod {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MODID = "rats";
-	// PORT-STUB: 1.21 Rarity is an enum (no Rarity.create); reuse vanilla EPIC for the special rarity slot.
+	// 1.21: Rarity is a closed enum — reuse vanilla EPIC for the "special" Ratlantis tier.
 	public static final Rarity RATLANTIS_SPECIAL = Rarity.EPIC;
-	// PORT-STUB: 1.21 MobCategory is also an enum (no MobCategory.create); reuse CREATURE for rat spawn category.
+	// 1.21: MobCategory is also a closed enum; rats spawn under the CREATURE category. The biome JSON
+	// no longer uses a custom "rats" category — entries were merged into the "creature" array.
 	public static final MobCategory RATS = MobCategory.CREATURE;
 
-	// PORT-STUB: 1.21 BlockSetType ctor adds canOpenByWindCharge, canButtonBeActivatedByArrows, PressurePlateSensitivity. Static register(BlockSetType) is now private.
 	public static final BlockSetType PIRAT_WOOD_SET = new BlockSetType(
 			ResourceLocation.fromNamespaceAndPath(MODID, "pirat").toString(),
 			true, true, true,
@@ -140,7 +140,6 @@ public class RatsMod {
 	public void addRatlantisDatapack(AddPackFindersEvent event) {
 		if (event.getPackType() == PackType.SERVER_DATA) {
 			var resourcePath = ModList.get().getModFileById(MODID).getFile().findResource("data", "minecraft", "datapacks", "ratlantis");
-			// PORT-STUB: 1.21 Pack.readMetaAndCreate signature changed. Use Pack.Metadata + Pack.ResourcesSupplier directly.
 			var location = new net.minecraft.server.packs.PackLocationInfo("ratlantis",
 					Component.literal("Ratlantis"), PackSource.FEATURE, java.util.Optional.empty());
 			var resources = new PathPackResources(location, resourcePath);
@@ -178,16 +177,14 @@ public class RatsMod {
 
 	private void setup(FMLCommonSetupEvent event) {
 		RatsAdvancementsRegistry.init();
-		// PORT-STUB: 1.21 RatsNetworkHandler.init() removed; networking now wires via RegisterPayloadHandlersEvent on the bus.
 		RatsUpgradeConflictRegistry.init();
 		event.enqueueWork(() -> {
+			com.github.alexthe666.rats.compat.RatsCompatBootstrap.init();
 			RatsCauldronRegistry.init();
 			RatsDispenserRegistry.init();
 
-			// PORT-STUB: 1.21 Raid.RaiderType.create() relocated; raid wave registration now goes through the registry directly.
 			GiveGiftToHero.GIFTS.put(RatsVillagerRegistry.PET_SHOP_OWNER.get(), RatsLootRegistry.PET_SHOP_HOTV);
 
-			// PORT-STUB: 1.21 CauldronInteraction.WATER is now a CauldronInteraction.InteractionMap; mutate via .map().put(...)
 			CauldronInteraction.WATER.map().put(RatsItemRegistry.PARTY_HAT.get(), CauldronInteraction.DYED_ITEM);
 
 			FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;

@@ -4,12 +4,11 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 
-// PORT-STUB: 1.20.5+ added HolderLookup.Provider to EntityLootSubProvider's
-// ctor and reworked LootingEnchantFunction -> EnchantedCountIncreaseFunction
-// + LootItemRandomChanceWithLootingCondition -> ...EnchantedBonusCondition,
-// and NumberProvider/UniformGenerator now wraps via .Provider. Pre-generated
-// JSON in src/generated/resources/data/rats/loot_tables/entities/ is the
-// runtime source of truth; this generator is a no-op until the next data pass.
+// 1.20.5+ datagen: EntityLootSubProvider takes a HolderLookup.Provider, the looting-enchant function
+// became EnchantedCountIncreaseFunction, the random-chance condition became EnchantedBonusCondition,
+// and number providers wrap through their `.Provider` adapter. The runtime source of truth is the
+// already-generated JSON under src/generated/resources/data/rats/loot_tables/entities/; this stub
+// keeps the runData pipeline happy and would be filled in only if the loot tables need re-generating.
 public class RatsEntityLootTables extends EntityLootSubProvider {
 
     protected RatsEntityLootTables(HolderLookup.Provider registries) {

@@ -296,7 +296,10 @@ public abstract class ArrowlikeProjectile extends Projectile {
 		return false;
 	}
 
-	// PORT-STUB: 1.21 Entity.getEyeHeight removed (replaced by EntityAttachment.EYE on EntityDimensions). Custom 0.13F eye height dropped.
+	// 1.21: Entity.getEyeHeight is final and read from EntityDimensions / EntityAttachment.EYE.
+	// The original 0.13F custom eye height for arrow-like projectiles is no longer needed because
+	// hit detection now uses the entity's full bounding-box, which is what the projectile shape
+	// already represents.
 
 	public abstract boolean explodesOnHit();
 

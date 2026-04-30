@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:golden_carrot"
+    },
+    "E": {
+      "tag": "c:storage_blocks/emerald"
+    },
+    "G": {
+      "tag": "c:ingots/gold"
+    },
+    "S": {
+      "item": "rats:golden_rat_skull"
+    },
+    "T": {
+      "item": "rats:top_hat"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic"
+    }
+  },
+  "pattern": [
+    "STS",
+    "GUG",
+    "CEC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_aristocrat"
+  },
+  "show_notification": true
+}

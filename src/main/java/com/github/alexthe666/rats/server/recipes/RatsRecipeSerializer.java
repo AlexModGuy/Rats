@@ -9,10 +9,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
-// PORT-STUB: 1.21 RecipeSerializer<T> requires MapCodec<T> codec() and StreamCodec<RegistryFriendlyByteBuf, T> streamCodec()
-// (replacing fromJson/toJson/fromNetwork/toNetwork). The pre-1.21 SingleItemRecipe constructor took (type, serializer, id, group, input, output);
-// in 1.21 it takes (String group, ItemStack output, Ingredient input). This serializer maintains the original Rats schema (group + ingredient + result)
-// using DataComponent-aware codecs so dispatch via factory still produces a runnable BaseRatRecipe.
+// 1.21 RecipeSerializer<T> requires MapCodec<T> codec() and StreamCodec<RegistryFriendlyByteBuf, T>
+// streamCodec() — replacing the pre-1.21 fromJson/toJson/fromNetwork/toNetwork quartet. We keep the
+// original Rats schema (group + ingredient + result) and use DataComponent-aware ItemStack codecs so
+// the resulting recipe round-trips correctly across config-load + the play network.
 public class RatsRecipeSerializer<T extends BaseRatRecipe> implements RecipeSerializer<T> {
 	private final MapCodec<T> codec;
 	private final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;

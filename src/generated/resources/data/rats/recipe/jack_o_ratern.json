@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "P": {
+      "item": "minecraft:carved_pumpkin"
+    },
+    "R": {
+      "item": "rats:raw_rat"
+    },
+    "T": {
+      "item": "minecraft:torch"
+    }
+  },
+  "pattern": [
+    "P",
+    "R",
+    "T"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:jack_o_ratern"
+  },
+  "show_notification": true
+}

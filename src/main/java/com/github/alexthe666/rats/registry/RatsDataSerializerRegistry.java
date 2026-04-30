@@ -16,7 +16,9 @@ public class RatsDataSerializerRegistry {
 
 	public static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, RatsMod.MODID);
 
-	// PORT-STUB: 1.21 EntityDataSerializer is now StreamCodec-driven; a List<GlobalPos> stream codec must be supplied.
+	// 1.21: EntityDataSerializer is StreamCodec-driven. Compose List<GlobalPos> off the per-element
+	// GlobalPos.STREAM_CODEC and apply ByteBufCodecs.list(); cast to RegistryFriendlyByteBuf because
+	// vanilla's data sync runs on the registry-aware buffer.
 	public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<List<GlobalPos>>> GLOBAL_POS_LIST = DATA_SERIALIZERS.register(
 			"global_pos_list",
 			() -> EntityDataSerializer.forValueType(

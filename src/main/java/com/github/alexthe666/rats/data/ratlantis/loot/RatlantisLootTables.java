@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-// PORT-STUB: see RatsLootTables.
+// Datagen note (1.21): see RatsLootTables.
 public class RatlantisLootTables extends LootTableProvider {
 
     public RatlantisLootTables(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

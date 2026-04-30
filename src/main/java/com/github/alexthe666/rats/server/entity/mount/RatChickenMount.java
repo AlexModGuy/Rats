@@ -26,18 +26,15 @@ public class RatChickenMount extends RatMountBase {
 
 	public RatChickenMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		// PORT-STUB: 1.21 removed Entity.setMaxUpStep; use Attributes.STEP_HEIGHT modifier instead. (was 1.0F)
 		this.riderY = 0.55F;
 		this.riderXZ = 0.1F;
 	}
 
-	// PORT-STUB: 1.21 removed Entity.getStandingEyeHeight in favor of EntityAttachments registered on EntityDimensions.
-	// Custom eye-height for the rat-chicken ride is dropped; vanilla chicken eye-height applies.
-
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 4.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D);
+				.add(Attributes.MOVEMENT_SPEED, 0.3D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	public boolean doHurtTarget(Entity entity) {

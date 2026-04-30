@@ -83,7 +83,10 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.ArrayList;
 import java.util.List;
 
-@EventBusSubscriber(modid = RatsMod.MODID, bus = EventBusSubscriber.Bus.GAME)
+// NeoForge 21.1+ deprecated EventBusSubscriber.Bus / bus() in favor of letting the framework infer bus
+// from event types. GAME bus is the default for non-mod-init events, so the annotation no longer needs
+// the bus parameter.
+@EventBusSubscriber(modid = RatsMod.MODID)
 public class ForgeEvents {
 
 	@SubscribeEvent
@@ -138,9 +141,7 @@ public class ForgeEvents {
 	@SubscribeEvent
 	public static void piglinsDontAttackGoldRatsEver(LivingChangeTargetEvent event) {
 		if (event.getEntity() instanceof Piglin) {
-			// PORT-STUB: 1.21 LivingChangeTargetEvent.getNewTarget() removed; vanilla now sets target before firing.
-			// Re-implementation requires reading the entity's actual current target.
-			LivingEntity newTarget = event.getEntity() instanceof Mob mob ? mob.getTarget() : null;
+			LivingEntity newTarget = event.getNewAboutToBeSetTarget();
 			if (newTarget instanceof TamedRat rat && RatUpgradeUtils.hasUpgrade(rat, RatsItemRegistry.RAT_UPGRADE_IDOL.get())) {
 				event.setCanceled(true);
 			}
@@ -186,8 +187,7 @@ public class ForgeEvents {
 
 	@SubscribeEvent
 	public static void checkIfPlagueCanApplyToMob(MobEffectEvent.Applicable event) {
-		if (event.getEffectInstance().getEffect() == RatsEffectRegistry.PLAGUE && (!RatConfig.plagueSpread || event.getEntity().getType().is(RatsEntityTags.PLAGUE_IMMUNE))) {
-			// PORT-STUB: 1.21 MobEffectEvent.Applicable.setResult(Event.Result) removed; use setResult(boolean).
+		if (event.getEffectInstance().is(RatsEffectRegistry.PLAGUE) && (!RatConfig.plagueSpread || event.getEntity().getType().is(RatsEntityTags.PLAGUE_IMMUNE))) {
 			event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
 		}
 	}
@@ -271,7 +271,6 @@ public class ForgeEvents {
 						demonRat.finalizeSpawn(event.getLevel(), event.getDifficulty(), MobSpawnType.JOCKEY, null);
 						demonRat.startRiding(strider, true);
 						demonRat.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.WARPED_FUNGUS_ON_A_STICK));
-						// PORT-STUB: 1.21 Strider.equipSaddle now requires (ItemStack, SoundSource); previously took (SoundSource).
 						strider.equipSaddle(new ItemStack(Items.SADDLE), null);
 					}
 				}
@@ -448,7 +447,6 @@ public class ForgeEvents {
 	public static void handleArmSwing(ItemStack stack, Player player) {
 		if (stack.is(RatsItemRegistry.PLAGUE_SCYTHE.get())) {
 			if (player.swingTime == 0 && !player.isSpectator()) {
-				// PORT-STUB: 1.21 ItemStack.getAttributeModifiers(EquipmentSlot) replaced with ItemAttributeModifiers component.
 				net.minecraft.world.item.component.ItemAttributeModifiers modifiers = stack.get(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS);
 				double totalDmg = 0;
 				if (modifiers != null) {

@@ -46,9 +46,17 @@ public class CauldronRecipeCategory implements IRecipeCategory<CauldronInfoHolde
 		return Component.translatable(RatsLangConstants.CHEESEMAKING_JEI);
 	}
 
+	// JEI 19+: getBackground() is deprecated for removal. Categories now expose width/height directly and
+	// render their background panel inside draw(...). We render the background drawable as the first thing
+	// in draw() so behavior is identical to the old getBackground() flow.
 	@Override
-	public IDrawable getBackground() {
-		return this.background;
+	public int getWidth() {
+		return WIDTH;
+	}
+
+	@Override
+	public int getHeight() {
+		return HEIGHT;
 	}
 
 	@Override
@@ -66,6 +74,7 @@ public class CauldronRecipeCategory implements IRecipeCategory<CauldronInfoHolde
 
 	@Override
 	public void draw(CauldronInfoHolder recipe, IRecipeSlotsView view, GuiGraphics graphics, double mouseX, double mouseY) {
+		this.background.draw(graphics);
 		if (recipe.additionStack().asItem() == Items.AIR) {
 			this.arrowIcon.draw(graphics, 95, 31);
 			Component text = Component.literal(RatConfig.milkCauldronTime / 20 + "s");

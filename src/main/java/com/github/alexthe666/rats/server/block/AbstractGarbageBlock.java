@@ -99,9 +99,9 @@ public abstract class AbstractGarbageBlock extends FallingBlock {
 		tooltip.add(Component.translatable(this.getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
 	}
 
-	// 1.21: BlockBehaviour.isValidSpawn is no longer overridable on the block class;
-	// vanilla now reads BlockBehaviour.Properties.isValidSpawn (a static predicate set during properties build).
-	// PORT-STUB: helper retained for callers; spawn-validity tied to spawn-placement registration instead.
+	// 1.21: BlockBehaviour.isValidSpawn is no longer overridable on the block class. Spawn validity
+	// is configured via Properties.isValidSpawn(...) at registration time. This helper stays as a
+	// public predicate for callers that need to ask "would this entity spawn on top of garbage?".
 	public boolean canMobSpawnHere(EntityType<?> entityType) {
 		return entityType == this.getEntityToSpawn();
 	}

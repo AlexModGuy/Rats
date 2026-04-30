@@ -36,7 +36,6 @@ public class RatGolemMount extends RatMountBase {
 
 	public RatGolemMount(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
-		// PORT-STUB: 1.21 removed Entity.setMaxUpStep; use Attributes.STEP_HEIGHT modifier instead. (was 1.0F)
 		this.riderY = 1.95F;
 		this.riderXZ = -0.1F;
 	}
@@ -46,7 +45,8 @@ public class RatGolemMount extends RatMountBase {
 				.add(Attributes.MAX_HEALTH, 100.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.2D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	public void aiStep() {

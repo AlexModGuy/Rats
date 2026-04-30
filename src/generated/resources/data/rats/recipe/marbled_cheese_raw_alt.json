@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": {
+      "tag": "c:cheese"
+    },
+    "Q": {
+      "tag": "c:gems/quartz"
+    }
+  },
+  "pattern": [
+    "QC",
+    "CQ"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:marbled_cheese_raw"
+  },
+  "show_notification": true
+}

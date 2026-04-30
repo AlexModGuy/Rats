@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "rats:aviator_hat"
+    },
+    "B": {
+      "item": "rats:ratbot_barrel"
+    },
+    "I": {
+      "tag": "c:storage_blocks/iron"
+    },
+    "U": {
+      "item": "rats:rat_upgrade_basic_mount"
+    },
+    "W": {
+      "item": "rats:biplane_wing"
+    }
+  },
+  "pattern": [
+    "IAI",
+    "BUB",
+    "IWI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_upgrade_biplane_mount"
+  },
+  "show_notification": true
+}

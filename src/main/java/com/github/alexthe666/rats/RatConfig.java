@@ -11,7 +11,7 @@ public class RatConfig {
 	public static boolean ratAngelGlint = true;
 
 	// SERVER
-	public static boolean ratlantisEnabledByDefault = false;
+	public static boolean ratlantisEnabledByDefault = true;
 	public static int ratSpawnDecrease = 5;
 	public static int piperSpawnDecrease = 2;
 	public static boolean ratsSpawnLikeMonsters = true;

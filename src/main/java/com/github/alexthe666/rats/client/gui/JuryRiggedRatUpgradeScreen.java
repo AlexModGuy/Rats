@@ -27,7 +27,6 @@ public class JuryRiggedRatUpgradeScreen extends AbstractContainerScreen<JuryRigg
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-		this.renderBackground(graphics, mouseX, mouseY, partialTicks);
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
 		graphics.blit(TEXTURE, i, j, 0, 0, this.imageWidth, 35);

@@ -42,8 +42,13 @@ public class ArcheologistRecipeCategory implements IRecipeCategory<ArcheologistR
 	}
 
 	@Override
-	public IDrawable getBackground() {
-		return this.background;
+	public int getWidth() {
+		return 170;
+	}
+
+	@Override
+	public int getHeight() {
+		return 79;
 	}
 
 	@Override
@@ -59,6 +64,7 @@ public class ArcheologistRecipeCategory implements IRecipeCategory<ArcheologistR
 
 	@Override
 	public void draw(ArcheologistRecipe recipe, IRecipeSlotsView view, GuiGraphics graphics, double mouseX, double mouseY) {
+		this.background.draw(graphics);
 		this.arrow.draw(graphics, 71, 49);
 	}
 }

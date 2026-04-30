@@ -26,9 +26,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -48,9 +46,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 import net.minecraft.core.HolderLookup;
 
-// PORT-STUB: dropped RecipeHolder interface (net.minecraft.world.inventory.RecipeHolder no longer exists in 1.21).
-// Recipe tracking is maintained via internal recipeUsed state; vanilla integration with
-// "recently-used recipes" stat tracking is lost but core crafting still works.
+// 1.21: dropped vanilla RecipeHolder *interface* (net.minecraft.world.inventory.RecipeHolder gone).
+// Internally we now hold RecipeHolder<CraftingRecipe> records (item.crafting.RecipeHolder) so
+// StackedContents.getBiggestCraftableStack and award-recipes calls keep working.
 @SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "unchecked", "unused"})
 public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProvider, Clearable {
 
@@ -61,9 +59,9 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 	public boolean hasValidRecipe;
 	private int cookTime;
 	protected final StackedContents itemHelper = new StackedContents();
-	protected Optional<CraftingRecipe> guideRecipe = Optional.empty();
-	protected Optional<CraftingRecipe> recipeUsed = Optional.empty();
-	protected List<CraftingRecipe> possibleRecipes = List.of();
+	protected Optional<RecipeHolder<CraftingRecipe>> guideRecipe = Optional.empty();
+	protected Optional<RecipeHolder<CraftingRecipe>> recipeUsed = Optional.empty();
+	protected List<RecipeHolder<CraftingRecipe>> possibleRecipes = List.of();
 	public int totalCookTime = 200;
 	private int selectedRecipeIndex = 0;
 	private final ContainerData dataAccess = new ContainerData() {
@@ -124,13 +122,14 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 			}
 			if (te.cookTime >= te.totalCookTime) {
 				te.cookTime = 0;
-				// PORT-STUB: 1.21 CraftingRecipe.assemble takes CraftingInput, not CraftingContainer.
-				// Wrap matrix items into a CraftingInput so the assemble call type-checks.
+				// 1.21: CraftingRecipe.assemble takes CraftingInput, not CraftingContainer.
 				net.minecraft.world.item.crafting.CraftingInput craftingInput = makeCraftingInput(te.matrixWrapper);
-				ItemStack addStack = te.recipeUsed.map(r -> r.assemble(craftingInput, level.registryAccess())).orElse(ItemStack.EMPTY);
-				IItemHandlerModifiable rh = te.resultHandler;
-				rh.setStackInSlot(0, addStack.copyWithCount(addStack.getCount() + rh.getStackInSlot(0).getCount()));
-				te.consumeIngredients(null);
+				ItemStack addStack = te.recipeUsed.map(r -> r.value().assemble(craftingInput, level.registryAccess())).orElse(ItemStack.EMPTY);
+				if (!addStack.isEmpty()) {
+					IItemHandlerModifiable rh = te.resultHandler;
+					rh.setStackInSlot(0, addStack.copyWithCount(addStack.getCount() + rh.getStackInSlot(0).getCount()));
+					te.consumeIngredients(null);
+				}
 				te.updateRecipe();
 			}
 		}
@@ -153,10 +152,10 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 		AtomicBoolean flag = new AtomicBoolean(true);
 		if (this.getLevel() != null) {
 			{
-				// PORT-STUB: 1.21 RecipeManager.getRecipesFor takes (RecipeType, RecipeInput, Level) and returns List<RecipeHolder<T>>.
-				// CraftingContainer is no longer a RecipeInput; needs CraftingInput.of(width, height, items) wrapper
-				// and RecipeHolder.value() unwrap. Recipe-suggestion list temporarily empty until rewritten.
-				this.possibleRecipes = java.util.Collections.emptyList();
+				// 1.21: RecipeManager.getRecipesFor takes (RecipeType, RecipeInput, Level) and returns List<RecipeHolder<T>>.
+				net.minecraft.world.item.crafting.CraftingInput input = makeCraftingInput(this.matrixWrapper);
+				this.possibleRecipes = this.getLevel().getRecipeManager()
+						.getRecipesFor(net.minecraft.world.item.crafting.RecipeType.CRAFTING, input, this.getLevel());
 				if (this.possibleRecipes.isEmpty()) {
 					flag.set(false);
 				} else {
@@ -172,29 +171,30 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 			if (flag.get()) {
 				this.checkIfRecipeIsValid(this.recipeUsed, this.itemHelper);
 				if (!this.hasValidRecipe)
-					this.setRecipeUsed(null);
+					this.setRecipeUsed((RecipeHolder<CraftingRecipe>) null);
 			} else {
 				this.guideRecipe = Optional.empty();
-				this.setRecipeUsed(null);
+				this.setRecipeUsed((RecipeHolder<CraftingRecipe>) null);
 			}
 		}
 	}
 
-	private boolean checkIfResultFits(Level level, Optional<CraftingRecipe> recipe) {
+	private boolean checkIfResultFits(Level level, Optional<RecipeHolder<CraftingRecipe>> recipe) {
 		if (recipe.isPresent()) {
 			ItemStack checkStack = this.resultHandler.getStackInSlot(0);
-			ItemStack resultStack = recipe.get().getResultItem(level.registryAccess());
+			ItemStack resultStack = recipe.get().value().getResultItem(level.registryAccess());
 			return (ItemStack.isSameItemSameComponents(checkStack, resultStack) && checkStack.getCount() + resultStack.getCount() <= checkStack.getMaxStackSize()) || checkStack.isEmpty();
 		}
 		return false;
 	}
 
-	private void checkIfRecipeIsValid(Optional<CraftingRecipe> recipe, StackedContents helper) {
-		// 1.21: getBiggestCraftableStack now requires a RecipeHolder<CraftingRecipe>; with no real holder, gate on basic presence.
-		this.hasValidRecipe = recipe.isPresent();
+	private void checkIfRecipeIsValid(Optional<RecipeHolder<CraftingRecipe>> recipe, StackedContents helper) {
+		this.hasValidRecipe = recipe.isPresent() && helper.getBiggestCraftableStack(recipe.get(), null) > 0;
 	}
 
-	// PORT-STUB helper: 1.21 CraftingRecipe.assemble/getRemainingItems take CraftingInput, not the legacy CraftingContainer.
+	// 1.21: CraftingRecipe.assemble/getRemainingItems/getMatching take CraftingInput, not the legacy
+	// CraftingContainer. This adapter wraps our matrix container into a CraftingInput so all those
+	// recipe APIs type-check.
 	private static net.minecraft.world.item.crafting.CraftingInput makeCraftingInput(net.minecraft.world.inventory.CraftingContainer container) {
 		java.util.List<ItemStack> items = new java.util.ArrayList<>(container.getContainerSize());
 		for (int i = 0; i < container.getContainerSize(); i++) {
@@ -221,24 +221,24 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 		this.updateRecipe();
 	}
 
-	public void setRecipeUsed(@Nullable Recipe<?> recipe) {
-		this.recipeUsed = Optional.ofNullable((CraftingRecipe) recipe);
+	public void setRecipeUsed(@Nullable RecipeHolder<CraftingRecipe> recipe) {
+		this.recipeUsed = Optional.ofNullable(recipe);
 	}
 
-	public boolean setRecipeUsed(Level level, @Nullable ServerPlayer player, Recipe<?> recipe) {
-		return !level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || recipe.isSpecial();
+	public boolean setRecipeUsed(Level level, @Nullable ServerPlayer player, RecipeHolder<CraftingRecipe> recipe) {
+		return !level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || recipe.value().isSpecial();
 	}
 
 	@Nullable
-	public Recipe<?> getRecipeUsed() {
+	public RecipeHolder<CraftingRecipe> getRecipeUsed() {
 		return this.recipeUsed.orElse(null);
 	}
 
 	public Optional<CraftingRecipe> getGuideRecipe() {
-		return this.guideRecipe;
+		return this.guideRecipe.map(RecipeHolder::value);
 	}
 
-	public List<CraftingRecipe> getPossibleRecipes() {
+	public List<RecipeHolder<CraftingRecipe>> getPossibleRecipes() {
 		return this.possibleRecipes;
 	}
 
@@ -300,7 +300,12 @@ public class RatCraftingTableBlockEntity extends BlockEntity implements MenuProv
 	}
 
 	public void consumeIngredients(@Nullable Player player) {
-		this.recipeUsed.ifPresent(recipe -> {
+		// Skip the entire pass when the recipe is unusable. getRemainingItems can read the matrix
+		// state and produce inconsistent container items if we run it after the matrix has already
+		// been mutated by a prior tick.
+		if (!this.hasValidRecipe) return;
+		this.recipeUsed.ifPresent(holder -> {
+			CraftingRecipe recipe = holder.value();
 			NonNullList<ItemStack> remainingStacks = recipe.getRemainingItems(makeCraftingInput(this.matrixWrapper));
 
 			if (this.hasValidRecipe) {

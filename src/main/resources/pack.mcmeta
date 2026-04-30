@@ -4,5 +4,7 @@
       "translate": "pack.rats.rats"
     },
     "pack_format": 34
-  }
+  },
+  "neoforge:resource_pack_format": 34,
+  "neoforge:data_pack_format": 48
 }

@@ -108,7 +108,7 @@ public class ServerConfig {
 
 	public ServerConfig(final ModConfigSpec.Builder builder) {
 		builder.push("Ratlantis");
-		this.ratlantisEnabledByDefault = buildBoolean(builder, "Ratlantis Datapack Enabled by Default", false, "If true, the ratlantis datapack will automatically be enabled when creating a new world.");
+		this.ratlantisEnabledByDefault = buildBoolean(builder, "Ratlantis Datapack Enabled by Default", true, "If true, the ratlantis datapack will automatically be enabled when creating a new world.");
 
 		builder.pop().push("Spawning");
 		this.garbageSpawnRate = buildDouble(builder, "Garbage Pile Spawn Chance", 0.15F, 0F, 1.0F, "Percentage for every random tick to spawn a rat for a garbage pile.");

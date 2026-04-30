@@ -20,11 +20,11 @@ public class RatlantisBlockTags extends BlockTagsProvider {
 	public static final TagKey<Block> PIRAT_LOGS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pirat_logs"));
 	public static final TagKey<Block> PIRAT_ONLY_BLOCKS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "pirat_blocks"));
 
-	public static final TagKey<Block> STORAGE_BLOCKS_ORATCHALCUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/oratchalcum"));
+	public static final TagKey<Block> STORAGE_BLOCKS_ORATCHALCUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/oratchalcum"));
 
-	public static final TagKey<Block> ORES_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "ores/cheese"));
-	public static final TagKey<Block> ORES_GEM_OF_RATLANTIS = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "ores/gem_of_ratlantis"));
-	public static final TagKey<Block> ORES_ORATCHALCUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", "ores/oratchalcum"));
+	public static final TagKey<Block> ORES_CHEESE = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/cheese"));
+	public static final TagKey<Block> ORES_GEM_OF_RATLANTIS = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/gem_of_ratlantis"));
+	public static final TagKey<Block> ORES_ORATCHALCUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/oratchalcum"));
 
 	public RatlantisBlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
 		super(output, provider, RatsMod.MODID, helper);

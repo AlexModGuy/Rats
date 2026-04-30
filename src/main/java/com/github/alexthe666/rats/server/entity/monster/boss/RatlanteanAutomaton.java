@@ -52,7 +52,6 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 
 	public RatlanteanAutomaton(EntityType<? extends Monster> type, Level level) {
 		super(type, level);
-		// PORT-STUB: 1.21 removed Entity.setMaxUpStep; use Attributes.STEP_HEIGHT modifier instead. (was 2.0F)
 		this.getNavigation().setCanFloat(true);
 		this.xpReward = 50;
 		this.moveControl = new FlyingMoveControl(this, 10, false);
@@ -75,7 +74,8 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 				.add(Attributes.ATTACK_DAMAGE, 5.0F)
 				.add(Attributes.FOLLOW_RANGE, 32.0D)
 				.add(Attributes.ARMOR, 10.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+				.add(Attributes.STEP_HEIGHT, 2.0D);
 	}
 
 	@Override
@@ -130,8 +130,8 @@ public class RatlanteanAutomaton extends Monster implements IAnimatedEntity, Ran
 		}
 	}
 
-	// PORT-STUB: 1.21 Entity.canChangeDimensions removed.
-	public boolean canChangeDimensions() {
+	@Override
+	public boolean canChangeDimensions(net.minecraft.world.level.Level from, net.minecraft.world.level.Level to) {
 		return false;
 	}
 

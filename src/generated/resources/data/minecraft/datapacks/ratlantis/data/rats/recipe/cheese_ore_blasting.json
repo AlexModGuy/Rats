@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.25,
+  "ingredient": {
+    "item": "rats:cheese_ore"
+  },
+  "result": {
+    "id": "rats:cheese"
+  }
+}

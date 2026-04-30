@@ -13,7 +13,6 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 public class RatNodeEvaluator extends WalkNodeEvaluator {
 
-	// PORT-STUB: 1.21 evaluateBlockPathType removed; node-type filtering is now done by overriding getPathTypeOfMob (PathfindingContext-based).
 	@Override
 	public PathType getPathTypeOfMob(net.minecraft.world.level.pathfinder.PathfindingContext context, int x, int y, int z, net.minecraft.world.entity.Mob mob) {
 		PathType types = super.getPathTypeOfMob(context, x, y, z, mob);

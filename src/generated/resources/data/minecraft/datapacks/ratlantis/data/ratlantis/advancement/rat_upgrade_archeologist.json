@@ -1,0 +1,38 @@
+{
+  "parent": "ratlantis:token",
+  "criteria": {
+    "get_upgrade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rats:rat_upgrade_archeologist"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.ratlantis.rat_upgrade_archeologist.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "rats:rat_upgrade_archeologist"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ratlantis.rat_upgrade_archeologist.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_upgrade"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

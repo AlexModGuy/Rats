@@ -12,7 +12,9 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 public class RatsIconRenderUtil {
-	public static void renderPOIIcon(ResourceLocation icon, Vec3 viewVec, @Nullable BlockPos renderPos, float bob, PoseStack stack, BufferBuilder buffer, Tesselator tesselator) {
+	// 1.21: BufferBuilder is now produced by tesselator.begin(...), not retrieved separately. The
+	// helper allocates its own buffer per call so callers don't need to (and shouldn't) supply one.
+	public static void renderPOIIcon(ResourceLocation icon, Vec3 viewVec, @Nullable BlockPos renderPos, float bob, PoseStack stack, Tesselator tesselator) {
 		if (renderPos != null && renderPos != BlockPos.ZERO) {
 			stack.pushPose();
 			RenderSystem.enableBlend();
@@ -24,7 +26,7 @@ public class RatsIconRenderUtil {
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderTexture(0, icon);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+			BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 			buffer.addVertex(matrix4f, -0.5F, -0.5F, 0).setUv(1.0F, 1.0F);
 			buffer.addVertex(matrix4f, -0.5F, 0.5F, 0).setUv(1.0F, 0.0F);
 			buffer.addVertex(matrix4f, 0.5F, 0.5F, 0).setUv(0.0F, 0.0F);

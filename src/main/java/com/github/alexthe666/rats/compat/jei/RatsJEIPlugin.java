@@ -91,13 +91,20 @@ public class RatsJEIPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+		// Register a CRAFTING-specific handler so JEI shows the "+" button on every vanilla crafting
+		// recipe when the rat crafting table is open. Also keep the universal fallback for other
+		// recipe types (chef, archeologist, etc.) so those can transfer too.
+		registration.addRecipeTransferHandler(RatCraftingTableCraftingTransferHandler.INSTANCE, mezz.jei.api.constants.RecipeTypes.CRAFTING);
 		registration.addUniversalRecipeTransferHandler(RatCraftingTableTransferHandler.INSTANCE);
 	}
 
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistration registration) {
-		// PORT-STUB: 1.21 ISubtypeRegistration.useNbtForSubtypes removed; subtypes now use DataComponents-based interpreter.
-		// JEI ore-nugget variant detection disabled until migrated to ISubtypeRegistration.registerSubtypeInterpreter(ItemLike, ISubtypeInterpreter).
+		// 1.21: ISubtypeRegistration.useNbtForSubtypes(...) was removed. Subtypes are now expressed by
+		// registering a per-item ISubtypeInterpreter that hashes the relevant DataComponents. None of
+		// our items vary their JEI page presentation by component data (the rat upgrades are listed
+		// once and the rat-nugget variants are separate items, not stack-side subtypes), so this hook
+		// stays empty intentionally.
 	}
 
 	@Override

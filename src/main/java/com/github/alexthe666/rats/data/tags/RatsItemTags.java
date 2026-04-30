@@ -23,11 +23,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class RatsItemTags extends ItemTagsProvider {
 
-	public static final TagKey<Item> CHEESE_ITEMS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "cheese"));
+	public static final TagKey<Item> CHEESE_ITEMS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "cheese"));
 
-	public static final TagKey<Item> CRAFTING_TABLES = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "crafting_tables"));
-	public static final TagKey<Item> VEGETABLES = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "vegetables"));
-	public static final TagKey<Item> PLASTICS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "plastics"));
+	public static final TagKey<Item> CRAFTING_TABLES = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "crafting_tables"));
+	public static final TagKey<Item> VEGETABLES = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "vegetables"));
+	public static final TagKey<Item> PLASTICS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "plastics"));
 	public static final TagKey<Item> HIDES_RAT_WHISKERS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "hides_rat_whiskers"));
 
 	public static final TagKey<Item> IGLOOS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "igloos"));
@@ -35,9 +35,9 @@ public class RatsItemTags extends ItemTagsProvider {
 	public static final TagKey<Item> HAMMOCKS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "hammocks"));
 	public static final TagKey<Item> MARBLED_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "marbled_cheese"));
 
-	public static final TagKey<Item> STORAGE_BLOCKS_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/cheese"));
-	public static final TagKey<Item> STORAGE_BLOCKS_BLUE_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/blue_cheese"));
-	public static final TagKey<Item> STORAGE_BLOCKS_NETHER_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/nether_cheese"));
+	public static final TagKey<Item> STORAGE_BLOCKS_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/cheese"));
+	public static final TagKey<Item> STORAGE_BLOCKS_BLUE_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/blue_cheese"));
+	public static final TagKey<Item> STORAGE_BLOCKS_NETHER_CHEESE = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/nether_cheese"));
 
 	public RatsItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> tags, @Nullable ExistingFileHelper helper) {
 		super(output, provider, tags, RatsMod.MODID, helper);
@@ -74,8 +74,9 @@ public class RatsItemTags extends ItemTagsProvider {
 				RatsItemRegistry.SANTA_HAT.get(), RatsItemRegistry.EXTERMINATOR_HAT.get(),
 				RatsItemRegistry.PARTY_HAT.get());
 
-		// 1.21: ItemTags.MUSIC_DISCS removed (music discs identified via DataComponents.JUKEBOX_PLAYABLE).
-		// PORT-STUB: explicit music-disc tagging dropped.
+		// 1.21: ItemTags.MUSIC_DISCS no longer exists. Music discs are identified by setting the
+		// DataComponents.JUKEBOX_PLAYABLE component on the item, which our rat-music discs do at
+		// registration time, so explicit tag membership is unnecessary.
 		this.tag(ItemTags.PIGLIN_LOVED).add(RatsItemRegistry.RAT_KING_CROWN.get(), RatsItemRegistry.GOLDEN_RAT_SKULL.get(), RatsItemRegistry.HALO_HAT.get());
 		this.tag(ItemTags.WOOL).add(RatsBlockRegistry.PIED_WOOL.get().asItem());
 		this.tag(ItemTags.ARROWS).add(RatsItemRegistry.RAT_ARROW.get());

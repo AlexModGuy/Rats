@@ -1,0 +1,10 @@
+{
+  "type": "rats:archeologist",
+  "ingredient": {
+    "item": "minecraft:skeleton_skull"
+  },
+  "result": {
+    "count": 1,
+    "id": "rats:marbled_cheese_rat_head"
+  }
+}

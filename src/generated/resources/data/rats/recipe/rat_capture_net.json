@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "minecraft:cobweb"
+    },
+    "N": {
+      "tag": "c:nuggets/iron"
+    },
+    "S": {
+      "item": "rats:rat_sack"
+    }
+  },
+  "pattern": [
+    "NCN",
+    "CSC",
+    "NCN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rats:rat_capture_net"
+  },
+  "show_notification": true
+}

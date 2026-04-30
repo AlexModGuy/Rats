@@ -1,0 +1,10 @@
+{
+  "type": "rats:chef",
+  "ingredient": {
+    "item": "minecraft:coal"
+  },
+  "result": {
+    "count": 1,
+    "id": "rats:little_black_squash_balls"
+  }
+}

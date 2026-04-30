@@ -164,8 +164,14 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				net.minecraft.world.food.FoodProperties food = stack.get(net.minecraft.core.component.DataComponents.FOOD);
 				if (food != null) {
 					this.heal(food.nutrition());
+					// FoodProperties.effects() returns a list of (effect, probability) pairs; apply each
+					// per its probability so eating cursed potions/foods affects the doctor like a player.
+					for (net.minecraft.world.food.FoodProperties.PossibleEffect possible : food.effects()) {
+						if (this.getRandom().nextFloat() < possible.probability()) {
+							this.addEffect(new net.minecraft.world.effect.MobEffectInstance(possible.effect()));
+						}
+					}
 				}
-				// PORT-STUB: addEatEffect(ItemStack, Level, LivingEntity) helper signature changed; effects now applied via FoodProperties.effects().
 				stack.shrink(1);
 				this.munchCounter = 0;
 				this.eating = false;
@@ -431,12 +437,15 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 	protected void updateTrades() {
 		VillagerTrades.ItemListing[] level1 = PlagueDoctorTrades.PLAGUE_DOCTOR_TRADES.get(1);
 		VillagerTrades.ItemListing[] level2 = PlagueDoctorTrades.PLAGUE_DOCTOR_TRADES.get(2);
-		if (level1 != null && level2 != null) {
-			MerchantOffers merchantoffers = this.getOffers();
-			this.addOffersFromItemListings(merchantoffers, level1, 5);
-			int i = this.getRandom().nextInt(level2.length);
-			int j = this.getRandom().nextInt(level2.length);
-			int k = this.getRandom().nextInt(level2.length);
+		// Defensive guard: avoid Random.nextInt(0) if either tier is missing or empty.
+		if (level1 == null || level2 == null || level2.length == 0) {
+			return;
+		}
+		MerchantOffers merchantoffers = this.getOffers();
+		this.addOffersFromItemListings(merchantoffers, level1, 5);
+		int i = this.getRandom().nextInt(level2.length);
+		int j = this.getRandom().nextInt(level2.length);
+		int k = this.getRandom().nextInt(level2.length);
 			int rolls = 0;
 			while ((j == i) && rolls < 100) {
 				j = this.getRandom().nextInt(level2.length);
@@ -463,11 +472,10 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 				merchantoffers.add(merchantoffer3);
 			}
 
-			if (!RatsMod.RATLANTIS_DATAPACK_ENABLED && this.willDespawn()) {
-				merchantoffers.add(PlagueDoctorTrades.COMBINER_TRADE.getOffer(this, this.getRandom()));
-				merchantoffers.add(PlagueDoctorTrades.SEPARATOR_TRADE.getOffer(this, this.getRandom()));
-				merchantoffers.add(PlagueDoctorTrades.UPGRADE_COMBINED_TRADE.getOffer(this, this.getRandom()));
-			}
+		if (!RatsMod.RATLANTIS_DATAPACK_ENABLED && this.willDespawn()) {
+			merchantoffers.add(PlagueDoctorTrades.COMBINER_TRADE.getOffer(this, this.getRandom()));
+			merchantoffers.add(PlagueDoctorTrades.SEPARATOR_TRADE.getOffer(this, this.getRandom()));
+			merchantoffers.add(PlagueDoctorTrades.UPGRADE_COMBINED_TRADE.getOffer(this, this.getRandom()));
 		}
 	}
 
@@ -499,16 +507,18 @@ public class PlagueDoctor extends AbstractVillager implements RangedAttackMob {
 			if (hand == InteractionHand.MAIN_HAND) {
 				player.awardStat(Stats.TALKED_TO_VILLAGER);
 			}
+			// 1.21: AbstractVillager.getOffers() throws on the client when offers haven't been synced yet.
+			// Defer the empty-offers check and trade-screen open to the server; the client just returns sidedSuccess
+			// so the interaction packet flows to the server.
+			if (this.level().isClientSide()) {
+				return InteractionResult.sidedSuccess(true);
+			}
 			if (this.getOffers().isEmpty()) {
 				return super.mobInteract(player, hand);
-			} else {
-				if (!this.level().isClientSide()) {
-					this.setTradingPlayer(player);
-					this.openTradingScreen(player, this.getDisplayName(), 1);
-				}
-
-				return InteractionResult.sidedSuccess(this.level().isClientSide());
 			}
+			this.setTradingPlayer(player);
+			this.openTradingScreen(player, this.getDisplayName(), 1);
+			return InteractionResult.sidedSuccess(false);
 		}
 		return super.mobInteract(player, hand);
 	}

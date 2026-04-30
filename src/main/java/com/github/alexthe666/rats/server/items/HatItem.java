@@ -146,13 +146,17 @@ public class HatItem extends ArmorItem {
 		return 0.0F;
 	}
 
-	// PORT-STUB: 1.21 ArmorItem.getArmorTexture removed.
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+	// 1.21: vanilla HumanoidArmorLayer derives the texture from ArmorMaterial.Layer.assetId(),
+	// not from any per-item override. NeoForge re-introduces a per-stack hook on IItemExtension —
+	// we use it to point each hat at its real texture under model/hat/, regardless of which shared
+	// ArmorMaterial (e.g. GENERIC_HAT) the hat was registered with.
+	@Override
+	public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
 		String item = BuiltInRegistries.ITEM.getKey(this).getPath();
 		if (!item.equals("air")) {
-			return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/model/hat/" + item + ".png").toString();
+			return ResourceLocation.fromNamespaceAndPath(RatsMod.MODID, "textures/model/hat/" + item + ".png");
 		}
-		return "textures/particle/flea_0.png";
+		return ResourceLocation.withDefaultNamespace("textures/particle/flea_0.png");
 	}
 
 	@Override

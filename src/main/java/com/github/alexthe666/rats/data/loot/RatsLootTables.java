@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-// PORT-STUB: 1.20.5+ changed LootTableProvider to take CompletableFuture<HolderLookup
+// Datagen note (1.21): 1.20.5+ changed LootTableProvider to take CompletableFuture<HolderLookup
 // .Provider> and SubProviderEntry now wraps a Function<HolderLookup.Provider,
 // LootTableSubProvider>. Sub-providers updated separately; this is the wiring shell.
 public class RatsLootTables extends LootTableProvider {

@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.Collections;
 import java.util.Set;
 
-// PORT-STUB: see RatsEntityLootTables.
+// Datagen note (1.21): see RatsEntityLootTables.
 public class RatsBlockLootTables extends BlockLootSubProvider {
 
     protected RatsBlockLootTables(HolderLookup.Provider registries) {
