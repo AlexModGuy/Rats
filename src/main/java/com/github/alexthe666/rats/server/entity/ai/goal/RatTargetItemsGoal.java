@@ -106,7 +106,7 @@ public class RatTargetItemsGoal extends Goal {
 					int extractSize = alreadyHolding.getCount() + duplicate.getCount() < 64 ? duplicate.getCount() : Math.min(64 - alreadyHolding.getCount(), duplicate.getCount());
 					duplicate.setCount(extractSize);
 					this.targetItem.getItem().shrink(extractSize);
-					this.rat.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(duplicate.getItem(), alreadyHolding.getCount() + extractSize));
+					this.rat.setItemInHand(InteractionHand.MAIN_HAND, duplicate.copyWithCount(alreadyHolding.getCount() + extractSize));
 				} else {
 					duplicate.setCount(1);
 					this.targetItem.getItem().shrink(1);
